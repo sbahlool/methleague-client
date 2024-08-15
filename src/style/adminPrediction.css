@@ -1,0 +1,133 @@
+.admin-predictions-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  /* padding: 20px; */
+}
+
+.gameweek-options {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.gameweek-option {
+  position: relative;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.gameweek-option input[type="radio"] {
+  display: none;
+}
+
+.gameweek-label {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.gameweek-option input[type="radio"]:checked + .gameweek-label {
+  background-color: #6b21a8;
+  color: white;
+  border-color: #6b21a8;
+}
+
+.matches-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.match-card {
+  position: relative;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 10px;
+}
+
+.match-tournament {
+  display: flex;
+  align-items: center;
+}
+
+.match-tournament img {
+  height: 70px;
+  width: 100px;
+  margin-right: 12px;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.team-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 15px #f3f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.team-logo img {
+  width: 50px;
+}
+
+.team-name {
+  margin-top: 16px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.match-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.match-date {
+  font-size: 18px;
+  color: #6c757d;
+}
+
+.match-date strong {
+  color: #343a40;
+}
+
+.user-prediction {
+  background-color: #6b21a8;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.user-prediction h4 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.user-prediction p {
+  margin: 0;
+}

@@ -1,0 +1,219 @@
+/* Container for the match details */
+.match-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Match Header Styling */
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+/* Team logos and names */
+.match h3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 20px 0;
+}
+
+.match h3 img {
+  margin: 0 20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.match h3 span {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+/* Date and Time */
+.match p {
+  text-align: center;
+  font-size: 18px;
+  color: #6c757d;
+}
+
+.match p strong {
+  color: #343a40;
+}
+
+/* Prediction Form */
+.match form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.match form div {
+  margin-bottom: 15px;
+}
+
+.match form label {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.match form input {
+  padding: 8px;
+  font-size: 16px;
+  width: 80px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Buttons */
+.match button {
+  background-color: #6b21a8; /* Match button background */
+  color: #ffffff; /* Match button text color */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+
+
+/* Container to Center Submit Button */
+.prediction-submit-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+/* Submit Button Styling (already defined) */
+.prediction-submit {
+  background-color: #6b21a8; /* Button background */
+  color: #ffffff; /* Button text color */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.prediction-submit:hover {
+  background-color: #5a189a; /* Darker shade for hover effect */
+}
+
+.prediction-submit:disabled {
+  background-color: #7842a4; /* Lighter shade for disabled state */
+  cursor: not-allowed;
+}
+
+
+.match button:hover {
+  background-color: #5a189a; /* Darker shade for hover effect */
+}
+
+.match button:disabled {
+  background-color: #7842a4; /* Lighter shade for disabled state */
+  cursor: not-allowed;
+}
+
+/* User Prediction */
+.user-prediction {
+  background-color: #6b21a8; /* Match button background */
+  color: #ffffff; /* Match button text color */
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Match Score */
+.match-score {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.match-score-number {
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.match-score-divider {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 10px;
+}
+.prediction-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+.prediction-inputs-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Space between the input fields */
+  margin-bottom: 20px; /* Space between the input fields and the button */
+}
+
+
+
+.prediction-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.prediction-label {
+  font-size: 16px;
+  margin-bottom: 5px; /* Space between label and input */
+}
+
+
+.prediction-score {
+  padding: 8px;
+  font-size: 16px;
+  width: 60px; /* Adjust the width of the input */
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+
+
+
+.prediction-score:focus {
+  outline: none;
+  border-color: #6b21a8; /* Focused state with a matching purple color */
+}
+
+.prediction-score::-webkit-inner-spin-button, 
+.prediction-score::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.prediction-score[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Prediction Form Container */
+
+
+/* Individual Prediction Input Container */
+
+
+

@@ -1,0 +1,6 @@
+/* index.css */
+
+/* Tailwind base, components, and utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

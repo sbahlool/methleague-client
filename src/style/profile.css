@@ -1,0 +1,122 @@
+/* Profile Page Styles */
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.vh-100 {
+  height: 100vh;
+}
+
+.profile {
+  background-color: #f4f4f4;
+  padding: 2rem 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: #fff;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 0 auto; /* Center the card horizontally */
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.profile-pic img {
+  border-radius: 50%;
+  border: 4px solid #710598;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  display: block; /* Ensure image is a block element */
+  margin: 0 auto; /* Center the image */
+}
+
+.card h4 {
+  margin: 1rem 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.card p {
+  color: #666;
+}
+
+.card button {
+  background-color: #710598;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block; /* Ensure button is a block element */
+  margin: 1rem auto; /* Center the button */
+}
+
+.card button:hover {
+  background-color: #62008c;
+}
+
+.btn-outline-warning {
+  color: #710598 !important;
+  border-color: #710598 !important;
+  border-radius: 5px !important;
+  display: block !important; /* Ensure buttons are block elements */
+  margin: 5px auto !important; /* Center buttons and add margin */
+}
+
+.btn-outline-warning:hover {
+  color: #fff !important;
+  background-color: #710598 !important;
+  border-color: #62008c !important;
+}
+
+.hero-section {
+  text-align: center;
+  padding: 3rem;
+  background-color: #f4f4f4;
+}
+
+.hero-section h1 {
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.hero-section h3 {
+  font-size: 1.5rem;
+  color: #666;
+}
+
+.hero-section a {
+  color: #710598;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.hero-section a:hover {
+  text-decoration: underline;
+}
+
+.team-logo-container {
+  text-align: center;
+  margin: 1rem 0; /* Add spacing around the logo */
+}
+
+.team-logo-container img {
+  display: inline-block;
+  max-width: 100px; /* Adjust size as needed */
+  height: auto; /* Maintain aspect ratio */
+}

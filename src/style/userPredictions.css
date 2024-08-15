@@ -1,0 +1,117 @@
+.user-predictions-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.user-predictions {
+  position: relative;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 16px;
+}
+
+.match-headers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 8px;
+}
+
+.match-tournaments {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.match-tournaments img {
+  height: 70px;
+  width: 100px;
+  margin-right: 12px;
+}
+
+.match-contents {
+  display: flex;
+  padding: 16px;
+}
+
+.columns {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.team-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 15px #f3f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-logo img {
+  width: 50px;
+}
+
+.team-name {
+  margin-top: 16px;
+}
+
+.match-score {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center scores horizontally */
+}
+
+.match-score-number {
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center; /* Center text within the number container */
+}
+
+.match-score-divider {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: #333; /* Example color */
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.match-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.match-date {
+  font-size: 18px;
+  color: #6c757d; /* Example color for var(--color-text-secondary) */
+}
+
+.match-date strong {
+  color: #343a40; /* Example color for var(--color-text-primary) */
+}
+
+.no-predictions {
+  text-align: center;
+  font-size: 18px;
+  color: #6c757d;
+}

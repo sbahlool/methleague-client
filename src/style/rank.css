@@ -1,0 +1,53 @@
+/* Add to your CSS file */
+
+/* Container for the tables to be displayed side by side */
+.table-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem; /* Space between the tables */
+  flex-wrap: wrap; /* Ensure tables wrap on smaller screens */
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  padding: 1rem; /* Padding around the container */
+}
+
+/* Wrapper for each table to ensure proper layout and spacing */
+.table-wrapper {
+  flex: 1;
+  min-width: 300px; /* Minimum width for each table */
+  max-width: 100%; /* Ensure tables do not overflow */
+  overflow-x: auto; /* Allow horizontal scrolling if the table overflows */
+}
+
+/* General table styles */
+table {
+  width: 100%;
+  border-collapse: collapse; /* Collapse borders for a cleaner look */
+}
+
+thead {
+  background-color: #4a4a4a; /* Dark background for headers */
+  color: white; /* White text for headers */
+}
+
+th, td {
+  padding: 0.5rem; /* Padding for table cells */
+  border: 1px solid #ccc; /* Light border for table cells */
+  text-align: left; /* Align text to the left */
+}
+
+th {
+  font-weight: bold; /* Bold text for headers */
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f4f4f4; /* Alternate row background color */
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #fff; /* White background for odd rows */
+}
+
+img {
+  max-width: 30px; /* Limit the size of images */
+  height: auto; /* Maintain aspect ratio */
+}
