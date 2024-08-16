@@ -1,6 +1,9 @@
 import Axios from 'axios'
 
-export const BASE_URL = 'http://localhost:4000'
+// Use the environment variable for the base URL, defaulting to Heroku's URL
+export const BASE_URL =
+  process.env.REACT_APP_API_URL ||
+  'https://methleague-e433e7bc8a2e.herokuapp.com/'
 
 const Client = Axios.create({ baseURL: BASE_URL })
 
@@ -26,15 +29,5 @@ export const fetchPremierLeagueStandings = async () => {
     throw error
   }
 }
-
-// export const fetchUpcomingMatches = async () => {
-//   try {
-//     const response = await Client.get('/api/upcoming-matches')
-//     return response.data
-//   } catch (error) {
-//     console.error('Error fetching upcoming matches:', error)
-//     throw error
-//   }
-// }
 
 export default Client
