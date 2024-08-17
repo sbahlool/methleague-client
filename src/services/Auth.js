@@ -87,12 +87,3 @@ export const GetUserById = async (id) => {
     throw error
   }
 }
-
-export const ForgotPass = async (email) => {
-  try {
-    const res = await Client.post('/auth/forgot-password', { email })
-    return res.data
-  } catch (error) {
-    throw error
-  }
-}

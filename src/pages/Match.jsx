@@ -168,19 +168,23 @@ const Match = () => {
           </div>
         </form>
       ) : (
-        <div className="user-prediction">
-          <p>Your Prediction:</p>
-          <p className="user-prediction-score">
-            {userPrediction.predictedHomeScore} :{' '}
-            {userPrediction.predictedAwayScore}
-          </p>
-          <button
-            className="update-prediction-button"
-            onClick={() => setUserPrediction(null)}
-          >
-            Update Prediction
-          </button>
-        </div>
+        <>
+          <div className="user-prediction">
+            <p>Your Prediction:</p>
+            <p className="user-prediction-score">
+              {userPrediction.predictedHomeScore} :{' '}
+              {userPrediction.predictedAwayScore}
+            </p>
+          </div>
+          <div className="update-prediction-container">
+            <button
+              className="update-prediction-button"
+              onClick={() => setUserPrediction(null)}
+            >
+              Update Prediction
+            </button>
+          </div>
+        </>
       )}
     </div>
   )
