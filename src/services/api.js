@@ -1,8 +1,7 @@
 import Axios from 'axios'
 
-// Use the environment variable for the base URL, defaulting to Heroku's URL
 export const BASE_URL =
-  process.env.REACT_APP_API_URL ||
+  import.meta.env.VITE_REACT_APP_API_URL ||
   'https://methleague-e433e7bc8a2e.herokuapp.com/'
 
 const Client = Axios.create({ baseURL: BASE_URL })
@@ -22,7 +21,7 @@ Client.interceptors.request.use(
 
 export const fetchPremierLeagueStandings = async () => {
   try {
-    const response = await Client.get('/api/standings') // This calls your backend
+    const response = await Client.get('/api/standings')
     return response.data
   } catch (error) {
     console.error('Error fetching Premier League standings:', error)

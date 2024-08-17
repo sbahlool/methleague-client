@@ -12,11 +12,11 @@ const EditProfilePage = () => {
     email: '',
     firstname: '',
     lastname: '',
-    profilePicture: '',
+    // profilePicture: '',
     team: '' // Add team field to state
   })
   const [teams, setTeams] = useState([])
-  const [file, setFile] = useState(null)
+  // const [file, setFile] = useState(null)
   let { username } = useParams()
 
   useEffect(() => {
@@ -39,9 +39,9 @@ const EditProfilePage = () => {
     formData.append('firstname', newProfile.firstname)
     formData.append('lastname', newProfile.lastname)
     formData.append('team', newProfile.team)
-    if (file) {
-      formData.append('profilePicture', file)
-    }
+    // if (file) {
+    //   formData.append('profilePicture', file)
+    // }
 
     await EditProfile(username, formData)
     navigate(`/profile/${newProfile.username}`)
@@ -71,7 +71,7 @@ const EditProfilePage = () => {
         onSubmit={handleSubmit}
         encType="multipart/form-data"
       >
-        <label className="edit-profile-file-label" htmlFor="file">
+        {/* <label className="edit-profile-file-label" htmlFor="file">
           <span className="glyphicon glyphicon-camera"></span>
           <span>Change Image</span>
         </label>
@@ -81,7 +81,7 @@ const EditProfilePage = () => {
           name="profilePicture"
           onChange={handleFileChange}
           className="edit-profile-file-input"
-        />
+        /> */}
         <label className="edit-profile-label" htmlFor="username">
           Username
         </label>
