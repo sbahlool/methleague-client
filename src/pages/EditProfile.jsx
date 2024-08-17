@@ -12,11 +12,9 @@ const EditProfilePage = () => {
     email: '',
     firstname: '',
     lastname: '',
-    // profilePicture: '',
     team: '' // Add team field to state
   })
   const [teams, setTeams] = useState([])
-  // const [file, setFile] = useState(null)
   let { username } = useParams()
 
   useEffect(() => {
@@ -39,9 +37,6 @@ const EditProfilePage = () => {
     formData.append('firstname', newProfile.firstname)
     formData.append('lastname', newProfile.lastname)
     formData.append('team', newProfile.team)
-    // if (file) {
-    //   formData.append('profilePicture', file)
-    // }
 
     await EditProfile(username, formData)
     navigate(`/profile/${newProfile.username}`)
@@ -49,10 +44,6 @@ const EditProfilePage = () => {
 
   const handleChange = (e) => {
     setNewProfile({ ...newProfile, [e.target.name]: e.target.value })
-  }
-
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0])
   }
 
   return (
