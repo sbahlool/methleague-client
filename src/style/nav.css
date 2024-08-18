@@ -12,6 +12,7 @@ body {
 
 a.navitem {
   text-decoration: none;
+  background-color: #eceef3;
 }
 
 .container {
@@ -151,6 +152,9 @@ a.navitem {
 
 @media (max-width: 768px) {
   .navbar .navbar-menu .navbar-nav {
+    border-color: whitesmoke;
+    border-radius: 5%;
+    background-color: #62008c;
     width: 100%;
     display: block;
     border-top: 1px solid #eee;
@@ -159,18 +163,23 @@ a.navitem {
 }
 
 .navbar .navbar-menu .navbar-nav > li > a {
-  color: #3c4250;
+  border-color: whitesmoke;
+  border-radius: 5%;
+  background-color: white;
+  color: black;
   text-decoration: none;
   display: inline-block;
   padding: 0.5rem 1rem;
 }
 
 .navbar .navbar-menu .navbar-nav > li > a:hover {
-  color: #FFAC00;
+  color: #b19bba;
 }
 
 @media (max-width: 768px) {
   .navbar .navbar-menu .navbar-nav > li > a {
+    color: white;
+    background-color: #62008c;
     border-bottom: 1px solid #eceef3;
   }
 }
@@ -196,6 +205,11 @@ a.navitem {
   display: none;
 }
 
+.logo-wrapper-logo img {
+  max-width: 100%;
+  height: auto;
+}
+
 @media (max-width: 768px) {
   .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown {
     position: relative;
@@ -204,13 +218,17 @@ a.navitem {
 }
 
 .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown li a {
-  color: #3c4250;
+  background-color: #6d3385;
+  color: white;
   padding: 0.25rem 1rem;
   display: block;
 }
 
 .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown.show {
   display: block !important;
+  background-color: #62008c;
+  padding: 0.25rem 1rem;
+
 }
 
 .navbar .navbar-menu .navbar-nav .dropdown > .separator {
@@ -238,6 +256,47 @@ a.navitem {
   .navbar .navbar-header h4 {
     font-size: 1.05rem;
   }
+}
+
+.navbar-toggler {
+  display: none; 
+}
+
+@media (max-width: 768px) {
+  .navbar-toggler {
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0; /* Remove any padding to make the icon align properly */
+  }
+
+  .bar {
+    width: 25px;
+    height: 25px;
+    /* Adjust the size to fit the icon */
+  }
+
+  /* Adjust the navbar logo on mobile */
+  .logo-home {
+    width: 70px; /* Adjust this value as needed for mobile */
+  }
+
+  /* Ensure that the menu is hidden initially and only shown when active */
+  .navbar-menu {
+    position: relative;
+    z-index: 10; /* Ensure this is higher than other elements */
+  }
+
+  .navbar-menu.active {
+    display: flex;
+  }
+}
+
+.bar {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
 }
 
 /* .navbar .navbar-menu {

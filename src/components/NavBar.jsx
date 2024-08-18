@@ -5,6 +5,7 @@ import '../style/nav.css'
 const NavBar = ({ user, handleLogOut }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false)
   const [isMenuOpen, setMenuOpen] = useState(false)
+  const [isBurgerVisible, setBurgerVisible] = useState(true)
 
   const toggleDropdown = (event) => {
     event.preventDefault()
@@ -19,6 +20,12 @@ const NavBar = ({ user, handleLogOut }) => {
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen)
+    setBurgerVisible(!isBurgerVisible)
+  }
+
+  const closeMenu = () => {
+    setMenuOpen(false)
+    setBurgerVisible(true)
   }
 
   useEffect(() => {
@@ -36,13 +43,24 @@ const NavBar = ({ user, handleLogOut }) => {
         </NavLink>
         <ul className={`dropdown ${isDropdownOpen ? 'show' : ''}`}>
           <li>
-            <NavLink className="navitem" to={`/profile/${user.username}`}>
+            <NavLink
+              className="navitem"
+              to={`/profile/${user.username}`}
+              onClick={closeMenu}
+            >
               Profile
             </NavLink>
           </li>
           <li className="separator"></li>
           <li>
-            <NavLink className="navitem" onClick={handleLogOut} to="/">
+            <NavLink
+              className="navitem"
+              onClick={() => {
+                handleLogOut()
+                closeMenu()
+              }}
+              to="/"
+            >
               Logout
             </NavLink>
           </li>
@@ -54,10 +72,12 @@ const NavBar = ({ user, handleLogOut }) => {
   const visitorOptions = (
     <ul className="navbar-nav">
       <li>
-        <NavLink to="/login">Sign in</NavLink>
+        <NavLink to="/login" onClick={closeMenu}>
+          Sign in
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/register">
+        <NavLink to="/register" onClick={closeMenu}>
           <button className="btn btn-outline-purple">Join</button>
         </NavLink>
       </li>
@@ -69,40 +89,52 @@ const NavBar = ({ user, handleLogOut }) => {
       <nav className="navbar">
         <div className="container">
           <div className="navbar-header">
-            <NavLink to="/">
-              <div className="logo-wrapper">
-                <img className="logo" src="/logo.png" alt="Logo" />
+            <NavLink to="/" onClick={closeMenu}>
+              <div className="logo-wrapper-logo">
+                <img className="logo-home" src="/logo.png" alt="Logo" />
               </div>
             </NavLink>
           </div>
 
-          <button className="navbar-toggler" onClick={toggleMenu}>
-            <span className="bar"></span>
-            <span className="bar"></span>
-            <span className="bar"></span>
-          </button>
+          {isBurgerVisible && (
+            <button className="navbar-toggler" onClick={toggleMenu}>
+              <img className="bar" src="/bmenu.png" alt="bmenu" />
+            </button>
+          )}
 
           <div className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
             <ul className="navbar-nav">
               <li>
-                <NavLink to="/">Home</NavLink>
+                <NavLink to="/" onClick={closeMenu}>
+                  Home
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/table">League Table</NavLink>
+                <NavLink to="/table" onClick={closeMenu}>
+                  League Table
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/rank">Rank</NavLink>
+                <NavLink to="/rank" onClick={closeMenu}>
+                  Rank
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/schedule">Schedule</NavLink>
+                <NavLink to="/schedule" onClick={closeMenu}>
+                  Schedule
+                </NavLink>
               </li>
               {user && user.role === 'admin' && (
                 <>
                   <li>
-                    <NavLink to="/admin">Admin Page</NavLink>
+                    <NavLink to="/admin" onClick={closeMenu}>
+                      Admin Page
+                    </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/admin-predictions">Admin Predictions</NavLink>
+                    <NavLink to="/admin-predictions" onClick={closeMenu}>
+                      Admin Predictions
+                    </NavLink>
                   </li>
                 </>
               )}
