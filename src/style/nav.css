@@ -24,7 +24,15 @@ a.navitem {
   padding-right: 15px;
 }
 
-.logo {
+.logo-home {
+  display: inline-block;
+  vertical-align: top;
+  width: 90px;
+  height: auto;
+  margin-right: 20px;
+  margin-bottom: 5px;
+}
+.logo{
   display: inline-block;
   vertical-align: top;
   width: 90px;
@@ -189,15 +197,11 @@ a.navitem {
 }
 
 .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown {
-  list-style: none;
   position: absolute;
   top: 150%;
   left: 0;
-  background-color: #fff;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  min-width: 160px;
-  width: auto;
+  background-color: #62008c;
+  padding: 0.5rem 1rem;
   white-space: nowrap;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   z-index: 99999;
@@ -208,6 +212,11 @@ a.navitem {
 .logo-wrapper-logo img {
   max-width: 100%;
   height: auto;
+}
+.navbar .navbar-menu .navbar-nav > li > a, .btn-outline-purple {
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
 }
 
 @media (max-width: 768px) {
@@ -226,8 +235,8 @@ a.navitem {
 
 .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown.show {
   display: block !important;
-  background-color: #62008c;
-  padding: 0.25rem 1rem;
+  /* background-color: #62008c;
+  padding: 0.25rem 1rem; */
 
 }
 

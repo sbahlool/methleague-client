@@ -14,7 +14,8 @@ const Home = () => {
             </div>
             <br />
             <h1>
-              <b>Meth League</b> <br /> <i>Prediction.</i>
+              <b className="home-text">Meth League</b> <br />{' '}
+              <i className="home-text-prediction">Prediction.</i>
             </h1>
           </div>
         </div>

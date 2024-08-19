@@ -6,6 +6,10 @@
   padding: 0;
 }
 
+.home-text, .home-text-prediction {
+  color: rgb(210, 201, 201);
+}
+
 body {
   font-family: "Source Sans Pro";
   max-width: 100vw;
