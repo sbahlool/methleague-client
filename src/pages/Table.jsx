@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { fetchPremierLeagueStandings } from '../services/api' // Ensure the correct path to the API file
+import { fetchPremierLeagueStandings } from '../services/api'
 import '../index.css'
 
 const PremierLeagueStandings = () => {
@@ -27,75 +27,54 @@ const PremierLeagueStandings = () => {
   return (
     <div className="flex flex-col items-center justify-center w-screen min-h-screen bg-purple-900 py-10">
       <h1 className="text-2xl text-purple-100 font-medium">2024-25 Season</h1>
-      <div className="flex flex-col mt-6">
+      <div className="flex flex-col mt-6 w-full">
         <div className="overflow-x-auto">
           <div className="py-2 align-middle inline-block min-w-full">
-            <div className="shadow overflow-hidden sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-purple-800 text-white text-s uppercase font-medium">
+            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+              <table className="min-w-full divide-y divide-gray-200 table-auto">
+                <thead className="bg-purple-800 text-white text-xs uppercase font-medium">
                   <tr>
-                    <th></th>
-                    <th className="px-6 py-3 text-left tracking-wider">Club</th>
-                    <th className="px-6 py-3 text-left tracking-wider">MP</th>
-                    <th className="px-6 py-3 text-left tracking-wider">W</th>
-                    <th className="px-6 py-3 text-left tracking-wider">D</th>
-                    <th className="px-6 py-3 text-left tracking-wider">L</th>
-                    <th className="px-6 py-3 text-left tracking-wider">GF</th>
-                    <th className="px-6 py-3 text-left tracking-wider">GA</th>
-                    <th className="px-6 py-3 text-left tracking-wider">GD</th>
-                    <th className="px-6 py-3 text-left tracking-wider">Pts</th>
-                    <th className="px-6 py-3 text-left tracking-wider">
-                      Last 5
-                    </th>
+                    <th className="px-2 py-2 text-left">#</th>
+                    <th className="px-2 py-2 text-left">Club</th>
+                    <th className="px-2 py-2 text-left">MP</th>
+                    <th className="px-2 py-2 text-left">W</th>
+                    <th className="px-2 py-2 text-left">D</th>
+                    <th className="px-2 py-2 text-left">L</th>
+                    <th className="px-2 py-2 text-left">GF</th>
+                    <th className="px-2 py-2 text-left">GA</th>
+                    <th className="px-2 py-2 text-left">GD</th>
+                    <th className="px-2 py-2 text-left">Pts</th>
+                    <th className="px-2 py-2 text-left">Last 5</th>
                   </tr>
                 </thead>
-                <tbody className="bg-black-800 divide-y divide-gray-600">
+                <tbody className="bg-black-800 divide-y divide-gray-600 text-xs">
                   {standings.map((team) => (
-                    <tr
-                      key={team.team.id}
-                      className="bg-white bg-opacity-20 text-base"
-                    >
-                      <td className="pl-4">{team.position}</td>
-                      <td className="flex items-center px-6 py-4 whitespace-nowrap">
+                    <tr key={team.team.id} className="bg-white bg-opacity-20">
+                      <td className="px-2 py-2">{team.position}</td>
+                      <td className="flex items-center px-2 py-2 whitespace-nowrap">
                         <img
-                          className="w-6"
+                          className="w-6 h-6"
                           src={team.team.crest}
                           alt={team.team.shortName}
                         />
-                        <span className="ml-2 font-medium">
+                        <span className="ml-2 font-medium truncate">
                           {team.team.shortName}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-base whitespace-nowrap">
-                        {team.playedGames}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {team.won}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {team.draw}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {team.lost}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {team.goalsFor}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {team.goalsAgainst}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {team.goalDifference}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {team.points}
-                      </td>
-                      <td className="flex items-center px-6 py-4 whitespace-nowrap">
-                        {team.form &&
+                      <td className="px-2 py-2">{team.playedGames}</td>
+                      <td className="px-2 py-2">{team.won}</td>
+                      <td className="px-2 py-2">{team.draw}</td>
+                      <td className="px-2 py-2">{team.lost}</td>
+                      <td className="px-2 py-2">{team.goalsFor}</td>
+                      <td className="px-2 py-2">{team.goalsAgainst}</td>
+                      <td className="px-2 py-2">{team.goalDifference}</td>
+                      <td className="px-2 py-2">{team.points}</td>
+                      <td className="flex items-center px-2 py-2">
+                        {team.form ? (
                           team.form.split(',').map((result, index) => (
                             <svg
                               key={index}
-                              className={`w-4 fill-current ${
+                              className={`w-4 h-4 fill-current ${
                                 result === 'W'
                                   ? 'text-green-600'
                                   : result === 'L'
@@ -112,7 +91,10 @@ const PremierLeagueStandings = () => {
                                 clipRule="evenodd"
                               />
                             </svg>
-                          ))}
+                          ))
+                        ) : (
+                          <span className="text-gray-400"></span>
+                        )}
                       </td>
                     </tr>
                   ))}
