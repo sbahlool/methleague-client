@@ -10,7 +10,6 @@ Currently, two official plugins are available:
 ## Temp personal tracker, pending files to fix:
 
 src/App.tsx
-src/components/NavBar.tsx
 src/components/ProtectedRoute.tsx
 src/pages/AdminPage.tsx
 src/pages/AdminPredictions.tsx

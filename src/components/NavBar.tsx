@@ -1,19 +1,25 @@
 import { NavLink } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import '../style/nav.css'
+import { UserResponse } from '../services/Auth'
 
-const NavBar = ({ user, handleLogOut }) => {
+interface Props {
+  user: UserResponse
+  handleLogOut: () => void
+}
+
+const NavBar = ({ user, handleLogOut }: Props) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false)
   const [isMenuOpen, setMenuOpen] = useState(false)
   const [isBurgerVisible, setBurgerVisible] = useState(true)
 
-  const toggleDropdown = (event) => {
+  const toggleDropdown: React.MouseEventHandler<HTMLAnchorElement> = (event) => {
     event.preventDefault()
     setDropdownOpen(!isDropdownOpen)
   }
 
-  const closeDropdown = (event) => {
-    if (!event.target.closest('.navbar-dropdown')) {
+  const closeDropdown = (event: MouseEvent) => {
+    if (event.target instanceof Element && !event.target.closest('.navbar-dropdown')) {
       setDropdownOpen(false)
     }
   }
@@ -41,13 +47,9 @@ const NavBar = ({ user, handleLogOut }) => {
         <NavLink to="#" className="dropdown-toggler" onClick={toggleDropdown}>
           Welcome, {user.username}! <i className="fa fa-angle-down"></i>
         </NavLink>
-        <ul className={`dropdown ${isDropdownOpen ? 'show' : ''}`}>
+        <ul className={`dropdown${isDropdownOpen ? ' show' : ''}`}>
           <li>
-            <NavLink
-              className="navitem"
-              to={`/profile/${user.username}`}
-              onClick={closeMenu}
-            >
+            <NavLink className="navitem" to={`/profile/${user.username}`} onClick={closeMenu}>
               Profile
             </NavLink>
           </li>
