@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react'
-import { viewProfile } from '../services/Auth'
+import { getProfile, UserResponse } from '../services/Auth'
 import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import '../style/profile.css' // Ensure this import is correct
 
-const Profile = ({ user }) => {
-  const [profile, setProfile] = useState(null)
+interface Props {
+  user: UserResponse
+}
+
+const Profile = ({ user }: Props) => {
+  const [profile, setProfile] = useState<UserResponse | null>(null)
   const { username } = useParams()
   const navigate = useNavigate()
 
   useEffect(() => {
     const handleProfile = async () => {
       try {
-        const fetchProfile = await viewProfile(username)
-        setProfile(fetchProfile)
+        setProfile(await getProfile(username!))
       } catch (error) {
         console.error('Error fetching profile:', error)
       }
@@ -22,7 +25,7 @@ const Profile = ({ user }) => {
   }, [username])
 
   const handleViewPredictions = async () => {
-    navigate(`/user/${profile._id}/predictions`)
+    navigate(`/user/${profile?._id}/predictions`)
   }
 
   let editOptions = user && user.username === username && (

@@ -15,9 +15,7 @@ src/pages/AdminPredictions.tsx
 src/pages/ChangePassword.tsx
 src/pages/ForgotPasswordPage.tsx
 src/pages/Home.tsx
-src/pages/Login.tsx
 src/pages/Match.tsx
-src/pages/Profile.tsx
 src/pages/Rank.tsx
 src/pages/Register.tsx
 src/pages/ResetPasswordPage.tsx

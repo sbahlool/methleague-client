@@ -49,7 +49,7 @@ export const changePassword = async (username: string, data) => {
   }
 }
 
-export const viewProfile = async (username: string): Promise<UserResponse> => {
+export const getProfile = async (username: string): Promise<UserResponse> => {
   try {
     const res = await Client.get<UserResponse>(`/auth/profile/${username}`)
     return res.data

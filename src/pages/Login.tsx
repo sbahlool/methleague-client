@@ -1,19 +1,23 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { loginUser } from '../services/Auth'
+import { LoginResponse, loginUser } from '../services/Auth'
 import '../style/auth.css'
 
-const Login = ({ setUser }) => {
+interface Props {
+  setUser: (user: LoginResponse['user']) => void
+}
+
+const Login = ({ setUser }: Props) => {
   let navigate = useNavigate()
 
   const [formValues, setFormValues] = useState({ username: '', password: '' })
   const [errorMessage, setErrorMessage] = useState('')
 
-  const handleChange = (e) => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     try {
       const payload = await loginUser(formValues)

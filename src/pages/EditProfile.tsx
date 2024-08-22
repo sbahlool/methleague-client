@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { viewProfile, editProfile, getTeams, TeamResponse, UserResponse } from '../services/Auth'
+import { getProfile, editProfile, getTeams, TeamResponse, UserResponse } from '../services/Auth'
 import { useNavigate, useParams } from 'react-router-dom'
 import '../style/editProfilePage.css'
 
@@ -33,7 +33,7 @@ const EditProfilePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const profileData = await viewProfile(username)
+      const profileData = await getProfile(username)
       const teamsData = await getTeams()
       setProfile(profileData)
       setNewProfile({ ...profileData, team: profileData.team._id }) // Set initial team value
