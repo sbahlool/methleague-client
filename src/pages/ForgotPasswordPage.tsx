@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ForgotPass } from '../services/Auth' // Import the forgot password service function
+// import { forgotPass } from '../services/Auth' // Import the forgot password service function
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')
@@ -9,7 +9,7 @@ const ForgotPassword = () => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     try {
-      await ForgotPass(email)
+      // await forgotPass(email)
       setMessage('Password reset email sent. Please check your inbox.')
       setError('')
     } catch (err) {

@@ -1,25 +1,19 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { changePassword } from '../services/Auth'
+import { changePassword, ChangePasswordRequest } from '../services/Auth'
 import '../style/changePass.css'
 
+const emptyPasswordChange = { oldPassword: '', newPassword: '', confirmPassword: '' }
+
 const ChangePasswordPage = () => {
-  const [newPassword, setNewPassword] = useState({
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  })
+  const [newPassword, setNewPassword] = useState<ChangePasswordRequest>({ ...emptyPasswordChange })
   const navigate = useNavigate()
   const { username } = useParams()
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    await changePassword(username, newPassword)
-    setNewPassword({
-      oldPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-    })
+    await changePassword(username!, newPassword)
+    setNewPassword({ ...emptyPasswordChange })
     navigate(`/profile/${username}`)
   }
 

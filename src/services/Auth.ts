@@ -40,13 +40,19 @@ export interface RegisterUserRequest {
   team: string
 }
 
-export const changePassword = async (username: string, data) => {
+export const changePassword = async (username: string, data: ChangePasswordRequest) => {
   try {
     const res = await Client.put(`/auth/changePassword/${username}`, data)
     return res.data
   } catch (error) {
     throw error
   }
+}
+
+export interface ChangePasswordRequest {
+  oldPassword: string
+  newPassword: string
+  confirmPassword: string
 }
 
 export const getProfile = async (username: string): Promise<UserResponse> => {

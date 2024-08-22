@@ -12,10 +12,7 @@ Currently, two official plugins are available:
 src/App.tsx
 src/pages/AdminPage.tsx
 src/pages/AdminPredictions.tsx
-src/pages/ChangePassword.tsx
-src/pages/ForgotPasswordPage.tsx
 src/pages/Home.tsx
-src/pages/Match.tsx
 src/pages/Rank.tsx
 src/pages/Register.tsx
 src/pages/ResetPasswordPage.tsx

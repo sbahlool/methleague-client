@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getMatchById } from '../services/Match'
-import { addPrediction, getUserPrediction } from '../services/Prediction'
+import { getMatchById, MatchResponse } from '../services/Match'
+import { addPrediction, getUserPrediction, PredictionResponse } from '../services/Prediction'
 import { checkSession } from '../services/Auth'
 import '../style/match.css'
 
 const Match = () => {
   const { matchId } = useParams()
-  const [match, setMatch] = useState(null)
+  const [match, setMatch] = useState<MatchResponse | null>(null)
   const [homeScore, setHomeScore] = useState('')
   const [awayScore, setAwayScore] = useState('')
   const [userId, setUserId] = useState(null)
-  const [userPrediction, setUserPrediction] = useState(null)
+  const [userPrediction, setUserPrediction] = useState<PredictionResponse | null>(null)
 
   useEffect(() => {
     const fetchMatch = async () => {
       try {
-        const data = await getMatchById(matchId)
+        const data = await getMatchById(matchId!)
         setMatch(data)
       } catch (error) {
         console.error('Failed to fetch match:', error)
@@ -40,7 +40,7 @@ const Match = () => {
     const fetchUserPrediction = async () => {
       if (userId) {
         try {
-          const prediction = await getUserPrediction(matchId, userId)
+          const prediction = await getUserPrediction(matchId!, userId)
           if (prediction) {
             setUserPrediction(prediction)
             setHomeScore(prediction.predictedHomeScore?.toString() || '')
@@ -59,7 +59,7 @@ const Match = () => {
     fetchUserPrediction()
   }, [userId, matchId])
 
-  const handlePredictionSubmit = async (e) => {
+  const handlePredictionSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     try {
       if (!userId) {
@@ -67,7 +67,7 @@ const Match = () => {
         return
       }
       const predictionData = {
-        match: matchId,
+        match: matchId!,
         user: userId,
         predictedHomeScore: parseInt(homeScore),
         predictedAwayScore: parseInt(awayScore),
@@ -85,7 +85,7 @@ const Match = () => {
     return <div>Loading...</div>
   }
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     const day = date.getDate()
     const monthNames = [

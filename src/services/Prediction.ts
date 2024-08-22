@@ -103,7 +103,7 @@ interface PredictionRequest {
   predictedAwayScore: number
 }
 
-interface PredictionResponse {
+export interface PredictionResponse {
   _id: string
   match: MatchResponse
   user: User
