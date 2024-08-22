@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { fetchPremierLeagueStandings } from '../services/api'
+import { getPremierLeagueStandings, Table } from '../services/Standings'
 import '../index.css'
 
 const PremierLeagueStandings = () => {
-  const [standings, setStandings] = useState([])
-  const [error, setError] = useState(null)
+  const [standings, setStandings] = useState<Table[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const getStandings = async () => {
       try {
-        const data = await fetchPremierLeagueStandings()
+        const data = await getPremierLeagueStandings()
         setStandings(data.standings[0].table)
       } catch (error) {
         setError('Failed to load standings')

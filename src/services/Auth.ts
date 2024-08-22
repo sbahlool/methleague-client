@@ -51,8 +51,8 @@ export const CheckSession = async () => {
   try {
     const res = await Client.get('/auth/session', {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
     })
     return res.data
   } catch (error) {
@@ -70,20 +70,40 @@ export const GetTeams = async () => {
   }
 }
 
-export const GetUsers = async () => {
+export const GetUsers = async (): Promise<UserResponse[]> => {
   try {
-    const res = await Client.get('/auth/users')
+    const res = await Client.get<UserResponse[]>('/auth/users')
     return res.data
   } catch (error) {
     throw error
   }
 }
 
-export const GetUserById = async (id) => {
+export const GetUserById = async (id: string): Promise<UserResponse> => {
   try {
-    const res = await Client.get(`/auth/users/${id}`)
+    const res = await Client.get<UserResponse>(`/auth/users/${id}`)
     return res.data
   } catch (error) {
     throw error
   }
+}
+
+export interface UserResponse {
+  _id: string
+  username: string
+  email: string
+  passwordDigest: string
+  firstname: string
+  lastname: string
+  profilePicture: string
+  team: {
+    _id: string
+    teamname: string
+    logo: string
+    __v: number
+  }
+  role: string
+  createdAt: string
+  updatedAt: string
+  __v: number
 }
