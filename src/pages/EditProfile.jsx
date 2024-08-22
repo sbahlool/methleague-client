@@ -48,12 +48,12 @@ const EditProfilePage = () => {
 
   return (
     <div className="edit-profile-container">
-      <img
+      {/* <img
         src={`/uploads/${profile.profilePicture}`}
         id="output"
         className="edit-profile-image"
         alt="Profile"
-      />
+      /> */}
 
       <h1 className="edit-profile-title">Edit My Profile</h1>
       <br />

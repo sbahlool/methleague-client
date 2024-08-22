@@ -78,39 +78,19 @@ const Rank = () => {
   return (
     <div className="flex flex-col items-center justify-center w-screen min-h-screen bg-purple-900 py-10">
       <h1 className="text-2xl text-purple-100 font-medium">User Rankings</h1>
-      <div className="table-container mt-6 px-6">
+      <div className="table-container mt-6 px-4 sm:px-6 lg:px-8 w-full">
         {/* Table for Rankings by Points */}
         <div className="table-wrapper">
-          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="overflow-x-auto">
             <div className="py-2 align-middle inline-block min-w-full">
               <div className="shadow overflow-hidden sm:rounded-lg">
                 <table className="min-w-full text-sm text-black-400">
-                  <thead className="bg-purple-800 text-white text-s uppercase font-medium">
+                  <thead className="bg-purple-800 text-white text-xs uppercase font-medium">
                     <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left tracking-wider"
-                      >
-                        Rank
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left tracking-wider"
-                      >
-                        Username
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left tracking-wider"
-                      >
-                        Team
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left tracking-wider"
-                      >
-                        Points
-                      </th>
+                      <th className="px-4 py-3 text-left">Rank</th>
+                      <th className="px-4 py-3 text-left">Username</th>
+                      <th className="px-4 py-3 text-left">Team</th>
+                      <th className="px-4 py-3 text-left">Points</th>
                     </tr>
                   </thead>
                   <tbody className="bg-black-800">
@@ -119,12 +99,10 @@ const Rank = () => {
                         key={user._id}
                         className="bg-white bg-opacity-20 text-base"
                       >
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {user.rank}
-                        </td>
-                        <td className="flex px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4">{user.rank}</td>
+                        <td className="flex items-center px-4 py-4">
                           <img
-                            className="w-6 rounded-full"
+                            className="w-8 h-8 rounded-full"
                             src={`/uploads/${user.profilePicture}`}
                             alt={`${user.username} profile`}
                           />
@@ -132,21 +110,19 @@ const Rank = () => {
                             {user.username}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4">
                           {user.team && (
                             <div className="flex items-center">
                               <img
                                 src={`/uploads/${user.team.logo}`}
                                 alt={`${user.team.teamname} logo`}
-                                className="w-6 h-6 rounded-full"
+                                className="w-8 h-8 rounded-full"
                               />
                               <span className="ml-2">{user.team.teamname}</span>
                             </div>
                           )}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {user.points}
-                        </td>
+                        <td className="px-4 py-4">{user.points}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -157,35 +133,17 @@ const Rank = () => {
         </div>
 
         {/* Table for Rankings by Perfect Predictions */}
-        <div className="table-wrapper">
-          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="table-wrapper mt-6">
+          <div className="overflow-x-auto">
             <div className="py-2 align-middle inline-block min-w-full">
               <div className="shadow overflow-hidden sm:rounded-lg">
                 <table className="min-w-full text-sm text-black-400">
-                  <thead className="bg-purple-800 text-white text-s uppercase font-medium">
+                  <thead className="bg-purple-800 text-white text-xs uppercase font-medium">
                     <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left tracking-wider"
-                      >
-                        Rank
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left tracking-wider"
-                      >
-                        Username
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left tracking-wider"
-                      >
-                        Team
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left tracking-wider"
-                      >
+                      <th className="px-4 py-3 text-left">Rank</th>
+                      <th className="px-4 py-3 text-left">Username</th>
+                      <th className="px-4 py-3 text-left">Team</th>
+                      <th className="px-4 py-3 text-left">
                         Perfect Predictions
                       </th>
                     </tr>
@@ -196,12 +154,10 @@ const Rank = () => {
                         key={user._id}
                         className="bg-white bg-opacity-20 text-base"
                       >
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {index + 1}
-                        </td>
-                        <td className="flex px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4">{index + 1}</td>
+                        <td className="flex items-center px-4 py-4">
                           <img
-                            className="w-6 rounded-full"
+                            className="w-8 h-8 rounded-full"
                             src={`/uploads/${user.profilePicture}`}
                             alt={`${user.username} profile`}
                           />
@@ -209,21 +165,19 @@ const Rank = () => {
                             {user.username}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-4 py-4">
                           {user.team && (
                             <div className="flex items-center">
                               <img
                                 src={`/uploads/${user.team.logo}`}
                                 alt={`${user.team.teamname} logo`}
-                                className="w-6 h-6 rounded-full"
+                                className="w-8 h-8 rounded-full"
                               />
                               <span className="ml-2">{user.team.teamname}</span>
                             </div>
                           )}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {user.perfect}
-                        </td>
+                        <td className="px-4 py-4">{user.perfect}</td>
                       </tr>
                     ))}
                   </tbody>
