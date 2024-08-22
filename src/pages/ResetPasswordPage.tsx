@@ -9,16 +9,14 @@ const ResetPasswordPage = () => {
   const { token } = useParams()
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     if (newPassword !== confirmPassword) {
       setMessage('Passwords do not match')
       return
     }
     try {
-      const response = await axios.post(`/reset-password/${token}`, {
-        password: newPassword
-      })
+      const response = await axios.post(`/reset-password/${token}`, { password: newPassword })
       setMessage(response.data)
       setTimeout(() => {
         navigate('/login')

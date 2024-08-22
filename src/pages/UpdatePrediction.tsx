@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import {
-  getPredictionByUserAndMatch,
-  updatePrediction
-} from '../services/Prediction'
+import { getPredictionByUserAndMatch, updatePrediction } from '../services/Prediction'
 import '../style/schedule.css' // Use the same CSS as the Schedule page
 
 const UpdatePrediction = ({ currentUser }) => {
@@ -16,10 +13,7 @@ const UpdatePrediction = ({ currentUser }) => {
   useEffect(() => {
     const fetchPrediction = async () => {
       try {
-        const predictionData = await getPredictionByUserAndMatch(
-          currentUser.id,
-          matchId
-        )
+        const predictionData = await getPredictionByUserAndMatch(currentUser.id, matchId)
         setPrediction(predictionData)
         setHomeScore(predictionData.predictedHomeScore)
         setAwayScore(predictionData.predictedAwayScore)
@@ -33,12 +27,12 @@ const UpdatePrediction = ({ currentUser }) => {
     }
   }, [currentUser, matchId])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     try {
       const updatedPrediction = {
         predictedHomeScore: homeScore,
-        predictedAwayScore: awayScore
+        predictedAwayScore: awayScore,
       }
       await updatePrediction(prediction._id, updatedPrediction)
       navigate('/schedule') // Navigate back to the schedule or any other page after updating
@@ -59,9 +53,7 @@ const UpdatePrediction = ({ currentUser }) => {
       <p className="update-gameweek">GW: {prediction.match.gameweek}</p>
       <div className="match">
         <div className="match-header">
-          <div className="match-status">
-            {prediction.match.isCompleted ? 'Completed' : 'Upcoming'}
-          </div>
+          <div className="match-status">{prediction.match.isCompleted ? 'Completed' : 'Upcoming'}</div>
           <div className="match-tournament">
             <img src="/uploads/epl-logo.png" alt="League logo" />
             Premier League
@@ -76,17 +68,13 @@ const UpdatePrediction = ({ currentUser }) => {
                   alt={`${prediction.match.homeTeam.teamname} logo`}
                 />
               </div>
-              <h2 className="team-name">
-                {prediction.match.homeTeam.teamname}
-              </h2>
+              <h2 className="team-name">{prediction.match.homeTeam.teamname}</h2>
             </div>
           </div>
           <div className="column">
             <div className="match-details">
               <div className="match-score">
-                <span className="match-score-number match-score-number--leading">
-                  {homeScore}
-                </span>
+                <span className="match-score-number match-score-number--leading">{homeScore}</span>
                 <span className="match-score-divider">:</span>
                 <span className="match-score-number">{awayScore}</span>
               </div>
@@ -94,23 +82,13 @@ const UpdatePrediction = ({ currentUser }) => {
                 <div className="update-score-input">
                   <label>
                     Home Team Score:
-                    <input
-                      type="number"
-                      value={homeScore}
-                      onChange={(e) => setHomeScore(e.target.value)}
-                      required
-                    />
+                    <input type="number" value={homeScore} onChange={(e) => setHomeScore(e.target.value)} required />
                   </label>
                 </div>
                 <div className="update-score-input">
                   <label>
                     Away Team Score:
-                    <input
-                      type="number"
-                      value={awayScore}
-                      onChange={(e) => setAwayScore(e.target.value)}
-                      required
-                    />
+                    <input type="number" value={awayScore} onChange={(e) => setAwayScore(e.target.value)} required />
                   </label>
                 </div>
                 <button type="submit" className="predict-button">
@@ -129,9 +107,7 @@ const UpdatePrediction = ({ currentUser }) => {
                   alt={`${prediction.match.awayTeam.teamname} logo`}
                 />
               </div>
-              <h2 className="team-name">
-                {prediction.match.awayTeam.teamname}
-              </h2>
+              <h2 className="team-name">{prediction.match.awayTeam.teamname}</h2>
             </div>
           </div>
         </div>

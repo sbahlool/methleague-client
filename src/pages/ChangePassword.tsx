@@ -12,7 +12,7 @@ const ChangePasswordPage = () => {
   const navigate = useNavigate()
   const { username } = useParams()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     await changePassword(username, newPassword)
     setNewPassword({
@@ -23,7 +23,7 @@ const ChangePasswordPage = () => {
     navigate(`/profile/${username}`)
   }
 
-  const handleChange = (e) => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) => {
     setNewPassword({ ...newPassword, [e.target.name]: e.target.value })
   }
 

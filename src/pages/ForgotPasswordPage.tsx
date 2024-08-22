@@ -6,7 +6,7 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     try {
       await ForgotPass(email)
@@ -24,13 +24,7 @@ const ForgotPassword = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
         <button type="submit">Send Reset Link</button>
       </form>

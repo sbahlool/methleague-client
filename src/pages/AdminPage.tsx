@@ -45,7 +45,7 @@ const AddMatch = () => {
     fetchAddedMatches()
   }, [])
 
-  const handleChange = (e) => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) => {
     setMatchData({ ...matchData, [e.target.name]: e.target.value })
   }
 
@@ -53,7 +53,7 @@ const AddMatch = () => {
     setSelectedGameweek(gameweek)
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     try {
       await addMatch(matchData)
