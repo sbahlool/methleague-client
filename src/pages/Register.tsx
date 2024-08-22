@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { RegisterUser, LoginUser, GetTeams } from '../services/Auth'
+import { registerUser, loginUser, getTeams } from '../services/Auth'
 import { useNavigate, Link } from 'react-router-dom'
 import '../style/auth.css'
 
@@ -13,14 +13,14 @@ const Register = ({ setUser }) => {
     confirmPassword: '',
     firstname: '',
     lastname: '',
-    team: ''
+    team: '',
   })
   const [teams, setTeams] = useState([])
 
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const data = await GetTeams()
+        const data = await getTeams()
         setTeams(data)
       } catch (error) {
         console.error('Failed to fetch teams', error)
@@ -35,14 +35,14 @@ const Register = ({ setUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await RegisterUser({
+    await registerUser({
       username: formValues.username,
       email: formValues.email,
       password: formValues.password,
       confirmPassword: formValues.confirmPassword,
       firstname: formValues.firstname,
       lastname: formValues.lastname,
-      team: formValues.team
+      team: formValues.team,
     })
     setFormValues({
       username: '',
@@ -51,10 +51,10 @@ const Register = ({ setUser }) => {
       confirmPassword: '',
       firstname: '',
       lastname: '',
-      team: ''
+      team: '',
     })
 
-    const payload = await LoginUser(formValues)
+    const payload = await loginUser(formValues)
     setUser(payload)
     navigate('/')
   }
@@ -135,13 +135,7 @@ const Register = ({ setUser }) => {
             <label className="label" htmlFor="team">
               Favorite Team:
             </label>
-            <select
-              name="team"
-              className="input"
-              value={formValues.team}
-              onChange={handleChange}
-              required
-            >
+            <select name="team" className="input" value={formValues.team} onChange={handleChange} required>
               <option value="">Select your favorite team</option>
               {teams.map((team) => (
                 <option key={team._id} value={team._id}>
@@ -149,11 +143,7 @@ const Register = ({ setUser }) => {
                 </option>
               ))}
             </select>
-            <button
-              className="button"
-              type="submit"
-              disabled={!formValues.username || !formValues.password}
-            >
+            <button className="button" type="submit" disabled={!formValues.username || !formValues.password}>
               Register
             </button>
             <br />

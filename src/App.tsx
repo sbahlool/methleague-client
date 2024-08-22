@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router'
-import { CheckSession } from './services/Auth'
+import { checkSession } from './services/Auth'
 import NavBar from './components/NavBar'
 import Register from './pages/Register'
 import Login from './pages/Login'
@@ -30,7 +30,7 @@ const App = () => {
   }
 
   const checkToken = async () => {
-    const user = await CheckSession()
+    const user = await checkSession()
     setUser(user)
   }
 
@@ -67,22 +67,13 @@ const App = () => {
           />
           <Route path="/register" element={<Register setUser={setUser} />} />
           <Route path="/profile/:username" element={<Profile user={user} />} />
-          <Route
-            path="/user/:userId/predictions"
-            element={<UserPredictions />}
-          />
+          <Route path="/user/:userId/predictions" element={<UserPredictions />} />
           <Route path="/profile/edit/:username" element={<EditProfilePage />} />
-          <Route
-            path="/profile/security/:username"
-            element={<ChangePasswordPage />}
-          />
+          <Route path="/profile/security/:username" element={<ChangePasswordPage />} />
           <Route path="/Rank" element={<Rank />} />
           <Route path="/Schedule" element={<Schedule currentUser={user} />} />
           <Route path="/match/:matchId" element={<Match />} />
-          <Route
-            path="/update-prediction/:matchId"
-            element={<UpdatePrediction currentUser={user} />}
-          />{' '}
+          <Route path="/update-prediction/:matchId" element={<UpdatePrediction currentUser={user} />} />{' '}
         </Routes>
       </main>
     </div>

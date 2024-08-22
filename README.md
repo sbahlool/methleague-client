@@ -10,11 +10,9 @@ Currently, two official plugins are available:
 ## Temp personal tracker, pending files to fix:
 
 src/App.tsx
-src/components/ProtectedRoute.tsx
 src/pages/AdminPage.tsx
 src/pages/AdminPredictions.tsx
 src/pages/ChangePassword.tsx
-src/pages/EditProfile.tsx
 src/pages/ForgotPasswordPage.tsx
 src/pages/Home.tsx
 src/pages/Login.tsx

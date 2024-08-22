@@ -1,24 +1,24 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ChangePassword } from '../services/Auth'
+import { changePassword } from '../services/Auth'
 import '../style/changePass.css'
 
 const ChangePasswordPage = () => {
   const [newPassword, setNewPassword] = useState({
     oldPassword: '',
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
   })
   const navigate = useNavigate()
   const { username } = useParams()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await ChangePassword(username, newPassword)
+    await changePassword(username, newPassword)
     setNewPassword({
       oldPassword: '',
       newPassword: '',
-      confirmPassword: ''
+      confirmPassword: '',
     })
     navigate(`/profile/${username}`)
   }
@@ -73,11 +73,7 @@ const ChangePasswordPage = () => {
         <button
           className="change-password-button"
           type="submit"
-          disabled={
-            !newPassword.oldPassword ||
-            !newPassword.newPassword ||
-            !newPassword.confirmPassword
-          }
+          disabled={!newPassword.oldPassword || !newPassword.newPassword || !newPassword.confirmPassword}
         >
           Change Password
         </button>

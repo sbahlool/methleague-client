@@ -1,26 +1,40 @@
 import { useState, useEffect } from 'react'
-import { ViewProfile, EditProfile, GetTeams } from '../services/Auth'
+import { viewProfile, editProfile, getTeams, TeamResponse, UserResponse } from '../services/Auth'
 import { useNavigate, useParams } from 'react-router-dom'
 import '../style/editProfilePage.css'
 
 const EditProfilePage = () => {
   let navigate = useNavigate()
 
-  const [profile, setProfile] = useState('')
+  const [profile, setProfile] = useState<UserResponse>({
+    _id: '',
+    username: '',
+    email: '',
+    passwordDigest: '',
+    firstname: '',
+    lastname: '',
+    profilePicture: '',
+    team: { _id: '', teamname: '', logo: '', __v: 0 },
+    role: '',
+    createdAt: '',
+    updatedAt: '',
+    __v: 0,
+  })
   const [newProfile, setNewProfile] = useState({
     username: '',
     email: '',
     firstname: '',
     lastname: '',
-    team: '' // Add team field to state
+    team: '', // Add team field to state
   })
-  const [teams, setTeams] = useState([])
+  const [teams, setTeams] = useState<TeamResponse[]>([])
   let { username } = useParams()
+  if (!username) username = ''
 
   useEffect(() => {
     const fetchData = async () => {
-      const profileData = await ViewProfile(username)
-      const teamsData = await GetTeams()
+      const profileData = await viewProfile(username)
+      const teamsData = await getTeams()
       setProfile(profileData)
       setNewProfile({ ...profileData, team: profileData.team._id }) // Set initial team value
       setTeams(teamsData)
@@ -28,7 +42,7 @@ const EditProfilePage = () => {
     fetchData()
   }, [username])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
 
     const formData = new FormData()
@@ -38,41 +52,21 @@ const EditProfilePage = () => {
     formData.append('lastname', newProfile.lastname)
     formData.append('team', newProfile.team)
 
-    await EditProfile(username, formData)
+    await editProfile(username, formData)
     navigate(`/profile/${newProfile.username}`)
   }
 
-  const handleChange = (e) => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) => {
     setNewProfile({ ...newProfile, [e.target.name]: e.target.value })
   }
 
   return (
     <div className="edit-profile-container">
-      <img
-        src={`/uploads/${profile.profilePicture}`}
-        id="output"
-        className="edit-profile-image"
-        alt="Profile"
-      />
+      <img src={`/uploads/${profile.profilePicture}`} id="output" className="edit-profile-image" alt="Profile" />
 
       <h1 className="edit-profile-title">Edit My Profile</h1>
       <br />
-      <form
-        className="edit-profile-form"
-        onSubmit={handleSubmit}
-        encType="multipart/form-data"
-      >
-        {/* <label className="edit-profile-file-label" htmlFor="file">
-          <span className="glyphicon glyphicon-camera"></span>
-          <span>Change Image</span>
-        </label>
-        <input
-          id="file"
-          type="file"
-          name="profilePicture"
-          onChange={handleFileChange}
-          className="edit-profile-file-input"
-        /> */}
+      <form className="edit-profile-form" onSubmit={handleSubmit} encType="multipart/form-data">
         <label className="edit-profile-label" htmlFor="username">
           Username
         </label>
@@ -129,13 +123,7 @@ const EditProfilePage = () => {
         <label className="edit-profile-label" htmlFor="team">
           Favorite Team
         </label>
-        <select
-          name="team"
-          className="edit-profile-input"
-          value={newProfile.team}
-          onChange={handleChange}
-          required
-        >
+        <select name="team" className="edit-profile-input" value={newProfile.team} onChange={handleChange} required>
           <option value="">Select Team</option>
           {teams.map((team) => (
             <option key={team._id} value={team._id}>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getMatchById } from '../services/Match'
 import { addPrediction, getUserPrediction } from '../services/Prediction'
-import { CheckSession } from '../services/Auth'
+import { checkSession } from '../services/Auth'
 import '../style/match.css'
 
 const Match = () => {
@@ -25,7 +25,7 @@ const Match = () => {
 
     const fetchUserId = async () => {
       try {
-        const sessionData = await CheckSession()
+        const sessionData = await checkSession()
         setUserId(sessionData.id)
       } catch (error) {
         console.error('Failed to fetch user ID:', error)
@@ -70,7 +70,7 @@ const Match = () => {
         match: matchId,
         user: userId,
         predictedHomeScore: parseInt(homeScore),
-        predictedAwayScore: parseInt(awayScore)
+        predictedAwayScore: parseInt(awayScore),
       }
       const prediction = await addPrediction(predictionData)
       setUserPrediction(prediction)
@@ -100,7 +100,7 @@ const Match = () => {
       'September',
       'October',
       'November',
-      'December'
+      'December',
     ]
     const month = monthNames[date.getMonth()]
     const year = date.getFullYear()
@@ -172,15 +172,11 @@ const Match = () => {
           <div className="user-prediction">
             <p>Your Prediction:</p>
             <p className="user-prediction-score">
-              {userPrediction.predictedHomeScore} :{' '}
-              {userPrediction.predictedAwayScore}
+              {userPrediction.predictedHomeScore} : {userPrediction.predictedAwayScore}
             </p>
           </div>
           <div className="update-prediction-container">
-            <button
-              className="update-prediction-button"
-              onClick={() => setUserPrediction(null)}
-            >
+            <button className="update-prediction-button" onClick={() => setUserPrediction(null)}>
               Update Prediction
             </button>
           </div>

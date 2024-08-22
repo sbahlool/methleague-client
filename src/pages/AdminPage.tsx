@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { addMatch, getMatches, updateMatchScores } from '../services/Match'
-import { GetTeams } from '../services/Auth'
+import { getTeams } from '../services/Auth'
 import '../style/schedule.css'
 
 const AddMatch = () => {
@@ -9,7 +9,7 @@ const AddMatch = () => {
     date: '',
     time: '',
     homeTeam: '',
-    awayTeam: ''
+    awayTeam: '',
   })
   const [teams, setTeams] = useState([])
   const [addedMatches, setAddedMatches] = useState([])
@@ -20,7 +20,7 @@ const AddMatch = () => {
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const data = await GetTeams()
+        const data = await getTeams()
         setTeams(data)
       } catch (error) {
         console.error('Failed to fetch teams', error)
@@ -34,9 +34,7 @@ const AddMatch = () => {
     try {
       const matches = await getMatches()
       setAddedMatches(matches)
-      const uniqueGameweeks = [
-        ...new Set(matches.map((match) => match.gameweek))
-      ]
+      const uniqueGameweeks = [...new Set(matches.map((match) => match.gameweek))]
       setOptions(uniqueGameweeks)
     } catch (error) {
       console.error('Failed to fetch added matches', error)
@@ -65,7 +63,7 @@ const AddMatch = () => {
         date: '',
         time: '',
         homeTeam: '',
-        awayTeam: ''
+        awayTeam: '',
       })
       fetchAddedMatches()
     } catch (error) {
@@ -78,8 +76,8 @@ const AddMatch = () => {
       ...scores,
       [matchId]: {
         ...scores[matchId],
-        [team]: value
-      }
+        [team]: value,
+      },
     })
   }
 
@@ -109,7 +107,7 @@ const AddMatch = () => {
       'September',
       'October',
       'November',
-      'December'
+      'December',
     ]
     const month = monthNames[date.getMonth()]
     const year = date.getFullYear()
@@ -129,29 +127,9 @@ const AddMatch = () => {
           required
           className="input"
         />
-        <input
-          type="date"
-          name="date"
-          value={matchData.date}
-          onChange={handleChange}
-          required
-          className="input"
-        />
-        <input
-          type="time"
-          name="time"
-          value={matchData.time}
-          onChange={handleChange}
-          required
-          className="input"
-        />
-        <select
-          name="homeTeam"
-          value={matchData.homeTeam}
-          onChange={handleChange}
-          required
-          className="select"
-        >
+        <input type="date" name="date" value={matchData.date} onChange={handleChange} required className="input" />
+        <input type="time" name="time" value={matchData.time} onChange={handleChange} required className="input" />
+        <select name="homeTeam" value={matchData.homeTeam} onChange={handleChange} required className="select">
           <option value="">Home Team</option>
           {teams.map((team) => (
             <option key={team._id} value={team._id}>
@@ -159,13 +137,7 @@ const AddMatch = () => {
             </option>
           ))}
         </select>
-        <select
-          name="awayTeam"
-          value={matchData.awayTeam}
-          onChange={handleChange}
-          required
-          className="select"
-        >
+        <select name="awayTeam" value={matchData.awayTeam} onChange={handleChange} required className="select">
           <option value="">Away Team</option>
           {teams.map((team) => (
             <option key={team._id} value={team._id}>
@@ -205,10 +177,7 @@ const AddMatch = () => {
                     width="80"
                     className="team-logo"
                   />{' '}
-                  {match.homeTeam.teamname}{' '}
-                  {match.isCompleted
-                    ? `${match.homeScore} - ${match.awayScore}`
-                    : 'vs'}{' '}
+                  {match.homeTeam.teamname} {match.isCompleted ? `${match.homeScore} - ${match.awayScore}` : 'vs'}{' '}
                   {match.awayTeam.teamname}
                   <img
                     src={`/uploads/${match.awayTeam.logo}`}
@@ -222,40 +191,20 @@ const AddMatch = () => {
                 </p>
                 <div className="score-update flex items-center justify-center space-x-4 bg-white-800 p-6 rounded-lg shadow-md">
                   <label className="score-label flex items-center space-x-2">
-                    <span className="text-black font-semibold">
-                      Home Score:
-                    </span>
+                    <span className="text-black font-semibold">Home Score:</span>
                     <input
                       type="number"
-                      value={
-                        (scores[match._id] && scores[match._id].homeScore) || ''
-                      }
-                      onChange={(e) =>
-                        handleScoreChange(
-                          match._id,
-                          'homeScore',
-                          e.target.value
-                        )
-                      }
+                      value={(scores[match._id] && scores[match._id].homeScore) || ''}
+                      onChange={(e) => handleScoreChange(match._id, 'homeScore', e.target.value)}
                       className="score-input w-12 p-2 bg-purple-200 text-black rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
                     />
                   </label>
                   <label className="score-label flex items-center space-x-2">
-                    <span className="text-black font-semibold">
-                      Away Score:
-                    </span>
+                    <span className="text-black font-semibold">Away Score:</span>
                     <input
                       type="number"
-                      value={
-                        (scores[match._id] && scores[match._id].awayScore) || ''
-                      }
-                      onChange={(e) =>
-                        handleScoreChange(
-                          match._id,
-                          'awayScore',
-                          e.target.value
-                        )
-                      }
+                      value={(scores[match._id] && scores[match._id].awayScore) || ''}
+                      onChange={(e) => handleScoreChange(match._id, 'awayScore', e.target.value)}
                       className="score-input w-12 p-2 bg-purple-200 text-black rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
                     />
                   </label>

@@ -1,8 +1,8 @@
 import Client from './api'
 
-export const LoginUser = async (data) => {
+export const loginUser = async (data: LoginRequest): Promise<LoginResponse['user']> => {
   try {
-    const res = await Client.post('/auth/login', data)
+    const res = await Client.post<LoginResponse>('/auth/login', data)
     localStorage.setItem('token', res.data.token)
     localStorage.setItem('role', res.data.user.role) // Store the role in local storage
     return res.data.user
@@ -11,16 +11,36 @@ export const LoginUser = async (data) => {
   }
 }
 
-export const RegisterUser = async (data) => {
+export interface LoginRequest {
+  username: string
+  password: string
+}
+
+export interface LoginResponse {
+  user: { id: string; username: string; role: string }
+  token: string
+}
+
+export const registerUser = async (data: RegisterUserRequest): Promise<UserResponse> => {
   try {
-    const res = await Client.post('/auth/register', data)
+    const res = await Client.post<UserResponse>('/auth/register', data)
     return res.data
   } catch (error) {
     throw error
   }
 }
 
-export const ChangePassword = async (username, data) => {
+export interface RegisterUserRequest {
+  username: string
+  email: string
+  password: string
+  confirmPassword: string
+  firstname: string
+  lastname: string
+  team: string
+}
+
+export const changePassword = async (username: string, data) => {
   try {
     const res = await Client.put(`/auth/changePassword/${username}`, data)
     return res.data
@@ -29,16 +49,16 @@ export const ChangePassword = async (username, data) => {
   }
 }
 
-export const ViewProfile = async (username) => {
+export const viewProfile = async (username: string): Promise<UserResponse> => {
   try {
-    const res = await Client.get(`/auth/profile/${username}`)
+    const res = await Client.get<UserResponse>(`/auth/profile/${username}`)
     return res.data
   } catch (error) {
     throw error
   }
 }
 
-export const EditProfile = async (username, data) => {
+export const editProfile = async (username: string, data) => {
   try {
     const res = await Client.put(`/auth/editProfile/${username}`, data)
     return res.data
@@ -47,7 +67,7 @@ export const EditProfile = async (username, data) => {
   }
 }
 
-export const CheckSession = async () => {
+export const checkSession = async () => {
   try {
     const res = await Client.get('/auth/session', {
       headers: {
@@ -61,13 +81,20 @@ export const CheckSession = async () => {
 }
 
 // New function to fetch the list of teams
-export const GetTeams = async () => {
+export const getTeams = async (): Promise<TeamResponse[]> => {
   try {
-    const res = await Client.get('/auth/teams')
+    const res = await Client.get<TeamResponse[]>('/auth/teams')
     return res.data
   } catch (error) {
     throw error
   }
+}
+
+export interface TeamResponse {
+  _id: string
+  teamname: string
+  logo: string
+  __v: number
 }
 
 export const GetUsers = async (): Promise<UserResponse[]> => {
