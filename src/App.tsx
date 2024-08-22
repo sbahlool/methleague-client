@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router'
-import { checkSession } from './services/Auth'
+import { checkSession, UserResponse } from './services/Auth'
 import NavBar from './components/NavBar'
 import Register from './pages/Register'
 import Login from './pages/Login'
@@ -23,7 +23,7 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
 const App = () => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<UserResponse | null>(null)
   const handleLogOut = () => {
     setUser(null)
     localStorage.clear()
@@ -60,7 +60,7 @@ const App = () => {
           <Route
             path="/admin-predictions"
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute>
                 <AdminPredictions user={user} />
               </ProtectedRoute>
             }

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import '../style/profile.css' // Ensure this import is correct
 
 interface Props {
-  user: UserResponse
+  user: UserResponse | null
 }
 
 const Profile = ({ user }: Props) => {

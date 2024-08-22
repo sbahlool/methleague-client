@@ -4,7 +4,7 @@ import '../style/nav.css'
 import { UserResponse } from '../services/Auth'
 
 interface Props {
-  user: UserResponse
+  user: UserResponse | null
   handleLogOut: () => void
 }
 

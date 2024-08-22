@@ -9,13 +9,9 @@ Currently, two official plugins are available:
 
 ## Temp personal tracker, pending files to fix:
 
-src/App.tsx
 src/pages/AdminPage.tsx
 src/pages/AdminPredictions.tsx
-src/pages/Home.tsx
 src/pages/Rank.tsx
-src/pages/Register.tsx
-src/pages/ResetPasswordPage.tsx
 src/pages/Schedule.tsx
 src/pages/UpdatePrediction.tsx
 src/pages/UserPredictions.tsx

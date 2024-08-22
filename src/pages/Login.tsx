@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { LoginResponse, loginUser } from '../services/Auth'
+import { loginUser, UserResponse } from '../services/Auth'
 import '../style/auth.css'
 
 interface Props {
-  setUser: (user: LoginResponse['user']) => void
+  setUser: (user: UserResponse) => void
 }
 
 const Login = ({ setUser }: Props) => {
@@ -22,7 +22,7 @@ const Login = ({ setUser }: Props) => {
     try {
       const payload = await loginUser(formValues)
       setFormValues({ username: '', password: '' })
-      setUser(payload)
+      setUser(payload as unknown as UserResponse)
       navigate('/')
     } catch (error) {
       setErrorMessage('Invalid username or password. Please try again.')

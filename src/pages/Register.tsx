@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react'
-import { registerUser, loginUser, getTeams } from '../services/Auth'
+import { registerUser, loginUser, getTeams, TeamResponse, UserResponse } from '../services/Auth'
 import { useNavigate, Link } from 'react-router-dom'
 import '../style/auth.css'
 
-const Register = ({ setUser }) => {
+interface Props {
+  setUser: (user: UserResponse) => void
+}
+
+const Register = ({ setUser }: Props) => {
   let navigate = useNavigate()
 
   const [formValues, setFormValues] = useState({
@@ -15,7 +19,7 @@ const Register = ({ setUser }) => {
     lastname: '',
     team: '',
   })
-  const [teams, setTeams] = useState([])
+  const [teams, setTeams] = useState<TeamResponse[]>([])
 
   useEffect(() => {
     const fetchTeams = async () => {
