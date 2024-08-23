@@ -76,7 +76,7 @@ const PremierLeagueStandings = () => {
                             src={team.team.crest}
                             alt={team.team.shortName}
                           />
-                          <span className="ml-2 font-medium truncate">
+                          <span className="ml-2 font-medium truncate font-bold">
                             {isMobile ? team.team.tla : team.team.shortName}
                           </span>
                         </td>
