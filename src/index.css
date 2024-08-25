@@ -5,29 +5,26 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Custom adjustments for mobile view */
-/* Ensure the table container is scrollable on small screens */
 @media (max-width: 640px) {
   .overflow-x-auto {
     overflow-x: auto;
   }
 
   table {
-    min-width: 600px; /* Adjust based on content */
+    min-width: 600px;
   }
 
   thead th {
-    font-size: 0.75rem; /* Smaller font size for better fit */
+    font-size: 0.75rem;
   }
 
   tbody td {
-    font-size: 0.75rem; /* Smaller font size for better fit */
+    font-size: 0.75rem;
   }
 
   img {
-    width: 24px; /* Adjust size for mobile view */
+    width: 24px;
     height: 24px;
   }
 }
-

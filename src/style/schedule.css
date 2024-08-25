@@ -183,3 +183,9 @@
 .match-date strong {
   color: #343a40; /* Example color for var(--color-text-primary) */
 }
+
+@media (max-width: 768px){
+  .team-logo img {
+    width: 70px;
+    height: 50px;}
+}

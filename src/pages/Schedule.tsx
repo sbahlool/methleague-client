@@ -101,7 +101,7 @@ const Schedule = ({ currentUser }) => {
 
   return (
     <div className="schedule-container">
-      <h2>Schedule</h2>
+      <h2>Gameweek</h2>
       <div className="gameweek-options">
         {options.map((gameweek) => (
           <label key={gameweek} className="gameweek-option">

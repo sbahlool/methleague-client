@@ -77,20 +77,20 @@ const Rank = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-screen min-h-screen bg-purple-900 py-10">
-      <h1 className="text-2xl text-purple-100 font-medium">User Rankings</h1>
+      <h1 className="text-2xl text-purple-100 font-bold">User Rankings</h1>
       <div className="table-container mt-6 px-4 sm:px-6 lg:px-8 w-full">
         {/* Table for Rankings by Points */}
         <div className="table-wrapper">
           <div className="overflow-x-auto">
             <div className="py-2 align-middle inline-block min-w-full">
               <div className="shadow overflow-hidden sm:rounded-lg">
-                <table className="min-w-full text-sm text-black-400">
-                  <thead className="bg-purple-800 text-white text-xs uppercase font-medium">
+                <table className="min-w-full text-sm text-black-400 table-fixed">
+                  <thead className="bg-purple-800 text-white text-xs uppercase font-bold">
                     <tr>
-                      <th className="px-4 py-3 text-left">Rank</th>
-                      <th className="px-4 py-3 text-left">Username</th>
-                      <th className="px-4 py-3 text-left">Team</th>
-                      <th className="px-4 py-3 text-left">Points</th>
+                      <th className="px-1 py-1 text-center">Rank</th>
+                      <th className="px-1 py-1 text-center">Username</th>
+                      <th className="px-1 py-1 text-left"></th>
+                      <th className="px-1 py-1 text-center">Points</th>
                     </tr>
                   </thead>
                   <tbody className="bg-black-800">
@@ -99,18 +99,18 @@ const Rank = () => {
                         key={user._id}
                         className="bg-white bg-opacity-20 text-base"
                       >
-                        <td className="px-4 py-4">{user.rank}</td>
-                        <td className="flex items-center px-4 py-4">
+                        <td className="px-1 py-1 text-center">{user.rank}</td>
+                        <td className="flex items-center px-1 py-1">
                           <img
                             className="w-8 h-8 rounded-full"
                             src={`/uploads/${user.profilePicture}`}
                             alt={`${user.username} profile`}
                           />
-                          <span className="ml-2 font-medium">
+                          <span className="ml-2 font-bold">
                             {user.username}
                           </span>
                         </td>
-                        <td className="px-4 py-4">
+                        <td className="px-1 py-1">
                           {user.team && (
                             <div className="flex items-center">
                               <img
@@ -118,11 +118,10 @@ const Rank = () => {
                                 alt={`${user.team.teamname} logo`}
                                 className="w-8 h-8 rounded-full"
                               />
-                              <span className="ml-2">{user.team.teamname}</span>
                             </div>
                           )}
                         </td>
-                        <td className="px-4 py-4">{user.points}</td>
+                        <td className="px-1 py-1 text-center">{user.points}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -137,15 +136,13 @@ const Rank = () => {
           <div className="overflow-x-auto">
             <div className="py-2 align-middle inline-block min-w-full">
               <div className="shadow overflow-hidden sm:rounded-lg">
-                <table className="min-w-full text-sm text-black-400">
-                  <thead className="bg-purple-800 text-white text-xs uppercase font-medium">
+                <table className="min-w-full text-sm text-black-400 table-fixed">
+                  <thead className="bg-purple-800 text-white text-xs uppercase font-bold">
                     <tr>
-                      <th className="px-4 py-3 text-left">Rank</th>
-                      <th className="px-4 py-3 text-left">Username</th>
-                      <th className="px-4 py-3 text-left">Team</th>
-                      <th className="px-4 py-3 text-left">
-                        Perfect Predictions
-                      </th>
+                      <th className="px-1 py-1 text-center">Rank</th>
+                      <th className="px-1 py-1 text-center">Username</th>
+                      <th className="px-1 py-1 text-left"></th>
+                      <th className="px-1 py-1 text-center">Perfect</th>
                     </tr>
                   </thead>
                   <tbody className="bg-black-800">
@@ -154,18 +151,18 @@ const Rank = () => {
                         key={user._id}
                         className="bg-white bg-opacity-20 text-base"
                       >
-                        <td className="px-4 py-4">{index + 1}</td>
-                        <td className="flex items-center px-4 py-4">
+                        <td className="px-1 py-1 text-center">{index + 1}</td>
+                        <td className="flex items-center px-1 py-1">
                           <img
                             className="w-8 h-8 rounded-full"
                             src={`/uploads/${user.profilePicture}`}
                             alt={`${user.username} profile`}
                           />
-                          <span className="ml-2 font-medium">
+                          <span className="ml-2 font-bold">
                             {user.username}
                           </span>
                         </td>
-                        <td className="px-4 py-4">
+                        <td className="px-1 py-1">
                           {user.team && (
                             <div className="flex items-center">
                               <img
@@ -173,11 +170,12 @@ const Rank = () => {
                                 alt={`${user.team.teamname} logo`}
                                 className="w-8 h-8 rounded-full"
                               />
-                              <span className="ml-2">{user.team.teamname}</span>
                             </div>
                           )}
                         </td>
-                        <td className="px-4 py-4">{user.perfect}</td>
+                        <td className="px-1 py-1 text-center">
+                          {user.perfect}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
