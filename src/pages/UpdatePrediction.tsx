@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getPredictionByUserAndMatch, updatePrediction } from '../services/Prediction'
+import { getPredictionByUserAndMatch, PredictionResponse, updatePrediction } from '../services/Prediction'
 import '../style/schedule.css' // Use the same CSS as the Schedule page
+import { UserResponse } from '../services/Auth'
 
-const UpdatePrediction = ({ currentUser }) => {
+interface Props {
+  currentUser: (UserResponse & { id: string }) | null // TODO: added the `& { id: string }` part as a quick hack because there's only a `._id` field to `UserResponse`... Up to you what you wanna do with this
+}
+
+const UpdatePrediction = ({ currentUser }: Props) => {
   const { matchId } = useParams()
-  const [prediction, setPrediction] = useState(null)
-  const [homeScore, setHomeScore] = useState('')
-  const [awayScore, setAwayScore] = useState('')
+  const [prediction, setPrediction] = useState<PredictionResponse | null>(null)
+  const [homeScore, setHomeScore] = useState<string>('')
+  const [awayScore, setAwayScore] = useState<string>('')
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchPrediction = async () => {
       try {
-        const predictionData = await getPredictionByUserAndMatch(currentUser.id, matchId)
+        const predictionData = await getPredictionByUserAndMatch(currentUser!.id, matchId!)
         setPrediction(predictionData)
-        setHomeScore(predictionData.predictedHomeScore)
-        setAwayScore(predictionData.predictedAwayScore)
+        setHomeScore(predictionData.predictedHomeScore.toString())
+        setAwayScore(predictionData.predictedAwayScore.toString())
       } catch (error) {
         console.error('Failed to fetch prediction:', error)
       }
@@ -34,7 +39,7 @@ const UpdatePrediction = ({ currentUser }) => {
         predictedHomeScore: homeScore,
         predictedAwayScore: awayScore,
       }
-      await updatePrediction(prediction._id, updatedPrediction)
+      await updatePrediction(prediction!._id, updatedPrediction)
       navigate('/schedule') // Navigate back to the schedule or any other page after updating
     } catch (error) {
       console.error('Failed to update prediction:', error)

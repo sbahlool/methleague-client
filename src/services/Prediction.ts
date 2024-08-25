@@ -12,7 +12,7 @@ export const addPrediction = async (predictionData: PredictionRequest): Promise<
 
 export const updatePrediction = async (
   predictionid: string,
-  predictionData: PredictionRequest,
+  predictionData: UpdatePredictionRequest,
 ): Promise<PredictionResponse> => {
   try {
     const res = await Client.put<PredictionResponse>(`/predictions/${predictionid}`, predictionData)
@@ -101,6 +101,11 @@ interface PredictionRequest {
   user: string
   predictedHomeScore: number
   predictedAwayScore: number
+}
+
+interface UpdatePredictionRequest {
+  predictedHomeScore: string
+  predictedAwayScore: string
 }
 
 export interface PredictionResponse {

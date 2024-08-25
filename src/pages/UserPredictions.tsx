@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getUserPredictions } from '../services/Prediction'
+import { getUserPredictions, PredictionResponse } from '../services/Prediction'
 import '../style/userPredictions.css'
 
 const UserPredictions = () => {
   const { userId } = useParams()
-  const [predictions, setPredictions] = useState([])
+  const [predictions, setPredictions] = useState<PredictionResponse[]>([])
 
   useEffect(() => {
     const fetchPredictions = async () => {
       try {
-        const data = await getUserPredictions(userId)
+        const data = await getUserPredictions(userId!)
         console.log('Fetched Predictions:', data) // Debugging
         if (data && Array.isArray(data)) {
           setPredictions(data)
@@ -49,24 +49,18 @@ const UserPredictions = () => {
                     alt={`${prediction.match.homeTeam.teamname} logo`}
                   />
                 </div>
-                <h2 className="team-name">
-                  {prediction.match.homeTeam.teamname}
-                </h2>
+                <h2 className="team-name">{prediction.match.homeTeam.teamname}</h2>
               </div>
             </div>
             <div className="column">
               <div className="match-details">
-                <div className="match-date">
-                  GW: {prediction.match.gameweek}
-                </div>
+                <div className="match-date">GW: {prediction.match.gameweek}</div>
                 <div className="match-score">
                   <span className="match-score-number match-score-number--leading">
                     {prediction.predictedHomeScore}
                   </span>
                   <span className="match-score-divider">:</span>
-                  <span className="match-score-number">
-                    {prediction.predictedAwayScore}
-                  </span>
+                  <span className="match-score-number">{prediction.predictedAwayScore}</span>
                 </div>
               </div>
             </div>
@@ -78,9 +72,7 @@ const UserPredictions = () => {
                     alt={`${prediction.match.awayTeam.teamname} logo`}
                   />
                 </div>
-                <h2 className="team-name">
-                  {prediction.match.awayTeam.teamname}
-                </h2>
+                <h2 className="team-name">{prediction.match.awayTeam.teamname}</h2>
               </div>
             </div>
           </div>
