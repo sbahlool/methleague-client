@@ -40,7 +40,7 @@ export interface RegisterUserRequest {
   team: string
 }
 
-export const changePassword = async (username: string, data: ChangePasswordRequest) => {
+export const changePassword = async (username: string, data: ChangePasswordRequest): Promise<unknown> => {
   try {
     const res = await Client.put(`/auth/changePassword/${username}`, data)
     return res.data
@@ -64,13 +64,21 @@ export const getProfile = async (username: string): Promise<UserResponse> => {
   }
 }
 
-export const editProfile = async (username: string, data) => {
+export const editProfile = async (username: string, data: EditProfileRequest) => {
   try {
     const res = await Client.put(`/auth/editProfile/${username}`, data)
     return res.data
   } catch (error) {
     throw error
   }
+}
+
+export interface EditProfileRequest {
+  username: string
+  email: string
+  firstname: string
+  lastname: string
+  team: string
 }
 
 export const checkSession = async () => {

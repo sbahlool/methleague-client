@@ -1,26 +1,12 @@
 import { useState, useEffect } from 'react'
-import { getProfile, editProfile, getTeams, TeamResponse, UserResponse } from '../services/Auth'
+import { getProfile, editProfile, getTeams, TeamResponse, UserResponse, EditProfileRequest } from '../services/Auth'
 import { useNavigate, useParams } from 'react-router-dom'
 import '../style/editProfilePage.css'
 
 const EditProfilePage = () => {
   let navigate = useNavigate()
 
-  const [profile, setProfile] = useState<UserResponse>({
-    _id: '',
-    username: '',
-    email: '',
-    passwordDigest: '',
-    firstname: '',
-    lastname: '',
-    profilePicture: '',
-    team: { _id: '', teamname: '', logo: '', __v: 0 },
-    role: '',
-    createdAt: '',
-    updatedAt: '',
-    __v: 0,
-  })
-  const [newProfile, setNewProfile] = useState({
+  const [newProfile, setNewProfile] = useState<EditProfileRequest>({
     username: '',
     email: '',
     firstname: '',
@@ -35,7 +21,6 @@ const EditProfilePage = () => {
     const fetchData = async () => {
       const profileData = await getProfile(username)
       const teamsData = await getTeams()
-      setProfile(profileData)
       setNewProfile({ ...profileData, team: profileData.team._id }) // Set initial team value
       setTeams(teamsData)
     }
@@ -45,19 +30,13 @@ const EditProfilePage = () => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
 
-    const formData = new FormData()
-    formData.append('username', newProfile.username)
-    formData.append('email', newProfile.email)
-    formData.append('firstname', newProfile.firstname)
-    formData.append('lastname', newProfile.lastname)
-    formData.append('team', newProfile.team)
-
-    await editProfile(username, formData)
+    // TODO: check if Ali broke this by replacing the payload of this API request :)
+    await editProfile(username, newProfile)
     navigate(`/profile/${newProfile.username}`)
   }
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) => {
-    setNewProfile({ ...newProfile, [e.target.name]: e.target.value })
+    setNewProfile({ ...newProfile, [e.target.name as keyof EditProfileRequest]: e.target.value })
   }
 
   return (
