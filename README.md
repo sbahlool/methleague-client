@@ -11,7 +11,6 @@ Currently, two official plugins are available:
 
 src/pages/AdminPage.tsx
 src/pages/AdminPredictions.tsx
-src/pages/Rank.tsx
 src/pages/Schedule.tsx
 src/pages/UpdatePrediction.tsx
 src/pages/UserPredictions.tsx

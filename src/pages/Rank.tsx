@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react'
-import { GetUsers } from '../services/Auth'
-import { getPredictions } from '../services/Prediction'
+import { useState, useEffect } from 'react'
+import { GetUsers, UserResponse } from '../services/Auth'
+import { getPredictions, PredictionResponse } from '../services/Prediction'
 import '../index.css'
 
+type PointsMapRecord = { points: number; perfect: number }
+type PointsMap = Record<string, PointsMapRecord>
+type UserAndPoints = UserResponse & PointsMapRecord
+type UserWithRank = UserAndPoints & { rank: number; rankChange: number | null }
+type UserWithPerfect = UserResponse & { perfect: number }
+
 const Rank = () => {
-  const [users, setUsers] = useState([])
-  const [userPoints, setUserPoints] = useState({})
-  const [previousRanks, setPreviousRanks] = useState({})
-  const [perfectPredictions, setPerfectPredictions] = useState([])
+  const [users, setUsers] = useState<UserWithRank[]>([])
+  const [userPoints, setUserPoints] = useState<PointsMap>({})
+  const [previousRanks, setPreviousRanks] = useState<Record<string, number>>({})
+  const [perfectPredictions, setPerfectPredictions] = useState<UserWithPerfect[]>([])
 
   useEffect(() => {
     const fetchUsersAndPredictions = async () => {
       try {
-        const [usersData, predictionsData] = await Promise.all([
-          GetUsers(),
-          getPredictions()
-        ])
+        const [usersData, predictionsData] = await Promise.all([GetUsers(), getPredictions()])
 
-        const pointsMap = predictionsData.reduce((acc, prediction) => {
+        const pointsMap = predictionsData.reduce((acc: PointsMap, prediction: PredictionResponse) => {
           const userId = prediction.user._id
           if (!acc[userId]) {
             acc[userId] = { points: 0, perfect: 0 }
@@ -30,36 +33,35 @@ const Rank = () => {
           return acc
         }, {})
 
-        const sortedUsers = usersData
+        const sortedUsers: UserAndPoints[] = usersData
           .map((user) => ({
             ...user,
             points: pointsMap[user._id]?.points || 0,
-            perfect: pointsMap[user._id]?.perfect || 0
+            perfect: pointsMap[user._id]?.perfect || 0,
           }))
           .sort((a, b) => b.points - a.points)
 
-        const currentRanks = sortedUsers.reduce((acc, user, index) => {
+        const currentRanks = sortedUsers.reduce((acc: Record<string, number>, user: UserAndPoints, index: number) => {
           acc[user._id] = index + 1
           return acc
         }, {})
 
-        const usersWithRank = sortedUsers.map((user) => {
+        const usersWithRank: UserWithRank[] = sortedUsers.map((user) => {
           const previousRank = previousRanks[user._id]
           const currentRank = currentRanks[user._id]
-          const rankChange =
-            previousRank !== undefined ? previousRank - currentRank : null
+          const rankChange = previousRank !== undefined ? previousRank - currentRank : null
 
           return {
             ...user,
             rank: currentRank,
-            rankChange
+            rankChange,
           }
         })
 
-        const sortedByPerfect = [...usersData]
+        const sortedByPerfect: UserWithPerfect[] = [...usersData]
           .map((user) => ({
             ...user,
-            perfect: pointsMap[user._id]?.perfect || 0
+            perfect: pointsMap[user._id]?.perfect || 0,
           }))
           .sort((a, b) => b.perfect - a.perfect)
 
@@ -95,10 +97,7 @@ const Rank = () => {
                   </thead>
                   <tbody className="bg-black-800">
                     {users.map((user) => (
-                      <tr
-                        key={user._id}
-                        className="bg-white bg-opacity-20 text-base"
-                      >
+                      <tr key={user._id} className="bg-white bg-opacity-20 text-base">
                         <td className="px-1 py-1 text-center">{user.rank}</td>
                         <td className="flex items-center px-1 py-1">
                           <img
@@ -106,9 +105,7 @@ const Rank = () => {
                             src={`/uploads/${user.profilePicture}`}
                             alt={`${user.username} profile`}
                           />
-                          <span className="ml-2 font-bold">
-                            {user.username}
-                          </span>
+                          <span className="ml-2 font-bold">{user.username}</span>
                         </td>
                         <td className="px-1 py-1">
                           {user.team && (
@@ -147,10 +144,7 @@ const Rank = () => {
                   </thead>
                   <tbody className="bg-black-800">
                     {perfectPredictions.map((user, index) => (
-                      <tr
-                        key={user._id}
-                        className="bg-white bg-opacity-20 text-base"
-                      >
+                      <tr key={user._id} className="bg-white bg-opacity-20 text-base">
                         <td className="px-1 py-1 text-center">{index + 1}</td>
                         <td className="flex items-center px-1 py-1">
                           <img
@@ -158,9 +152,7 @@ const Rank = () => {
                             src={`/uploads/${user.profilePicture}`}
                             alt={`${user.username} profile`}
                           />
-                          <span className="ml-2 font-bold">
-                            {user.username}
-                          </span>
+                          <span className="ml-2 font-bold">{user.username}</span>
                         </td>
                         <td className="px-1 py-1">
                           {user.team && (
@@ -173,9 +165,7 @@ const Rank = () => {
                             </div>
                           )}
                         </td>
-                        <td className="px-1 py-1 text-center">
-                          {user.perfect}
-                        </td>
+                        <td className="px-1 py-1 text-center">{user.perfect}</td>
                       </tr>
                     ))}
                   </tbody>
