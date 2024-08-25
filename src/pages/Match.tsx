@@ -4,6 +4,7 @@ import { getMatchById, MatchResponse } from '../services/Match'
 import { addPrediction, getUserPrediction, PredictionResponse } from '../services/Prediction'
 import { checkSession } from '../services/Auth'
 import '../style/match.css'
+import { formatDate } from '../utils/date'
 
 const Match = () => {
   const { matchId } = useParams()
@@ -83,28 +84,6 @@ const Match = () => {
 
   if (!match) {
     return <div>Loading...</div>
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    const day = date.getDate()
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ]
-    const month = monthNames[date.getMonth()]
-    const year = date.getFullYear()
-    return `${day} ${month} ${year}`
   }
 
   return (
