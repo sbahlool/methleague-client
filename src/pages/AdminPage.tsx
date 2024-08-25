@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import { addMatch, getMatches, updateMatchScores } from '../services/Match'
-import { getTeams } from '../services/Auth'
+import { addMatch, getMatches, MatchRequest, MatchResponse, Scores, updateMatchScores } from '../services/Match'
+import { getTeams, TeamResponse } from '../services/Auth'
 import '../style/schedule.css'
+import { formatDate } from '../utils/date'
+
+const emptyMatchRequest: MatchRequest = {
+  gameweek: '',
+  date: '',
+  time: '',
+  homeTeam: '',
+  awayTeam: '',
+}
 
 const AddMatch = () => {
-  const [matchData, setMatchData] = useState({
-    gameweek: '',
-    date: '',
-    time: '',
-    homeTeam: '',
-    awayTeam: '',
-  })
-  const [teams, setTeams] = useState([])
-  const [addedMatches, setAddedMatches] = useState([])
-  const [selectedGameweek, setSelectedGameweek] = useState(1)
-  const [options, setOptions] = useState([])
-  const [scores, setScores] = useState({})
+  const [matchData, setMatchData] = useState<MatchRequest>({ ...emptyMatchRequest })
+  const [teams, setTeams] = useState<TeamResponse[]>([])
+  const [addedMatches, setAddedMatches] = useState<MatchResponse[]>([])
+  const [selectedGameweek, setSelectedGameweek] = useState<number>(1)
+  const [options, setOptions] = useState<number[]>([])
+  const [scores, setScores] = useState<Record<string, Scores>>({})
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -46,10 +49,10 @@ const AddMatch = () => {
   }, [])
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) => {
-    setMatchData({ ...matchData, [e.target.name]: e.target.value })
+    setMatchData((previous) => ({ ...previous, [e.target.name]: e.target.value }))
   }
 
-  const handleGameweekChange = (gameweek) => {
+  const handleGameweekChange = (gameweek: number) => {
     setSelectedGameweek(gameweek)
   }
 
@@ -58,30 +61,24 @@ const AddMatch = () => {
     try {
       await addMatch(matchData)
       alert('Match added successfully')
-      setMatchData({
-        gameweek: '',
-        date: '',
-        time: '',
-        homeTeam: '',
-        awayTeam: '',
-      })
+      setMatchData({ ...emptyMatchRequest })
       fetchAddedMatches()
     } catch (error) {
       console.error('Failed to add match', error)
     }
   }
 
-  const handleScoreChange = (matchId, team, value) => {
-    setScores({
-      ...scores,
+  const handleScoreChange = (matchId: string, team: 'homeScore' | 'awayScore', value: string) => {
+    setScores((previous) => ({
+      ...previous,
       [matchId]: {
-        ...scores[matchId],
+        ...previous[matchId],
         [team]: value,
       },
-    })
+    }))
   }
 
-  const handleScoreUpdate = async (matchId) => {
+  const handleScoreUpdate = async (matchId: string) => {
     const { homeScore, awayScore } = scores[matchId] || {}
     try {
       await updateMatchScores(matchId, { homeScore, awayScore })
@@ -90,28 +87,6 @@ const AddMatch = () => {
     } catch (error) {
       console.error('Failed to update scores', error)
     }
-  }
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    const day = date.getDate()
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ]
-    const month = monthNames[date.getMonth()]
-    const year = date.getFullYear()
-    return `${day} ${month} ${year}`
   }
 
   return (

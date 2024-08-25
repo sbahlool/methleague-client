@@ -8,7 +8,7 @@ export const addMatch = async (matchData: MatchRequest): Promise<MatchResponse> 
     throw error
   }
 }
-export const updateMatchScores = async (matchId: string, scores: Record<string, number>): Promise<MatchResponse> => {
+export const updateMatchScores = async (matchId: string, scores: Scores): Promise<MatchResponse> => {
   try {
     const res = await Client.put<MatchResponse>(`match/update-scores/${matchId}`, scores)
     return res.data
@@ -16,6 +16,11 @@ export const updateMatchScores = async (matchId: string, scores: Record<string, 
     console.error('Failed to update match scores', error)
     throw error
   }
+}
+
+export interface Scores {
+  homeScore: string
+  awayScore: string
 }
 
 export const getMatches = async (): Promise<MatchResponse[]> => {
@@ -39,7 +44,7 @@ export const getMatchById = async (matchId: string): Promise<MatchResponse> => {
 }
 
 export interface MatchRequest {
-  gameweek: number
+  gameweek: string
   date: string
   time: string
   homeTeam: string
