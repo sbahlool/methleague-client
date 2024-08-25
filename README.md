@@ -9,7 +9,6 @@ Currently, two official plugins are available:
 
 ## Temp personal tracker, pending files to fix:
 
-src/pages/Schedule.tsx
 src/pages/UpdatePrediction.tsx
 src/pages/UserPredictions.tsx
 src/services/Auth.ts
