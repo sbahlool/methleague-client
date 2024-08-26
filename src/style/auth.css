@@ -40,7 +40,7 @@
   cursor: pointer;
   font-weight: bold;
   width: 100%;
-  align-self: center
+  align-self: center;
 }
 
 .button:hover {
