@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Login = ({ setUser }: Props) => {
-  let navigate = useNavigate()
+  const navigate = useNavigate()
 
   const [formValues, setFormValues] = useState({ username: '', password: '' })
   const [errorMessage, setErrorMessage] = useState('')
@@ -24,7 +24,7 @@ const Login = ({ setUser }: Props) => {
       setFormValues({ username: '', password: '' })
       setUser(payload as unknown as UserResponse)
       navigate('/')
-    } catch (error) {
+    } catch (_) {
       setErrorMessage('Invalid username or password. Please try again.')
     }
   }

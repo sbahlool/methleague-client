@@ -12,7 +12,7 @@ const ForgotPassword = () => {
       // await forgotPass(email)
       setMessage('Password reset email sent. Please check your inbox.')
       setError('')
-    } catch (err) {
+    } catch (_) {
       setError('Error sending password reset email. Please try again.')
       setMessage('')
     }

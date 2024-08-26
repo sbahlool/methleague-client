@@ -28,7 +28,7 @@ const Profile = ({ user }: Props) => {
     navigate(`/user/${profile?._id}/predictions`)
   }
 
-  let editOptions = user && user.username === username && (
+  const editOptions = user && user.username === username && (
     <div>
       <a className="btn btn-outline-warning" href={`/profile/edit/${username}`}>
         Edit Profile

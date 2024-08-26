@@ -42,13 +42,13 @@ interface Season {
   startDate: string
   endDate: string
   currentMatchday: number
-  winner: any
+  winner: string | null
 }
 
 interface Standing {
   stage: string
   type: string
-  group: any
+  group: string | null
   table: Table[]
 }
 

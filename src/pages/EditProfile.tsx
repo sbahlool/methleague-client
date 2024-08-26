@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { getProfile, editProfile, getTeams, TeamResponse, UserResponse, EditProfileRequest } from '../services/Auth'
+import { getProfile, editProfile, getTeams, TeamResponse, EditProfileRequest } from '../services/Auth'
 import { useNavigate, useParams } from 'react-router-dom'
 import '../style/editProfilePage.css'
 
 const EditProfilePage = () => {
-  let navigate = useNavigate()
+  const navigate = useNavigate()
 
   const [newProfile, setNewProfile] = useState<EditProfileRequest>({
     username: '',

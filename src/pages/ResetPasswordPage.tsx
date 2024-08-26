@@ -21,7 +21,7 @@ const ResetPasswordPage = () => {
       setTimeout(() => {
         navigate('/login')
       }, 3000)
-    } catch (error) {
+    } catch (_) {
       setMessage('Error resetting password')
     }
   }

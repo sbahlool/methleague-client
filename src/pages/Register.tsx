@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Register = ({ setUser }: Props) => {
-  let navigate = useNavigate()
+  const navigate = useNavigate()
 
   const [formValues, setFormValues] = useState({
     username: '',

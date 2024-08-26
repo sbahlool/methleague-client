@@ -11,7 +11,6 @@ type UserWithPerfect = UserResponse & { perfect: number }
 
 const Rank = () => {
   const [users, setUsers] = useState<UserWithRank[]>([])
-  const [userPoints, setUserPoints] = useState<PointsMap>({})
   const [previousRanks, setPreviousRanks] = useState<Record<string, number>>({})
   const [perfectPredictions, setPerfectPredictions] = useState<UserWithPerfect[]>([])
 
@@ -66,7 +65,6 @@ const Rank = () => {
           .sort((a, b) => b.perfect - a.perfect)
 
         setUsers(usersWithRank)
-        setUserPoints(pointsMap)
         setPreviousRanks(currentRanks)
         setPerfectPredictions(sortedByPerfect)
       } catch (error) {
