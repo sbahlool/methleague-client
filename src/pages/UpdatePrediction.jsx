@@ -4,13 +4,14 @@ import {
   getPredictionByUserAndMatch,
   updatePrediction
 } from '../services/Prediction'
-import '../style/schedule.css' // Use the same CSS as the Schedule page
+import '../style/schedule.css'
 
 const UpdatePrediction = ({ currentUser }) => {
   const { matchId } = useParams()
   const [prediction, setPrediction] = useState(null)
   const [homeScore, setHomeScore] = useState('')
   const [awayScore, setAwayScore] = useState('')
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -25,6 +26,7 @@ const UpdatePrediction = ({ currentUser }) => {
         setAwayScore(predictionData.predictedAwayScore)
       } catch (error) {
         console.error('Failed to fetch prediction:', error)
+        setError('Failed to load prediction. Please try again.')
       }
     }
 
@@ -35,26 +37,35 @@ const UpdatePrediction = ({ currentUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setError(null)
+    if (parseInt(homeScore) < 0 || parseInt(awayScore) < 0) {
+      setError('Scores must be non-negative integers.')
+      return
+    }
     try {
       const updatedPrediction = {
         predictedHomeScore: homeScore,
         predictedAwayScore: awayScore
       }
       await updatePrediction(prediction._id, updatedPrediction)
-      navigate('/schedule') // Navigate back to the schedule or any other page after updating
+      navigate('/schedule')
     } catch (error) {
       console.error('Failed to update prediction:', error)
+      setError('Failed to update prediction. Please try again.')
     }
   }
 
   if (!prediction) {
-    return <div className="update-loading">Loading...</div>
+    return (
+      <div className="update-loading">
+        <div className="spinner"></div>
+      </div>
+    )
   }
 
   return (
     <div className="schedule-container">
       {' '}
-      {/* Reused container class */}
       <h2 className="update-header">Update Prediction</h2>
       <p className="update-gameweek">GW: {prediction.match.gameweek}</p>
       <div className="match">
@@ -90,32 +101,33 @@ const UpdatePrediction = ({ currentUser }) => {
                 <span className="match-score-divider">:</span>
                 <span className="match-score-number">{awayScore}</span>
               </div>
+              {error && <p className="error-message">{error}</p>}
               <form onSubmit={handleSubmit} className="update-form">
                 <div className="update-score-input">
-                  <label>
-                    Home Team Score:
-                    <input
-                      type="number"
-                      value={homeScore}
-                      onChange={(e) => setHomeScore(e.target.value)}
-                      required
-                    />
-                  </label>
+                  <label htmlFor="homeScore">Home:</label>
+                  <input
+                    id="homeScore"
+                    type="number"
+                    value={homeScore}
+                    onChange={(e) => setHomeScore(e.target.value)}
+                    required
+                    min="0"
+                    aria-label="Home team score"
+                  />
                 </div>
                 <div className="update-score-input">
-                  <label>
-                    Away Team Score:
-                    <input
-                      type="number"
-                      value={awayScore}
-                      onChange={(e) => setAwayScore(e.target.value)}
-                      required
-                    />
-                  </label>
+                  <label htmlFor="awayScore">Away:</label>
+                  <input
+                    id="awayScore"
+                    type="number"
+                    value={awayScore}
+                    onChange={(e) => setAwayScore(e.target.value)}
+                    required
+                    min="0"
+                    aria-label="Away team score"
+                  />
                 </div>
                 <button type="submit" className="predict-button">
-                  {' '}
-                  {/* Reused button class */}
                   Update Prediction
                 </button>
               </form>

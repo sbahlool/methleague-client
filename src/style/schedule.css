@@ -19,6 +19,7 @@
   display: none;
 }
 
+
 .gameweek-label {
   display: inline-block;
   padding: 10px 20px;
@@ -42,6 +43,7 @@
   border-radius: 10px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 4px 4px 0 rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  padding-bottom: 15px;
 }
 
 .match-header {
@@ -78,6 +80,7 @@
 .match-content {
   display: flex;
   padding: 16px;
+  padding-bottom: 10px;
 }
 
 .column {
@@ -106,7 +109,8 @@
 }
 
 .team-logo img {
-  width: 50px;
+  width: 60px;
+  height: 60px;
 }
 
 .team-name {
@@ -121,7 +125,7 @@
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   margin-top: 10px;
   transition: background-color 0.3s ease;
 }
@@ -137,12 +141,12 @@
 
 /* New user prediction styles */
 .user-prediction {
-  background-color: #6b21a8; /* Match button background */
-  color: #ffffff; /* Match button text color */
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  margin-top: 10px;
+  text-align: center;
+  font-weight: bold;
+  margin: 10px 0;
+  padding: 5px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
 }
 
 
@@ -184,8 +188,190 @@
   color: #343a40; /* Example color for var(--color-text-primary) */
 }
 
-@media (max-width: 768px){
-  .team-logo img {
-    width: 70px;
-    height: 50px;}
+  @media (max-width: 768px) {
+    .match {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+    }
+  
+    .match-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+  
+    .match-status {
+      font-size: 12px;
+      font-weight: bold;
+    }
+  
+    .match-date-time {
+      font-size: 12px;
+    }
+  
+    .match-tournament img {
+      height: 20px;
+      width: auto;
+    }
+  
+    .match-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+    }
+  
+    .team {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 30%;
+    }
+  
+    .team-logo {
+      width: 40px;
+      height: 40px;
+    }
+  
+    .team-name {
+      font-size: 15px !important;
+      text-align: center;
+      margin-top: 5px;
+    }
+  
+    .match-score {
+      display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    }
+  
+    .match-score-number {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .match-score-divider {
+      font-size: 24px;
+      margin: 0 5px;
+    }
+  
+    .match-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px solid #e0e0e0;
+    }
+  
+    .toggle-predictions {
+      font-size: 16px;
+    }
+  
+    .predict-button {
+      font-size: 12px;
+      padding: 5px 10px;
+    }
+  }
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.update-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+.predictions-section {
+  margin-top: 15px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 15px;
+}
+
+.toggle-predictions-button {
+  background-color: #f0f0f0;
+  border: 2px solid #6b21a8;
+  color: #6b21a8;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-predictions-button:hover {
+  background-color: #6b21a8;
+  color: #ffffff;
+}
+
+.predictions-list {
+  margin-top: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.prediction-item {
+  padding: 5px 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+}
+
+.prediction-item:last-child {
+  border-bottom: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+  .toggle-predictions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .toggle-predictions-switch {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+
+  .toggle-predictions-text {
+    font-size: 12px;
+  }
+
+  .predictions-section {
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+
+  .toggle-predictions-button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .predictions-list {
+    max-height: 150px;
+  }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getMatches } from '../services/Match'
-import { getUserPredictions } from '../services/Prediction'
+import { getUserPredictions, getAllPredictions } from '../services/Prediction'
 import '../style/schedule.css'
 
 const Schedule = ({ currentUser }) => {
@@ -9,6 +9,8 @@ const Schedule = ({ currentUser }) => {
   const [selectedGameweek, setSelectedGameweek] = useState(1)
   const [options, setOptions] = useState([])
   const [userPredictions, setUserPredictions] = useState([])
+  const [allPredictions, setAllPredictions] = useState({})
+  const [showPredictions, setShowPredictions] = useState({})
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -43,8 +45,35 @@ const Schedule = ({ currentUser }) => {
     fetchUserPredictions()
   }, [selectedGameweek, currentUser])
 
+  useEffect(() => {
+    const fetchAllPredictions = async () => {
+      try {
+        const predictions = await getAllPredictions()
+        const predictionsByMatch = predictions.reduce((acc, prediction) => {
+          if (!acc[prediction.match._id]) {
+            acc[prediction.match._id] = []
+          }
+          acc[prediction.match._id].push(prediction)
+          return acc
+        }, {})
+        setAllPredictions(predictionsByMatch)
+      } catch (error) {
+        console.error('Failed to fetch all predictions:', error)
+      }
+    }
+
+    fetchAllPredictions()
+  }, [selectedGameweek])
+
   const handleGameweekChange = (gameweek) => {
     setSelectedGameweek(gameweek)
+  }
+
+  const togglePredictions = (matchId) => {
+    setShowPredictions((prev) => ({
+      ...prev,
+      [matchId]: !prev[matchId]
+    }))
   }
 
   const formatDate = (dateString) => {
@@ -122,6 +151,7 @@ const Schedule = ({ currentUser }) => {
             const timeDiff = getTimeDiff(match)
             const isRestricted = timeDiff <= 10
             const userPrediction = getUserPredictionForMatch(match._id)
+            const canShowPredictions = isRestricted || match.isCompleted
 
             return (
               <div key={match._id} className="match">
@@ -129,75 +159,80 @@ const Schedule = ({ currentUser }) => {
                   <div className="match-status">
                     {match.isCompleted ? 'Completed' : 'Upcoming'}
                   </div>
+                  <div className="match-date-time">
+                    {formatDate(match.date)} {match.time}
+                  </div>
                   <div className="match-tournament">
-                    <img src="/uploads/epl-logo.png" alt="League logo" />
-                    Premier League
+                    <img src="/uploads/epl-logo.png" alt="Premier League" />
                   </div>
                 </div>
                 <div className="match-content">
-                  <div className="column">
-                    <div className="team team--home">
-                      <div className="team-logo">
-                        <img
-                          src={`/uploads/${match.homeTeam.logo}`}
-                          alt={`${match.homeTeam.teamname} logo`}
-                        />
-                      </div>
-                      <h2 className="team-name">{match.homeTeam.teamname}</h2>
+                  <div className="team team--home">
+                    <div className="team-logo">
+                      <img
+                        src={`/uploads/${match.homeTeam.logo}`}
+                        alt={`${match.homeTeam.teamname} logo`}
+                      />
                     </div>
+                    <div className="team-name">{match.homeTeam.teamname}</div>
                   </div>
-                  <div className="column">
-                    <div className="match-details">
-                      <div className="match-date">
-                        {formatDate(match.date)} at{' '}
-                        <strong>{match.time}</strong>
-                      </div>
-                      <div className="match-score">
-                        <span className="match-score-number match-score-number--leading">
-                          {match.isCompleted ? match.homeScore : '-'}
-                        </span>
-                        <span className="match-score-divider">:</span>
-                        <span className="match-score-number">
-                          {match.isCompleted ? match.awayScore : '-'}
-                        </span>
-                      </div>
-                      {isRestricted && (
-                        <div className="match-restriction">
-                          Predictions not allowed within 10 minutes of the
-                          match.
-                        </div>
-                      )}
-                      {!match.isCompleted && (
-                        <button
-                          className="predict-button"
-                          onClick={() => handlePredictClick(match)}
-                          disabled={isRestricted}
-                        >
-                          {userPrediction
-                            ? `Update Prediction: ${userPrediction.predictedHomeScore}-${userPrediction.predictedAwayScore}`
-                            : 'Predict Score'}
-                        </button>
-                      )}
-                      {userPrediction && match.isCompleted && (
-                        <div className="user-prediction">
-                          Your prediction: {userPrediction.predictedHomeScore} -{' '}
-                          {userPrediction.predictedAwayScore}
-                        </div>
-                      )}
-                    </div>
+                  <div className="match-score">
+                    <span className="match-score-number">
+                      {match.isCompleted ? match.homeScore : '-'}
+                    </span>
+                    <span className="match-score-divider">:</span>
+                    <span className="match-score-number">
+                      {match.isCompleted ? match.awayScore : '-'}
+                    </span>
                   </div>
-                  <div className="column">
-                    <div className="team team--away">
-                      <div className="team-logo">
-                        <img
-                          src={`/uploads/${match.awayTeam.logo}`}
-                          alt={`${match.awayTeam.teamname} logo`}
-                        />
-                      </div>
-                      <h2 className="team-name">{match.awayTeam.teamname}</h2>
+                  <div className="team team--away">
+                    <div className="team-logo">
+                      <img
+                        src={`/uploads/${match.awayTeam.logo}`}
+                        alt={`${match.awayTeam.teamname} logo`}
+                      />
                     </div>
+                    <div className="team-name">{match.awayTeam.teamname}</div>
                   </div>
                 </div>
+                {userPrediction && (
+                  <div className="user-prediction">
+                    Your prediction: {userPrediction.predictedHomeScore} -{' '}
+                    {userPrediction.predictedAwayScore}
+                  </div>
+                )}
+                <div className="match-footer">
+                  {canShowPredictions && (
+                    <div
+                      className={`toggle-predictions ${
+                        showPredictions[match._id] ? 'active' : ''
+                      }`}
+                      onClick={() => togglePredictions(match._id)}
+                    >
+                      {showPredictions[match._id] ? 'Hide' : 'Show'} Predictions
+                    </div>
+                  )}
+                  {!match.isCompleted && (
+                    <button
+                      className="toggle-predictions predict-button"
+                      onClick={() => handlePredictClick(match)}
+                      disabled={isRestricted}
+                    >
+                      {userPrediction ? 'Update' : 'Submit'} Prediction
+                    </button>
+                  )}
+                </div>
+                {showPredictions[match._id] && canShowPredictions && (
+                  <div className="predictions-list">
+                    {allPredictions[match._id]?.map((prediction, index) => (
+                      <div key={index} className="prediction-item">
+                        {prediction.user.username}:{' '}
+                        {prediction.predictedHomeScore} -{' '}
+                        {prediction.predictedAwayScore}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )
           })}
