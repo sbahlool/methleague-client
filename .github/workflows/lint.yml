@@ -25,7 +25,7 @@ jobs:
           node-version: 20
 
       - name: Install Node.js dependencies
-        run: npm i
+        run: npm ci
 
       - name: Run eslint
         run: npm run lint:check
