@@ -65,7 +65,6 @@ const UpdatePrediction = ({ currentUser }) => {
 
   return (
     <div className="schedule-container">
-      {' '}
       <h2 className="update-header">Update Prediction</h2>
       <p className="update-gameweek">GW: {prediction.match.gameweek}</p>
       <div className="match">
@@ -73,80 +72,75 @@ const UpdatePrediction = ({ currentUser }) => {
           <div className="match-status">
             {prediction.match.isCompleted ? 'Completed' : 'Upcoming'}
           </div>
+          <div className="match-date-time">
+            {new Date(prediction.match.date).toLocaleDateString()}{' '}
+            {prediction.match.time}
+          </div>
           <div className="match-tournament">
-            <img src="/uploads/epl-logo.png" alt="League logo" />
-            Premier League
+            <img src="/uploads/epl-logo.png" alt="Premier League" />
           </div>
         </div>
         <div className="match-content">
-          <div className="column">
-            <div className="team team--home">
-              <div className="team-logo">
-                <img
-                  src={`/uploads/${prediction.match.homeTeam.logo}`}
-                  alt={`${prediction.match.homeTeam.teamname} logo`}
-                />
-              </div>
-              <h2 className="team-name">
-                {prediction.match.homeTeam.teamname}
-              </h2>
+          <div className="team team--home">
+            <div className="team-logo">
+              <img
+                src={`/uploads/${prediction.match.homeTeam.logo}`}
+                alt={`${prediction.match.homeTeam.teamname} logo`}
+              />
             </div>
+            <h2 className="team-name">{prediction.match.homeTeam.teamname}</h2>
           </div>
-          <div className="column">
-            <div className="match-details">
-              <div className="match-score">
-                <span className="match-score-number match-score-number--leading">
-                  {homeScore}
-                </span>
-                <span className="match-score-divider">:</span>
-                <span className="match-score-number">{awayScore}</span>
-              </div>
-              {error && <p className="error-message">{error}</p>}
-              <form onSubmit={handleSubmit} className="update-form">
-                <div className="update-score-input">
-                  <label htmlFor="homeScore">Home:</label>
-                  <input
-                    id="homeScore"
-                    type="number"
-                    value={homeScore}
-                    onChange={(e) => setHomeScore(e.target.value)}
-                    required
-                    min="0"
-                    aria-label="Home team score"
-                  />
-                </div>
-                <div className="update-score-input">
-                  <label htmlFor="awayScore">Away:</label>
-                  <input
-                    id="awayScore"
-                    type="number"
-                    value={awayScore}
-                    onChange={(e) => setAwayScore(e.target.value)}
-                    required
-                    min="0"
-                    aria-label="Away team score"
-                  />
-                </div>
-                <button type="submit" className="predict-button">
-                  Update Prediction
-                </button>
-              </form>
-            </div>
+          <div className="match-score">
+            <span className="match-score-number match-score-number--leading">
+              {prediction.match.isCompleted ? prediction.match.homeScore : '-'}
+            </span>
+            <span className="match-score-divider">:</span>
+            <span className="match-score-number">
+              {prediction.match.isCompleted ? prediction.match.awayScore : '-'}
+            </span>
           </div>
-          <div className="column">
-            <div className="team team--away">
-              <div className="team-logo">
-                <img
-                  src={`/uploads/${prediction.match.awayTeam.logo}`}
-                  alt={`${prediction.match.awayTeam.teamname} logo`}
-                />
-              </div>
-              <h2 className="team-name">
-                {prediction.match.awayTeam.teamname}
-              </h2>
+          <div className="team team--away">
+            <div className="team-logo">
+              <img
+                src={`/uploads/${prediction.match.awayTeam.logo}`}
+                alt={`${prediction.match.awayTeam.teamname} logo`}
+              />
             </div>
+            <h2 className="team-name">{prediction.match.awayTeam.teamname}</h2>
           </div>
         </div>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleSubmit} className="update-form">
+          <div className="update-score-inputs">
+            <div className="update-score-input">
+              <label htmlFor="homeScore">Home:</label>
+              <input
+                id="homeScore"
+                type="number"
+                value={homeScore}
+                onChange={(e) => setHomeScore(e.target.value)}
+                required
+                min="0"
+                aria-label="Home team score"
+              />
+            </div>
+            <div className="update-score-input">
+              <label htmlFor="awayScore">Away:</label>
+              <input
+                id="awayScore"
+                type="number"
+                value={awayScore}
+                onChange={(e) => setAwayScore(e.target.value)}
+                required
+                min="0"
+                aria-label="Away team score"
+              />
+            </div>
+          </div>
+          <button type="submit" className="toggle-predictions predict-button">
+            Update Prediction
+          </button>
+        </form>
       </div>
     </div>
   )

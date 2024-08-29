@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { getMatches } from '../services/Match'
-import { getUserPredictions, getAllPredictions } from '../services/Prediction'
+import {
+  getUserPredictions,
+  getAllPredictions,
+  addPrediction,
+  updatePrediction
+} from '../services/Prediction'
 import '../style/schedule.css'
 
 const Schedule = ({ currentUser }) => {
@@ -11,7 +15,7 @@ const Schedule = ({ currentUser }) => {
   const [userPredictions, setUserPredictions] = useState([])
   const [allPredictions, setAllPredictions] = useState({})
   const [showPredictions, setShowPredictions] = useState({})
-  const navigate = useNavigate()
+  const [editingPrediction, setEditingPrediction] = useState({})
 
   useEffect(() => {
     const fetchAddedMatches = async () => {
@@ -108,20 +112,45 @@ const Schedule = ({ currentUser }) => {
   }
 
   const handlePredictClick = (match) => {
-    const predictionExists = getUserPredictionForMatch(match._id)
-    const timeDiff = getTimeDiff(match)
+    const userPrediction = getUserPredictionForMatch(match._id)
+    setEditingPrediction({
+      matchId: match._id,
+      homeScore: userPrediction ? userPrediction.predictedHomeScore : '',
+      awayScore: userPrediction ? userPrediction.predictedAwayScore : ''
+    })
+  }
 
-    if (timeDiff <= 10) {
-      alert(
-        'You cannot add or update predictions within 10 minutes of the match time.'
-      )
+  const handlePredictionSubmit = async (matchId) => {
+    const prediction = editingPrediction
+    if (prediction.homeScore === '' || prediction.awayScore === '') {
+      alert('Please enter both scores')
       return
     }
 
-    if (predictionExists) {
-      navigate(`/update-prediction/${match._id}`)
-    } else {
-      navigate(`/match/${match._id}`)
+    try {
+      const userPrediction = getUserPredictionForMatch(matchId)
+      if (userPrediction) {
+        await updatePrediction(userPrediction._id, {
+          predictedHomeScore: prediction.homeScore,
+          predictedAwayScore: prediction.awayScore
+        })
+      } else {
+        await addPrediction({
+          match: matchId,
+          user: currentUser.id,
+          predictedHomeScore: prediction.homeScore,
+          predictedAwayScore: prediction.awayScore
+        })
+      }
+
+      // Refresh user predictions
+      const updatedUserPredictions = await getUserPredictions(currentUser.id)
+      setUserPredictions(updatedUserPredictions)
+
+      setEditingPrediction({})
+    } catch (error) {
+      console.error('Failed to submit prediction:', error)
+      alert('Failed to submit prediction. Please try again.')
     }
   }
 
@@ -201,36 +230,78 @@ const Schedule = ({ currentUser }) => {
                     {userPrediction.predictedAwayScore}
                   </div>
                 )}
-                <div className="match-footer">
-                  {canShowPredictions && (
-                    <div
-                      className={`toggle-predictions ${
-                        showPredictions[match._id] ? 'active' : ''
-                      }`}
-                      onClick={() => togglePredictions(match._id)}
-                    >
-                      {showPredictions[match._id] ? 'Hide' : 'Show'} Predictions
+                {editingPrediction.matchId === match._id ? (
+                  <div className="prediction-form">
+                    <div className="prediction-form-inputs">
+                      <input
+                        type="number"
+                        value={editingPrediction.homeScore}
+                        onChange={(e) =>
+                          setEditingPrediction({
+                            ...editingPrediction,
+                            homeScore: e.target.value
+                          })
+                        }
+                        min="0"
+                      />
+                      <span>-</span>
+                      <input
+                        type="number"
+                        value={editingPrediction.awayScore}
+                        onChange={(e) =>
+                          setEditingPrediction({
+                            ...editingPrediction,
+                            awayScore: e.target.value
+                          })
+                        }
+                        min="0"
+                      />
                     </div>
-                  )}
-                  {!match.isCompleted && (
-                    <button
-                      className="toggle-predictions predict-button"
-                      onClick={() => handlePredictClick(match)}
-                      disabled={isRestricted}
-                    >
-                      {userPrediction ? 'Update' : 'Submit'} Prediction
-                    </button>
-                  )}
-                </div>
-                {showPredictions[match._id] && canShowPredictions && (
-                  <div className="predictions-list">
-                    {allPredictions[match._id]?.map((prediction, index) => (
-                      <div key={index} className="prediction-item">
-                        {prediction.user.username}:{' '}
-                        {prediction.predictedHomeScore} -{' '}
-                        {prediction.predictedAwayScore}
+                    <div className="prediction-form-buttons">
+                      <button onClick={() => handlePredictionSubmit(match._id)}>
+                        Submit
+                      </button>
+                      <button onClick={() => setEditingPrediction({})}>
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="match-footer">
+                    {canShowPredictions && (
+                      <div
+                        className={`toggle-predictions ${
+                          showPredictions[match._id] ? 'active' : ''
+                        }`}
+                        onClick={() => togglePredictions(match._id)}
+                      >
+                        {showPredictions[match._id] ? 'Hide' : 'Show'}{' '}
+                        Predictions
                       </div>
-                    ))}
+                    )}
+                    {!match.isCompleted && (
+                      <button
+                        className="toggle-predictions predict-button"
+                        onClick={() => handlePredictClick(match)}
+                        disabled={isRestricted}
+                      >
+                        {userPrediction ? 'Update' : 'Submit'} Prediction
+                      </button>
+                    )}
+                  </div>
+                )}
+                {showPredictions[match._id] && canShowPredictions && (
+                  <div className="predictions-section">
+                    <h3 className="predictions-title">All Predictions</h3>
+                    <div className="predictions-list">
+                      {allPredictions[match._id]?.map((prediction, index) => (
+                        <div key={index} className="prediction-item">
+                          {prediction.user.username}:{' '}
+                          {prediction.predictedHomeScore} -{' '}
+                          {prediction.predictedAwayScore}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
