@@ -16,6 +16,8 @@ import Schedule from './pages/Schedule'
 import Match from './pages/Match'
 import UserPredictions from './pages/UserPredictions'
 import UpdatePrediction from './pages/UpdatePrediction'
+import ForgotPassword from './pages/ForgotPasswordPage'
+import ResetPassword from './pages/ResetPasswordPage'
 import Table from './pages/Table'
 
 import './index.css'
@@ -83,6 +85,8 @@ const App = () => {
             path="/update-prediction/:matchId"
             element={<UpdatePrediction currentUser={user} />}
           />{' '}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset/:token" element={<ResetPassword />} />
         </Routes>
       </main>
     </div>

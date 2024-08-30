@@ -87,3 +87,23 @@ export const GetUserById = async (id) => {
     throw error
   }
 }
+
+export const forgotPassword = async (email) => {
+  const response = await fetch('/password-reset/forgot', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  })
+  if (!response.ok) throw new Error('Failed to send reset email')
+  return response.json()
+}
+
+export const resetPassword = async (token, newPassword) => {
+  const response = await fetch('/password-reset/reset', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token, newPassword })
+  })
+  if (!response.ok) throw new Error('Failed to reset password')
+  return response.json()
+}

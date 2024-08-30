@@ -1,20 +1,19 @@
-import { useState } from 'react'
-import { ForgotPass } from '../services/Auth' // Import the forgot password service function
+import React, { useState } from 'react'
+import { forgotPassword } from '../services/Auth'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await ForgotPass(email)
-      setMessage('Password reset email sent. Please check your inbox.')
-      setError('')
-    } catch (err) {
-      setError('Error sending password reset email. Please try again.')
-      setMessage('')
+      await forgotPassword(email)
+      setMessage(
+        'If an account with that email exists, we have sent a password reset link.'
+      )
+    } catch (error) {
+      setMessage('An error occurred. Please try again.')
     }
   }
 
@@ -22,20 +21,16 @@ const ForgotPassword = () => {
     <div className="forgot-password">
       <h2>Forgot Password</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Send Reset Link</button>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
+          required
+        />
+        <button type="submit">Reset Password</button>
       </form>
-      {message && <p className="message">{message}</p>}
-      {error && <p className="error">{error}</p>}
+      {message && <p>{message}</p>}
     </div>
   )
 }
