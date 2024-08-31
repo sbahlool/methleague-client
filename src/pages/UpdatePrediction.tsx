@@ -6,7 +6,7 @@ import { UserResponse } from '../services/Auth'
 import '../style/schedule.css'
 
 interface Props {
-  currentUser: (UserResponse & { id: string }) | null // TODO: added the `& { id: string }` part as a quick hack because there's only a `._id` field to `UserResponse`... Up to you what you wanna do with this
+  currentUser: (UserResponse & { id?: string }) | null // TODO: added the `& { id: string }` part as a quick hack because there's only a `._id` field to `UserResponse`... Up to you what you wanna do with this
 }
 
 const UpdatePrediction = ({ currentUser }: Props) => {

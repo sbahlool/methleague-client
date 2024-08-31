@@ -9,7 +9,7 @@ type UserAndPoints = UserResponse & PointsMapRecord
 type UserWithRank = UserAndPoints & { rank: number; rankChange: number | null }
 type UserWithPerfect = UserResponse & { perfect: number }
 interface Props {
-  currentUser: (UserResponse & { id: string }) | null // TODO: added the `& { id: string }` part as a quick hack because there's only a `._id` field to `UserResponse`... Up to you what you wanna do with this
+  currentUser: (UserResponse & { id?: string }) | null // TODO: added the `& { id: string }` part as a quick hack because there's only a `._id` field to `UserResponse`... Up to you what you wanna do with this
 }
 
 const Rank = ({ currentUser }: Props) => {
