@@ -15,10 +15,9 @@
   cursor: pointer;
 }
 
-.gameweek-option input[type="radio"] {
+.gameweek-option input[type='radio'] {
   display: none;
 }
-
 
 .gameweek-label {
   display: inline-block;
@@ -26,10 +25,12 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
-.gameweek-option input[type="radio"]:checked + .gameweek-label {
+.gameweek-option input[type='radio']:checked + .gameweek-label {
   background-color: #6b21a8;
   color: white;
   border-color: #6b21a8;
@@ -171,7 +172,6 @@
   margin-bottom: 10px;
 }
 
-
 .user-prediction {
   text-align: center;
   font-weight: bold;
@@ -180,7 +180,6 @@
   background-color: #f0f0f0;
   border-radius: 4px;
 }
-
 
 .match-score {
   display: flex;
@@ -194,7 +193,7 @@
   font-size: 48px;
   font-weight: 600;
   line-height: 1;
-  text-align: center; 
+  text-align: center;
 }
 
 .match-score-divider {
@@ -202,18 +201,18 @@
 }
 
 .match-details {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .match-date {
   font-size: 18px;
-  color: #6c757d; 
+  color: #6c757d;
 }
 
 .match-date strong {
-  color: #343a40; 
+  color: #343a40;
 }
 
 .match-footer {
@@ -245,143 +244,141 @@
 }
 
 @media (max-width: 768px) {
-    
-      .update-score-inputs {
-        flex-direction: column;
-      }
-    
-      .update-score-input {
-        margin: 10px 0;
-      }
+  .update-score-inputs {
+    flex-direction: column;
+  }
 
-    .match {
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-    }
-  
-    .match-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #e0e0e0;
-    }
-  
-    .match-status {
-      font-size: 12px;
-      font-weight: bold;
-    }
-  
-    .match-date-time {
-      font-size: 12px;
-    }
-  
-    .match-tournament img {
-      height: 20px;
-      width: auto;
-    }
-  
-    .match-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 0;
-    }
-  
-    .team {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 30%;
-    }
-  
-    .team-logo img {
-      width: 60px !important;
-      height: 60px !important;
-    }
-  
-    .team-name {
-      font-size: 13px !important;
-      text-align: center;
-      margin-top: 5px;
-    }
-  
-    .match-score {
-      display: flex;
+  .update-score-input {
+    margin: 10px 0;
+  }
+
+  .match {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .match-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .match-status {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .match-date-time {
+    font-size: 12px;
+  }
+
+  .match-tournament img {
+    height: 20px;
+    width: auto;
+  }
+
+  .match-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+  }
+
+  .team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+  }
+
+  .team-logo img {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .team-name {
+    font-size: 13px !important;
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  .match-score {
+    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    }
-  
-    .match-score-number {
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .match-score-divider {
-      font-size: 24px;
-      margin: 0 5px;
-    }
-  
-    .match-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 10px;
-      border-top: 1px solid #e0e0e0;
-    }
-  
-    .toggle-predictions {
-      font-size: 16px;
-    }
-  
-    .predict-button {
-      font-size: 12px;
-      padding: 5px 10px;
-    }
-    .toggle-predictions {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .toggle-predictions-switch {
-      margin-right: 0;
-      margin-bottom: 5px;
-    }
-  
-    .toggle-predictions-text {
-      font-size: 12px;
-    }
-  
-    .predictions-section {
-      margin-top: 10px;
-      padding-top: 10px;
-    }
-  
-    .toggle-predictions-button {
-      width: 100%;
-      padding: 10px;
-    }
-  
-    .predictions-list {
-      max-height: 150px;
-    }
-
-    .prediction-form {
-      flex-direction: column;
-    }
-  
-    .prediction-form-inputs,
-    .prediction-form-buttons {
-      margin: 5px 0;
-    }
-  
-    .prediction-form button {
-      margin: 0 5px;
-    }
   }
 
+  .match-score-number {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .match-score-divider {
+    font-size: 24px;
+    margin: 0 5px;
+  }
+
+  .match-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .toggle-predictions {
+    font-size: 16px;
+  }
+
+  .predict-button {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+  .toggle-predictions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .toggle-predictions-switch {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+
+  .toggle-predictions-text {
+    font-size: 12px;
+  }
+
+  .predictions-section {
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+
+  .toggle-predictions-button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .predictions-list {
+    max-height: 150px;
+  }
+
+  .prediction-form {
+    flex-direction: column;
+  }
+
+  .prediction-form-inputs,
+  .prediction-form-buttons {
+    margin: 5px 0;
+  }
+
+  .prediction-form button {
+    margin: 0 5px;
+  }
+}
 
 .spinner {
   border: 4px solid #f3f3f3;
@@ -393,8 +390,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .update-loading {
@@ -403,7 +404,6 @@
   align-items: center;
   height: 100vh;
 }
-
 
 .predictions-section {
   margin-top: 15px;
@@ -490,7 +490,7 @@
 }
 
 .prediction-form button:first-of-type {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 

@@ -5,7 +5,9 @@
   padding: 20px;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 0 2px 0 rgba(0, 0, 0, 0.1),
+    0 4px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* Match Header Styling */
@@ -93,8 +95,6 @@
   transition: background-color 0.3s ease;
 }
 
-
-
 /* Container to Center Submit Button */
 .prediction-submit-container {
   display: flex;
@@ -121,7 +121,6 @@
   background-color: #7842a4; /* Lighter shade for disabled state */
   cursor: not-allowed;
 }
-
 
 .match button:hover {
   background-color: #5a189a; /* Darker shade for hover effect */
@@ -200,8 +199,6 @@
   margin-bottom: 20px; /* Space between the input fields and the button */
 }
 
-
-
 .prediction-input {
   display: flex;
   flex-direction: column;
@@ -213,7 +210,6 @@
   margin-bottom: 5px; /* Space between label and input */
 }
 
-
 .prediction-score {
   padding: 8px;
   font-size: 16px;
@@ -223,21 +219,17 @@
   border: 1px solid #ccc;
 }
 
-
-
-
 .prediction-score:focus {
   outline: none;
   border-color: #6b21a8; /* Focused state with a matching purple color */
 }
 
-.prediction-score::-webkit-inner-spin-button, 
-.prediction-score::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+.prediction-score::-webkit-inner-spin-button,
+.prediction-score::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.prediction-score[type="number"] {
+.prediction-score[type='number'] {
   -moz-appearance: textfield;
 }
-
