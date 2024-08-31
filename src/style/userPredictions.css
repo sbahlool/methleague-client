@@ -9,9 +9,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-  box-shadow:
-    0 0 2px 0 rgba(0, 0, 0, 0.1),
-    0 4px 4px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 4px 4px 0 rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   padding: 16px;
 }
@@ -55,20 +53,19 @@
 }
 
 .team-logo {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background-color: #fff;
-  box-shadow:
-    0 4px 4px 0 rgba(0, 0, 0, 0.15),
-    0 0 0 15px #f3f5f9;
+  background-color: #ffffff;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 15px #f8f3f9;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .team-logo img {
-  width: 50px;
+  width: 60px;
 }
 
 .team-name {

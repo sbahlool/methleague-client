@@ -16,6 +16,8 @@ import Schedule from './pages/Schedule'
 import Match from './pages/Match'
 import UserPredictions from './pages/UserPredictions'
 import UpdatePrediction from './pages/UpdatePrediction'
+import ForgotPassword from './pages/ForgotPasswordPage'
+import ResetPassword from './pages/ResetPasswordPage'
 import Table from './pages/Table'
 
 import './index.css'
@@ -70,10 +72,13 @@ const App = () => {
           <Route path="/user/:userId/predictions" element={<UserPredictions />} />
           <Route path="/profile/edit/:username" element={<EditProfilePage />} />
           <Route path="/profile/security/:username" element={<ChangePasswordPage />} />
-          <Route path="/Rank" element={<Rank />} />
+          <Route path="/Rank" element={<Rank currentUser={user} />} />
           <Route path="/Schedule" element={<Schedule currentUser={user} />} />
           <Route path="/match/:matchId" element={<Match />} />
           <Route path="/update-prediction/:matchId" element={<UpdatePrediction currentUser={user} />} />{' '}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset/:token" element={<ResetPassword />} />
+          <Route path="/rank" element={<Rank currentUser={user} />} />
         </Routes>
       </main>
     </div>

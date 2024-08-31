@@ -148,3 +148,50 @@ export interface UserResponse {
   updatedAt: string
   __v: number
 }
+
+export const forgotPassword = async (email: string): Promise<unknown> => {
+  try {
+    const response = await fetch('/password-reset/forgot', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.message || 'Failed to send reset email')
+    }
+    return response.json()
+  } catch (error) {
+    console.error('Error in forgotPassword:', error)
+    throw error
+  }
+}
+
+export const resetPassword = async (token: string, newPassword: string): Promise<unknown> => {
+  const response = await fetch('/password-reset/reset', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token, newPassword }),
+  })
+  if (!response.ok) throw new Error('Failed to reset password')
+  return response.json()
+}
+
+// New function to fetch the current user
+export const GetCurrentUser = async (): Promise<UserResponse> => {
+  try {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      throw new Error('No token found')
+    }
+    const res = await Client.get('/auth/current-user', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return res.data
+  } catch (error) {
+    console.error('Error fetching current user:', error)
+    throw error
+  }
+}

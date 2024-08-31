@@ -62,9 +62,9 @@ const Login = ({ setUser }: Props) => {
             Login
           </button>
           <br />
-          {/* <div style={{ textAlign: 'center', marginTop: '10px' }}>
+          <div style={{ textAlign: 'center', marginTop: '10px' }}>
             <Link to="/forgot-password">Forgot Password?</Link>
-          </div> */}
+          </div>
           <br />
           <p style={{ textAlign: 'center' }}>
             Don&apos;t have an account? <Link to="/register">Register Here</Link>

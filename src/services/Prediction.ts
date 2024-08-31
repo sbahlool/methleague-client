@@ -132,3 +132,21 @@ interface User {
   updatedAt: string
   __v: number
 }
+
+export const getCurrentGameweek = async (): Promise<unknown> => {
+  try {
+    const response = await Client.get('/predictions/current-gameweek')
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getRankingsForGameweek = async (gameweek: string): Promise<unknown> => {
+  try {
+    const response = await Client.get(`/predictions/rankings/${gameweek}`)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
