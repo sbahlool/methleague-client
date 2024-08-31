@@ -12,7 +12,7 @@ const ResetPassword = () => {
     try {
       await resetPassword(token!, newPassword)
       setMessage('Your password has been successfully reset.')
-    } catch (error) {
+    } catch (_) {
       setMessage('An error occurred. Please try again.')
     }
   }

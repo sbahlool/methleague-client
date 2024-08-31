@@ -10,9 +10,9 @@ const ForgotPassword = () => {
     try {
       await forgotPassword(email)
       setMessage('If an account with that email exists, we have sent a password reset link.')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error in handleSubmit:', error)
-      setMessage(`An error occurred: ${error.message}`)
+      setMessage(`An error occurred: ${(error as { message: string }).message}`)
     }
   }
 
