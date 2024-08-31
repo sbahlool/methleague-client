@@ -78,7 +78,7 @@ const App = () => {
             path="/profile/security/:username"
             element={<ChangePasswordPage />}
           />
-          <Route path="/Rank" element={<Rank />} />
+          <Route path="/Rank" element={<Rank currentUser={user} />} />
           <Route path="/Schedule" element={<Schedule currentUser={user} />} />
           <Route path="/match/:matchId" element={<Match />} />
           <Route
@@ -87,6 +87,7 @@ const App = () => {
           />{' '}
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset/:token" element={<ResetPassword />} />
+          <Route path="/rank" element={<Rank currentUser={user} />} />
         </Routes>
       </main>
     </div>

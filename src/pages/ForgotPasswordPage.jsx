@@ -13,7 +13,8 @@ const ForgotPassword = () => {
         'If an account with that email exists, we have sent a password reset link.'
       )
     } catch (error) {
-      setMessage('An error occurred. Please try again.')
+      console.error('Error in handleSubmit:', error)
+      setMessage(`An error occurred: ${error.message}`)
     }
   }
 

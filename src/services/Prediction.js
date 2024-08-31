@@ -95,3 +95,21 @@ export const getAllPredictionsByGameweek = async (gameweek) => {
     throw error
   }
 }
+
+export const getCurrentGameweek = async () => {
+  try {
+    const response = await Client.get('/predictions/current-gameweek')
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getRankingsForGameweek = async (gameweek) => {
+  try {
+    const response = await Client.get(`/predictions/rankings/${gameweek}`)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
