@@ -9,7 +9,7 @@ $(document).ready(function () {
   // Scroll Reveal
   // ScrollReveal().reveal('.services .grid .card');
 
-  $('.square.blue').on('inview', function (event, isInView) {
+  $('.square.blue').on('inview', function (_, isInView) {
     if (isInView) {
       // element is now visible in the viewport
       $(this).addClass('in-view')

@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { fetchPremierLeagueStandings } from '../services/api'
+import { useEffect, useState } from 'react'
+import { getPremierLeagueStandings, Table } from '../services/Standings'
 import '../index.css'
 
 const PremierLeagueStandings = () => {
-  const [standings, setStandings] = useState([])
-  const [error, setError] = useState(null)
+  const [standings, setStandings] = useState<Table[]>([])
+  const [error, setError] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const getStandings = async () => {
       try {
-        const data = await fetchPremierLeagueStandings()
+        const data = await getPremierLeagueStandings()
         setStandings(data.standings[0].table)
       } catch (error) {
         setError('Failed to load standings')
@@ -63,19 +63,10 @@ const PremierLeagueStandings = () => {
                   {standings.map((team, index) => {
                     const position = index + 1 // Ensure position is calculated correctly
                     return (
-                      <tr
-                        key={team.team.id}
-                        className={`bg-white bg-opacity-20 ${getPositionClass(
-                          position
-                        )}`}
-                      >
+                      <tr key={team.team.id} className={`bg-white bg-opacity-20 ${getPositionClass(position)}`}>
                         <td className="px-2 py-2">{position}</td>
                         <td className="flex items-center px-2 py-2 whitespace-nowrap">
-                          <img
-                            className="w-6 h-6"
-                            src={team.team.crest}
-                            alt={team.team.shortName}
-                          />
+                          <img className="w-6 h-6" src={team.team.crest} alt={team.team.shortName} />
                           <span className="ml-2 font-medium truncate font-bold">
                             {isMobile ? team.team.tla : team.team.shortName}
                           </span>
@@ -94,11 +85,7 @@ const PremierLeagueStandings = () => {
                               <svg
                                 key={i}
                                 className={`w-4 h-4 fill-current ${
-                                  result === 'W'
-                                    ? 'text-green-600'
-                                    : result === 'L'
-                                    ? 'text-red-600'
-                                    : 'text-gray-400'
+                                  result === 'W' ? 'text-green-600' : result === 'L' ? 'text-red-600' : 'text-gray-400'
                                 }`}
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 20 20"
@@ -128,7 +115,7 @@ const PremierLeagueStandings = () => {
   )
 }
 
-const getPositionClass = (position) => {
+const getPositionClass = (position: number): string => {
   switch (position) {
     case 1:
       return 'border-b-2 border-green-300'

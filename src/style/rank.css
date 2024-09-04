@@ -1,4 +1,3 @@
-
 /* Container for the tables to be displayed side by side */
 .table-container {
   display: flex;
@@ -28,7 +27,8 @@ thead {
   color: white; /* White text for headers */
 }
 
-th, td {
+th,
+td {
   padding: 0.5rem; /* Padding for table cells */
   border: 1px solid #ccc; /* Light border for table cells */
   text-align: left; /* Align text to the left */

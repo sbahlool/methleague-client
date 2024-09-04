@@ -7,12 +7,12 @@ const ResetPassword = () => {
   const [message, setMessage] = useState('')
   const { token } = useParams()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     try {
-      await resetPassword(token, newPassword)
+      await resetPassword(token!, newPassword)
       setMessage('Your password has been successfully reset.')
-    } catch (error) {
+    } catch (_) {
       setMessage('An error occurred. Please try again.')
     }
   }

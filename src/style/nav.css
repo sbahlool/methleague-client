@@ -32,7 +32,7 @@ a.navitem {
   margin-right: 20px;
   margin-bottom: 5px;
 }
-.logo{
+.logo {
   display: inline-block;
   vertical-align: top;
   width: 90px;
@@ -42,7 +42,8 @@ a.navitem {
 }
 
 /* Navbar Styles */
-.navbar, .navbar > .container {
+.navbar,
+.navbar > .container {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -51,7 +52,8 @@ a.navitem {
 }
 
 @media (max-width: 768px) {
-  .navbar, .navbar > .container {
+  .navbar,
+  .navbar > .container {
     display: block;
   }
 }
@@ -193,7 +195,7 @@ a.navitem {
 }
 
 .navbar .navbar-menu .navbar-nav > li.active a {
-  color: #FFAC00;
+  color: #ffac00;
 }
 
 .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown {
@@ -213,7 +215,8 @@ a.navitem {
   max-width: 100%;
   height: auto;
 }
-.navbar .navbar-menu .navbar-nav > li > a, .btn-outline-purple {
+.navbar .navbar-menu .navbar-nav > li > a,
+.btn-outline-purple {
   border-radius: 5px;
   padding: 0.5rem 1rem;
   margin: 0.25rem;
@@ -237,7 +240,6 @@ a.navitem {
   display: block !important;
   /* background-color: #62008c;
   padding: 0.25rem 1rem; */
-
 }
 
 .navbar .navbar-menu .navbar-nav .dropdown > .separator {
@@ -253,7 +255,7 @@ a.navitem {
 }
 
 .navbar .navbar-header > a span {
-  color: #FFAC00;
+  color: #ffac00;
 }
 
 .navbar .navbar-header h4 {
@@ -268,7 +270,7 @@ a.navitem {
 }
 
 .navbar-toggler {
-  display: none; 
+  display: none;
 }
 
 @media (max-width: 768px) {

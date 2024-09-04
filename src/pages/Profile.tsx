@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react'
-import { ViewProfile } from '../services/Auth'
+import { getProfile, UserResponse } from '../services/Auth'
 import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import '../style/profile.css' // Ensure this import is correct
 
-const Profile = ({ user }) => {
-  const [profile, setProfile] = useState(null)
+interface Props {
+  user: UserResponse | null
+}
+
+const Profile = ({ user }: Props) => {
+  const [profile, setProfile] = useState<UserResponse | null>(null)
   const { username } = useParams()
   const navigate = useNavigate()
 
   useEffect(() => {
     const handleProfile = async () => {
       try {
-        const fetchProfile = await ViewProfile(username)
-        setProfile(fetchProfile)
+        setProfile(await getProfile(username!))
       } catch (error) {
         console.error('Error fetching profile:', error)
       }
@@ -22,18 +25,15 @@ const Profile = ({ user }) => {
   }, [username])
 
   const handleViewPredictions = async () => {
-    navigate(`/user/${profile._id}/predictions`)
+    navigate(`/user/${profile?._id}/predictions`)
   }
 
-  let editOptions = user && user.username === username && (
+  const editOptions = user && user.username === username && (
     <div>
       <a className="btn btn-outline-warning" href={`/profile/edit/${username}`}>
         Edit Profile
       </a>
-      <a
-        className="btn btn-outline-warning"
-        href={`/profile/security/${username}`}
-      >
+      <a className="btn btn-outline-warning" href={`/profile/security/${username}`}>
         Change Password
       </a>
     </div>
@@ -48,11 +48,7 @@ const Profile = ({ user }) => {
               <div className="card-body text-center">
                 <div className="mt-3 mb-4">
                   <div className="profile-pic">
-                    <img
-                      src={`/uploads/${profile.profilePicture}`}
-                      id="output"
-                      alt="Profile"
-                    />
+                    <img src={`/uploads/${profile.profilePicture}`} id="output" alt="Profile" />
                   </div>
                 </div>
                 <h4 className="mb-2">
@@ -66,16 +62,11 @@ const Profile = ({ user }) => {
                       <strong>{profile.team.teamname}</strong>
                     </p>
                     {profile.team.logo && (
-                      <img
-                        src={`/uploads/${profile.team.logo}`}
-                        alt={`${profile.team.teamname} logo`}
-                      />
+                      <img src={`/uploads/${profile.team.logo}`} alt={`${profile.team.teamname} logo`} />
                     )}
                   </div>
                 )}
-                <button onClick={handleViewPredictions}>
-                  View Predicted Scores
-                </button>
+                <button onClick={handleViewPredictions}>View Predicted Scores</button>
               </div>
               {username === profile.username && editOptions}
             </div>

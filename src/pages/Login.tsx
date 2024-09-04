@@ -1,26 +1,30 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { LoginUser } from '../services/Auth'
+import { loginUser, UserResponse } from '../services/Auth'
 import '../style/auth.css'
 
-const Login = ({ setUser }) => {
-  let navigate = useNavigate()
+interface Props {
+  setUser: (user: UserResponse) => void
+}
+
+const Login = ({ setUser }: Props) => {
+  const navigate = useNavigate()
 
   const [formValues, setFormValues] = useState({ username: '', password: '' })
   const [errorMessage, setErrorMessage] = useState('')
 
-  const handleChange = (e) => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     try {
-      const payload = await LoginUser(formValues)
+      const payload = await loginUser(formValues)
       setFormValues({ username: '', password: '' })
-      setUser(payload)
+      setUser(payload as unknown as UserResponse)
       navigate('/')
-    } catch (error) {
+    } catch (_) {
       setErrorMessage('Invalid username or password. Please try again.')
     }
   }
@@ -31,9 +35,7 @@ const Login = ({ setUser }) => {
       <br />
       <div>
         <form className="form" onSubmit={handleSubmit}>
-          {errorMessage && (
-            <p style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</p>
-          )}
+          {errorMessage && <p style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</p>}
           <label className="label" htmlFor="username">
             Username or Email
           </label>
@@ -56,11 +58,7 @@ const Login = ({ setUser }) => {
             value={formValues.password}
             required
           />
-          <button
-            className="button"
-            type="submit"
-            disabled={!formValues.username || !formValues.password}
-          >
+          <button className="button" type="submit" disabled={!formValues.username || !formValues.password}>
             Login
           </button>
           <br />
@@ -69,8 +67,7 @@ const Login = ({ setUser }) => {
           </div>
           <br />
           <p style={{ textAlign: 'center' }}>
-            Don&apos;t have an account?{' '}
-            <Link to="/register">Register Here</Link>
+            Don&apos;t have an account? <Link to="/register">Register Here</Link>
           </p>
         </form>
       </div>

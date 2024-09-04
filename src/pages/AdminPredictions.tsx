@@ -1,24 +1,26 @@
-import React, { useState, useEffect } from 'react'
-import { getAllPredictionsByGameweek } from '../services/Prediction'
-import { getMatches } from '../services/Match'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { getAllPredictionsByGameweek, PredictionResponse } from '../services/Prediction'
+import { getMatches, MatchResponse } from '../services/Match'
 import '../style/adminPrediction.css' // Import the new CSS file
+import { UserResponse } from '../services/Auth'
+import { formatDate } from '../utils/date'
 
-const AdminPredictions = ({ user }) => {
-  const [predictions, setPredictions] = useState([])
-  const [addedMatches, setAddedMatches] = useState([])
-  const [options, setOptions] = useState([])
-  const [selectedGameweek, setSelectedGameweek] = useState(1)
-  const navigate = useNavigate()
+interface Props {
+  user: UserResponse | null
+}
+
+const AdminPredictions = ({ user }: Props) => {
+  const [predictions, setPredictions] = useState<PredictionResponse[]>([])
+  const [addedMatches, setAddedMatches] = useState<MatchResponse[]>([])
+  const [options, setOptions] = useState<number[]>([])
+  const [selectedGameweek, setSelectedGameweek] = useState<number>(1)
 
   useEffect(() => {
     const fetchAddedMatches = async () => {
       try {
         const matches = await getMatches()
         setAddedMatches(matches)
-        const uniqueGameweeks = [
-          ...new Set(matches.map((match) => match.gameweek))
-        ]
+        const uniqueGameweeks = [...new Set(matches.map((match) => match.gameweek))]
         setOptions(uniqueGameweeks)
         setSelectedGameweek(uniqueGameweeks[0])
       } catch (error) {
@@ -44,30 +46,8 @@ const AdminPredictions = ({ user }) => {
     }
   }, [selectedGameweek, user])
 
-  const handleGameweekChange = (gameweek) => {
+  const handleGameweekChange = (gameweek: number) => {
     setSelectedGameweek(gameweek)
-  }
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    const day = date.getDate()
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ]
-    const month = monthNames[date.getMonth()]
-    const year = date.getFullYear()
-    return `${day} ${month} ${year}`
   }
 
   if (user?.role !== 'admin') {
@@ -98,10 +78,7 @@ const AdminPredictions = ({ user }) => {
               <div className="match-header">
                 <div className="team">
                   <div className="team-logo">
-                    <img
-                      src={`/uploads/${match.homeTeam.logo}`}
-                      alt={`${match.homeTeam.teamname} logo`}
-                    />
+                    <img src={`/uploads/${match.homeTeam.logo}`} alt={`${match.homeTeam.teamname} logo`} />
                   </div>
                   <div className="team-name">{match.homeTeam.teamname}</div>
                 </div>
@@ -110,10 +87,7 @@ const AdminPredictions = ({ user }) => {
                 </div>
                 <div className="team">
                   <div className="team-logo">
-                    <img
-                      src={`/uploads/${match.awayTeam.logo}`}
-                      alt={`${match.awayTeam.teamname} logo`}
-                    />
+                    <img src={`/uploads/${match.awayTeam.logo}`} alt={`${match.awayTeam.teamname} logo`} />
                   </div>
                   <div className="team-name">{match.awayTeam.teamname}</div>
                 </div>
@@ -127,8 +101,7 @@ const AdminPredictions = ({ user }) => {
                   <div key={prediction._id} className="user-prediction">
                     <h4>{prediction.user.username}</h4>
                     <p>
-                      Predicted Score: {prediction.predictedHomeScore} -{' '}
-                      {prediction.predictedAwayScore}
+                      Predicted Score: {prediction.predictedHomeScore} - {prediction.predictedAwayScore}
                     </p>
                     <p>Points: {prediction.points}</p>
                   </div>

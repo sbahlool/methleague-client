@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getMatchById } from '../services/Match'
-import { addPrediction, getUserPrediction } from '../services/Prediction'
-import { CheckSession } from '../services/Auth'
+import { getMatchById, MatchResponse } from '../services/Match'
+import { addPrediction, getUserPrediction, PredictionResponse } from '../services/Prediction'
+import { checkSession } from '../services/Auth'
 import '../style/match.css'
+import { formatDate } from '../utils/date'
 
 const Match = () => {
   const { matchId } = useParams()
-  const [match, setMatch] = useState(null)
+  const [match, setMatch] = useState<MatchResponse | null>(null)
   const [homeScore, setHomeScore] = useState('')
   const [awayScore, setAwayScore] = useState('')
   const [userId, setUserId] = useState(null)
-  const [userPrediction, setUserPrediction] = useState(null)
+  const [userPrediction, setUserPrediction] = useState<PredictionResponse | null>(null)
 
   useEffect(() => {
     const fetchMatch = async () => {
       try {
-        const data = await getMatchById(matchId)
+        const data = await getMatchById(matchId!)
         setMatch(data)
       } catch (error) {
         console.error('Failed to fetch match:', error)
@@ -25,7 +26,7 @@ const Match = () => {
 
     const fetchUserId = async () => {
       try {
-        const sessionData = await CheckSession()
+        const sessionData = await checkSession()
         setUserId(sessionData.id)
       } catch (error) {
         console.error('Failed to fetch user ID:', error)
@@ -40,7 +41,7 @@ const Match = () => {
     const fetchUserPrediction = async () => {
       if (userId) {
         try {
-          const prediction = await getUserPrediction(matchId, userId)
+          const prediction = await getUserPrediction(matchId!, userId)
           if (prediction) {
             setUserPrediction(prediction)
             setHomeScore(prediction.predictedHomeScore?.toString() || '')
@@ -59,7 +60,7 @@ const Match = () => {
     fetchUserPrediction()
   }, [userId, matchId])
 
-  const handlePredictionSubmit = async (e) => {
+  const handlePredictionSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     try {
       if (!userId) {
@@ -67,10 +68,10 @@ const Match = () => {
         return
       }
       const predictionData = {
-        match: matchId,
+        match: matchId!,
         user: userId,
         predictedHomeScore: parseInt(homeScore),
-        predictedAwayScore: parseInt(awayScore)
+        predictedAwayScore: parseInt(awayScore),
       }
       const prediction = await addPrediction(predictionData)
       setUserPrediction(prediction)
@@ -83,28 +84,6 @@ const Match = () => {
 
   if (!match) {
     return <div>Loading...</div>
-  }
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    const day = date.getDate()
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ]
-    const month = monthNames[date.getMonth()]
-    const year = date.getFullYear()
-    return `${day} ${month} ${year}`
   }
 
   return (
@@ -172,15 +151,11 @@ const Match = () => {
           <div className="user-prediction">
             <p>Your Prediction:</p>
             <p className="user-prediction-score">
-              {userPrediction.predictedHomeScore} :{' '}
-              {userPrediction.predictedAwayScore}
+              {userPrediction.predictedHomeScore} : {userPrediction.predictedAwayScore}
             </p>
           </div>
           <div className="update-prediction-container">
-            <button
-              className="update-prediction-button"
-              onClick={() => setUserPrediction(null)}
-            >
+            <button className="update-prediction-button" onClick={() => setUserPrediction(null)}>
               Update Prediction
             </button>
           </div>

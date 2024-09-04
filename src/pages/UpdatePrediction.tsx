@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import {
-  getPredictionByUserAndMatch,
-  updatePrediction
-} from '../services/Prediction'
+import { getPredictionByUserAndMatch, PredictionResponse, updatePrediction } from '../services/Prediction'
+import '../style/schedule.css' // Use the same CSS as the Schedule page
+import { UserResponse } from '../services/Auth'
 import '../style/schedule.css'
 
-const UpdatePrediction = ({ currentUser }) => {
+interface Props {
+  currentUser: (UserResponse & { id?: string }) | null // TODO: added the `& { id: string }` part as a quick hack because there's only a `._id` field to `UserResponse`... Up to you what you wanna do with this
+}
+
+const UpdatePrediction = ({ currentUser }: Props) => {
   const { matchId } = useParams()
-  const [prediction, setPrediction] = useState(null)
-  const [homeScore, setHomeScore] = useState('')
-  const [awayScore, setAwayScore] = useState('')
-  const [error, setError] = useState(null)
+  const [prediction, setPrediction] = useState<PredictionResponse | null>(null)
+  const [homeScore, setHomeScore] = useState<string>('')
+  const [awayScore, setAwayScore] = useState<string>('')
+  const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchPrediction = async () => {
       try {
-        const predictionData = await getPredictionByUserAndMatch(
-          currentUser.id,
-          matchId
-        )
+        const predictionData = await getPredictionByUserAndMatch(currentUser!.id, matchId!)
         setPrediction(predictionData)
-        setHomeScore(predictionData.predictedHomeScore)
-        setAwayScore(predictionData.predictedAwayScore)
-      } catch (error) {
-        console.error('Failed to fetch prediction:', error)
+        setHomeScore(predictionData.predictedHomeScore.toString())
+        setAwayScore(predictionData.predictedAwayScore.toString())
+      } catch (err) {
+        console.error('Failed to fetch prediction:', err)
         setError('Failed to load prediction. Please try again.')
       }
     }
@@ -35,7 +35,7 @@ const UpdatePrediction = ({ currentUser }) => {
     }
   }, [currentUser, matchId])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     setError(null)
     if (parseInt(homeScore) < 0 || parseInt(awayScore) < 0) {
@@ -45,9 +45,9 @@ const UpdatePrediction = ({ currentUser }) => {
     try {
       const updatedPrediction = {
         predictedHomeScore: homeScore,
-        predictedAwayScore: awayScore
+        predictedAwayScore: awayScore,
       }
-      await updatePrediction(prediction._id, updatedPrediction)
+      await updatePrediction(prediction!._id, updatedPrediction)
       navigate('/schedule')
     } catch (error) {
       console.error('Failed to update prediction:', error)
@@ -69,12 +69,9 @@ const UpdatePrediction = ({ currentUser }) => {
       <p className="update-gameweek">GW: {prediction.match.gameweek}</p>
       <div className="match">
         <div className="match-header">
-          <div className="match-status">
-            {prediction.match.isCompleted ? 'Completed' : 'Upcoming'}
-          </div>
+          <div className="match-status">{prediction.match.isCompleted ? 'Completed' : 'Upcoming'}</div>
           <div className="match-date-time">
-            {new Date(prediction.match.date).toLocaleDateString()}{' '}
-            {prediction.match.time}
+            {new Date(prediction.match.date).toLocaleDateString()} {prediction.match.time}
           </div>
           <div className="match-tournament">
             <img src="/uploads/epl-logo.png" alt="Premier League" />
