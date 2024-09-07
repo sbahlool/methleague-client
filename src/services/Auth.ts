@@ -150,7 +150,7 @@ export interface UserResponse {
 
 export const forgotPassword = async (email: string): Promise<any> => {
   try {
-    const API_URL = 'https://methleague-e433e7bc8a2e.herokuapp.com/'; // Replace with your actual API URL
+    const API_URL = 'https://methleague.surge.sh/'; // Replace with your actual API URL
     const response = await fetch(`${API_URL}/auth/forgot-password`, {
       method: 'POST',
       headers: {
