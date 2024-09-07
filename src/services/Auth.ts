@@ -150,8 +150,8 @@ export interface UserResponse {
 
 export const forgotPassword = async (email: string): Promise<any> => {
   try {
-    const API_URL = 'https://methleague.surge.sh/'; // Replace with your actual API URL
-    const response = await fetch(`${API_URL}/auth/forgot-password`, {
+    const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
+    const response = await fetch(`${API_URL}auth/forgot-password`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
