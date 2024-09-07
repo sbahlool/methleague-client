@@ -102,9 +102,6 @@ const NavBar = ({ user, handleLogOut }: Props) => {
               </div>
             </NavLink>
           </div>
-
-          
-
           <div className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
             <ul className="navbar-nav">
               <li>

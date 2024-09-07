@@ -148,23 +148,24 @@ export interface UserResponse {
   __v: number
 }
 
-export const forgotPassword = async (email: string): Promise<unknown> => {
+export const forgotPassword = async (email: string): Promise<any> => {
   try {
     const response = await fetch('/password-reset/forgot', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
-    })
+    });
     if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(errorData.message || 'Failed to send reset email')
+      const text = await response.text();
+      console.error('Server response:', text);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return response.json()
+    return await response.json();
   } catch (error) {
-    console.error('Error in forgotPassword:', error)
-    throw error
+    console.error('Error in forgotPassword:', error);
+    throw error;
   }
-}
+};
 
 export const resetPassword = async (token: string, newPassword: string): Promise<unknown> => {
   const response = await fetch('/password-reset/reset', {
