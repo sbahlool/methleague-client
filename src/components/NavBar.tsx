@@ -91,6 +91,11 @@ const NavBar = ({ user, handleLogOut }: Props) => {
       <nav className="navbar">
         <div className="container">
           <div className="navbar-header">
+          {isBurgerVisible && (
+            <button className="navbar-toggler" onClick={toggleMenu}>
+              <img className="bar" src="/bmenu.png" alt="bmenu" />
+            </button>
+          )}
             <NavLink to="/" onClick={closeMenu}>
               <div className="logo-wrapper-logo">
                 <img className="logo-home" src="/logo.png" alt="Logo" />
@@ -98,11 +103,7 @@ const NavBar = ({ user, handleLogOut }: Props) => {
             </NavLink>
           </div>
 
-          {isBurgerVisible && (
-            <button className="navbar-toggler" onClick={toggleMenu}>
-              <img className="bar" src="/bmenu.png" alt="bmenu" />
-            </button>
-          )}
+          
 
           <div className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
             <ul className="navbar-nav">

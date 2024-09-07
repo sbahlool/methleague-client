@@ -14,7 +14,6 @@ interface Props {
 
 const Rank = ({ currentUser }: Props) => {
   const [users, setUsers] = useState<UserWithRank[]>([])
-  const [previousRanks, setPreviousRanks] = useState<Record<string, number>>({})
   const [perfectPredictions, setPerfectPredictions] = useState<UserWithPerfect[]>([])
 
   useEffect(() => {
@@ -43,7 +42,11 @@ const Rank = ({ currentUser }: Props) => {
           }))
           .sort((a, b) => b.points - a.points)
 
-        // Define currentRanks here
+        // Get previous ranks from local storage
+        const previousRanksString = localStorage.getItem('previousRanks')
+        const previousRanks: Record<string, number> = previousRanksString ? JSON.parse(previousRanksString) : {}
+
+        // Calculate current ranks
         const currentRanks = sortedUsers.reduce((acc: Record<string, number>, user: UserAndPoints, index: number) => {
           acc[user._id] = index + 1
           return acc
@@ -61,6 +64,9 @@ const Rank = ({ currentUser }: Props) => {
           }
         })
 
+        // Store current ranks as previous ranks for next time
+        localStorage.setItem('previousRanks', JSON.stringify(currentRanks))
+
         const sortedByPerfect: UserWithPerfect[] = [...usersData]
           .map((user) => ({
             ...user,
@@ -69,7 +75,6 @@ const Rank = ({ currentUser }: Props) => {
           .sort((a, b) => b.perfect - a.perfect)
 
         setUsers(usersWithRank)
-        setPreviousRanks(currentRanks)
         setPerfectPredictions(sortedByPerfect)
       } catch (error) {
         console.error('Failed to fetch users or predictions:', error)

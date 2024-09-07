@@ -4,7 +4,7 @@ export const loginUser = async (data: LoginRequest): Promise<LoginResponse['user
   try {
     const res = await Client.post<LoginResponse>('/auth/login', data)
     localStorage.setItem('token', res.data.token)
-    localStorage.setItem('role', res.data.user.role) // Store the role in local storage
+    localStorage.setItem('role', res.data.user.role)
     return res.data.user
   } catch (error) {
     throw error
@@ -94,7 +94,6 @@ export const checkSession = async () => {
   }
 }
 
-// New function to fetch the list of teams
 export const getTeams = async (): Promise<TeamResponse[]> => {
   try {
     const res = await Client.get<TeamResponse[]>('/auth/teams')

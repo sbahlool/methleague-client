@@ -100,7 +100,30 @@ a.navitem {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-direction: row-reverse;
+    padding: 10px 15px;
+  }
+
+  .logo-home {
+    width: 70px;
+    margin-right: 0;
+  }
+
+  .navbar-toggler {
+    order: 2;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+  }
+
+  .bar {
+    width: 25px;
+    height: 25px;
+    display: block;
+  }
+
+  .logo-wrapper-logo {
+    order: 1;
   }
 }
 
@@ -238,8 +261,6 @@ a.navitem {
 
 .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown.show {
   display: block !important;
-  /* background-color: #62008c;
-  padding: 0.25rem 1rem; */
 }
 
 .navbar .navbar-menu .navbar-nav .dropdown > .separator {
@@ -255,7 +276,7 @@ a.navitem {
 }
 
 .navbar .navbar-header > a span {
-  color: #ffac00;
+  color: #6d3385;
 }
 
 .navbar .navbar-header h4 {
@@ -279,24 +300,20 @@ a.navitem {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0; /* Remove any padding to make the icon align properly */
+    padding: 10px;
   }
 
   .bar {
     width: 25px;
-    height: 25px;
-    /* Adjust the size to fit the icon */
+    height: 3px;
+    background-color: #f3e8ff;
+    margin: 5px 0;
+    display: block;
   }
 
-  /* Adjust the navbar logo on mobile */
-  .logo-home {
-    width: 70px; /* Adjust this value as needed for mobile */
-  }
-
-  /* Ensure that the menu is hidden initially and only shown when active */
   .navbar-menu {
     position: relative;
-    z-index: 10; /* Ensure this is higher than other elements */
+    z-index: 10;
   }
 
   .navbar-menu.active {
@@ -305,142 +322,8 @@ a.navitem {
 }
 
 .bar {
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
+  border-radius: 10%;
   cursor: pointer;
 }
-
-/* .navbar .navbar-menu {
-  display: flex;
-  align-items: center;
-  flex-basis: auto;
-  flex-grow: 1;
-} */
-
-/* .navbar .navbar-menu .navbar-nav {
-  margin-left: auto;
-  flex-direction: row;
-  display: flex;
-  padding-left: 0;
-  margin-bottom: 0;
-  list-style: none;
-} */
-
-/* .navbar .navbar-menu .navbar-nav > li > a {
-  color: #3c4250;
-  text-decoration: none;
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  position: relative;
-  text-transform: uppercase;
-  transition: 0.5s;
-} */
-
-/* .navbar .navbar-menu .navbar-nav > li > a::after {
-  position: absolute;
-  content: "";
-  top: 100%;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: #6b21a8;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.5s;
-}
-
-.navbar .navbar-menu .navbar-nav > li > a:hover {
-  color: #95a5a6;
-}
-
-.navbar .navbar-menu .navbar-nav > li > a:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-} */
-
-/* Dropdown Menu */
-
-/* .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown {
-  display: none;
-  position: absolute; 
-  background-color: #fff;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  min-width: 160px;
-  width: auto;
-  white-space: nowrap;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  z-index: 99999;
-  border-radius: 0.75rem;
-}
-
-.navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown.show {
-  display: block;
-}
-
-.navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown li a {
-  color: #3c4250;
-  padding: 0.25rem 1rem;
-  display: block;
-} */
-
-/* Mobile Styles */
-/* @media (max-width: 768px) {
-  .navbar-menu {
-    display: none; 
-    flex-direction: column; 
-    width: 100%;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #fff;
-    z-index: 9999;
-  }
-
-  .navbar-menu.active {
-    display: flex; 
-  }
-
-  .navbar-toggler {
-    display: block; 
-    cursor: pointer;
-  }
-
-  .navbar-toggler .bar {
-    display: block;
-    width: 25px;
-    height: 3px;
-    background-color: #333;
-    margin: 5px 0;
-  }
-
-  .navbar-nav {
-    flex-direction: column; 
-    width: 100%;
-  }
-
-  .navbar-nav > li {
-    width: 100%;
-  }
-
-  .navbar-nav .dropdown {
-    position: static; 
-  }
-} */
-
-/* Hamburger Menu Styles */
-/* .navbar .navbar-toggler {
-  display: none; 
-}
-
-.navbar .navbar-menu.show .navbar-toggler .bar:nth-child(1) {
-  transform: rotate(-45deg) translate(-5px, 6px);
-}
-
-.navbar .navbar-menu.show .navbar-toggler .bar:nth-child(2) {
-  opacity: 0;
-}
-
-.navbar .navbar-menu.show .navbar-toggler .bar:nth-child(3) {
-  transform: rotate(45deg) translate(-5px, -6px);
-} */
