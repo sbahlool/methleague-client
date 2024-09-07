@@ -151,7 +151,7 @@ export interface UserResponse {
 export const forgotPassword = async (email: string): Promise<any> => {
   try {
     const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
-    const response = await fetch(`${API_URL}auth/forgot-password`, {
+    const response = await fetch(`${API_URL}password-reset/forgot`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
