@@ -150,16 +150,21 @@ export interface UserResponse {
 
 export const forgotPassword = async (email: string): Promise<any> => {
   try {
-    const response = await fetch('/password-reset/forgot', {
+    const API_URL = 'https://methleague-e433e7bc8a2e.herokuapp.com/'; // Replace with your actual API URL
+    const response = await fetch(`${API_URL}/auth/forgot-password`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ email }),
     });
+
     if (!response.ok) {
-      const text = await response.text();
-      console.error('Server response:', text);
+      const errorText = await response.text();
+      console.error('Server error response:', errorText);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+
     return await response.json();
   } catch (error) {
     console.error('Error in forgotPassword:', error);
