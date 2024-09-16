@@ -1,0 +1,117 @@
+.App {
+  max-width: 860px;
+  margin: 40px auto;
+  padding: 0 20px; /* Added padding for mobile */
+}
+
+.button-game {
+  background: #c23866;
+  border: 2px solid #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1em;
+  width: 100%; /* Full width for mobile */
+}
+
+button:hover {
+  background: #c23866;
+  color: white;
+}
+
+img {
+  height: 150px;
+  width: 130px;
+}
+
+.back {
+  background: #fff;
+}
+
+.card-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+}
+
+/* Mobile styles */
+@media (max-width: 600px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on mobile */
+  }
+
+  img {
+    height: 100px; /* Smaller images for mobile */
+    width: 90px; /* Adjusted width for mobile */
+  }
+
+  .button-game {
+    font-size: 0.9em; /* Slightly smaller font size */
+  }
+}
+
+.card-game {
+  position: relative;
+  width: 100%; /* Ensure the card takes full width */
+  max-width: 150px; /* Set a max width for larger screens */
+  height: 100px; /* Increased height for cards */
+  margin: 0 auto; /* Center the card */
+  perspective: 1000px; /* Add perspective for 3D effect */
+}
+
+.card-game img {
+  width: 65% !important;
+  height: 70% !important; /* Ensure images fill the card */
+  display: block;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  object-fit: cover; /* Maintain aspect ratio and cover the area */
+}
+
+.card-game .front,
+.card-game .back {
+  position: absolute;
+  top: 0; /* Align to the top */
+  left: 0; /* Align to the left */
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  backface-visibility: hidden; /* Hide the back face when flipped */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.card-game .front {
+  transform: rotateY(90deg);
+  transition: transform 0.2s ease-in;
+}
+
+.flipped .front {
+  transform: rotateY(0deg);
+  transition-delay: 0.2s;
+}
+
+.card-game .back {
+  transition: transform 0.2s ease-in; 
+  transition-delay: 0.2s;
+}
+
+.flipped .back {
+  transform: rotateY(90deg);
+  transition-delay: 0s;
+}
+
+/* Mobile styles */
+@media (max-width: 600px) {
+  .card {
+    width: 80%; /* Adjust card width for mobile */
+    margin: 0 auto; /* Center the card */
+  }
+
+  .card img {
+    height: auto; /* Maintain aspect ratio */
+  }
+}

@@ -124,6 +124,11 @@ const NavBar = ({ user, handleLogOut }: Props) => {
                   Schedule
                 </NavLink>
               </li>
+              <li>
+                <NavLink to="/minigame" onClick={closeMenu}>
+                  Mini Game
+                </NavLink>
+              </li>
               {user && user.role === 'admin' && (
                 <>
                   <li>

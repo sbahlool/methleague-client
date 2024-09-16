@@ -1,4 +1,3 @@
-import '../style/home'
 import '../style/home.css'
 
 const Home = () => (

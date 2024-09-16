@@ -19,6 +19,7 @@ import UpdatePrediction from './pages/UpdatePrediction'
 import ForgotPassword from './pages/ForgotPasswordPage'
 import ResetPassword from './pages/ResetPasswordPage'
 import Table from './pages/Table'
+import MiniGame from "./pages/MiniGame"
 
 import './index.css'
 import './App.css'
@@ -50,6 +51,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/table" element={<Table />} />
+          <Route path="/minigame" element={<MiniGame />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
           <Route
             path="/admin"
