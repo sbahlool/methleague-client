@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import '../style/miniGame.css'
 
 interface Card {
-  src: string;
-  matched: boolean;
-  id?: number;
+  src: string
+  matched: boolean
+  id?: number
 }
 
 interface SingleCardProps {
-  card: Card;
+  card: Card
   handleChoice: (card: Card) => void;
   flipped: boolean;
   disabled: boolean;

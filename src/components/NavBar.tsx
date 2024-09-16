@@ -91,10 +91,10 @@ const NavBar = ({ user, handleLogOut }: Props) => {
       <nav className="navbar">
         <div className="container">
           <div className="navbar-header">
-          {isBurgerVisible && (
-            <button className="navbar-toggler" onClick={toggleMenu}>
-              <img className="bar" src="/bmenu.png" alt="bmenu" />
-            </button>
+            {isBurgerVisible && (
+              <button className="navbar-toggler" onClick={toggleMenu}>
+                <img className="bar" src="/bmenu.png" alt="bmenu" />
+              </button>
           )}
             <NavLink to="/" onClick={closeMenu}>
               <div className="logo-wrapper-logo">

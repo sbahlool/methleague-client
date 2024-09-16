@@ -19,7 +19,7 @@ import UpdatePrediction from './pages/UpdatePrediction'
 import ForgotPassword from './pages/ForgotPasswordPage'
 import ResetPassword from './pages/ResetPasswordPage'
 import Table from './pages/Table'
-import MiniGame from "./pages/MiniGame"
+import MiniGame from './pages/MiniGame'
 
 import './index.css'
 import './App.css'
