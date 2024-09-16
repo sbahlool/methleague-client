@@ -100,7 +100,7 @@ const Rank = ({ currentUser }: Props) => {
                   <button onClick={() => setSortBy('points')} className="ml-1 text-purple-100 text-xs p-0.1" aria-label="Sort by points">▲</button>
                 </th>
                 <th scope="col" className="px-3 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                <span className="hidden sm:inline">Perfecr</span>
+                <span className="hidden sm:inline">Perfect</span>
                 <span className="inline sm:hidden">Perf</span>
                   <button onClick={() => setSortBy('perfect')} className="ml-1 text-purple-100 text-xs p-0.1" aria-label="Sort by perfect predictions">▲</button>
                 </th>
