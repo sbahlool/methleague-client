@@ -36,15 +36,6 @@ const SingleCard: React.FC<SingleCardProps> = ({ card, handleChoice, flipped, di
   )
 }
 
-const cardImages: Card[] = [
-  { src: '/uploads/Arsenal_PR01Llr.png', matched: false },
-  { src: '/uploads/Chelsea_A9h8r1R.png', matched: false },
-  { src: '/uploads/Manutd_CwrwrPV.png', matched: false },
-  { src: '/uploads/Liverpool_HoymQ5A.png', matched: false },
-  { src: '/uploads/Tottenham_fMhJwrN.png', matched: false },
-  { src: '/uploads/Mancity_e6NGUOG.png', matched: false }
-]
-
 const App: React.FC = () => {
   const [cards, setCards] = useState<Card[]>([])
   const [turns, setTurns] = useState(0)
@@ -53,6 +44,20 @@ const App: React.FC = () => {
   const [disabled, setDisabled] = useState(false)
 
   const shuffleCards = () => {
+    const cardImages: Card[] = [
+      { src: '/uploads/Arsenal_PR01Llr.png', matched: false },
+      { src: '/uploads/Chelsea_A9h8r1R.png', matched: false },
+      { src: '/uploads/Manutd_CwrwrPV.png', matched: false },
+      { src: '/uploads/Liverpool_HoymQ5A.png', matched: false },
+      { src: '/uploads/Tottenham_fMhJwrN.png', matched: false },
+      { src: '/uploads/Mancity_e6NGUOG.png', matched: false },
+      { src: '/uploads/Newcastle_SGEdcip.png', matched: false },
+      { src: '/uploads/Astonvilla_gKRqxyi.png', matched: false },
+      { src: '/uploads/Brighton_vvcCto4.png', matched: false },
+      { src: '/uploads/Westham_F1aNDJ2.png', matched: false },
+      // Add more teams as needed
+    ]
+
     const shuffledCards = [...cardImages, ...cardImages]
       .sort(() => Math.random() - 0.5)
       .map((card) => ({ ...card, id: Math.random() }))
@@ -101,7 +106,6 @@ const App: React.FC = () => {
     <div className="App">
       <h1>EPL Match</h1>
       <button className='button-game' onClick={shuffleCards}>New Game</button>
-
       <div className="card-grid">
         {cards.map((card) => (
           <SingleCard

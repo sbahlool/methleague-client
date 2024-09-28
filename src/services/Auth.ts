@@ -150,11 +150,15 @@ export interface UserResponse {
 
 export const forgotPassword = async (email: string): Promise<any> => {
   try {
-    const API_URL = import.meta.env.API_URL;
-    const response = await fetch(`${API_URL}password-reset/forgot`, {
+    const API_URL = import.meta.env.VITE_REACT_APP_API_URL; // Use the deployed URL
+    const fullUrl = `${API_URL}password-reset/forgot`; // Construct the full URL
+    console.log('Requesting URL:', fullUrl); // Log the URL for debugging
+    const token = localStorage.getItem('token'); // Assuming you store a token in localStorage
+    const response = await fetch(fullUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}), // Add token if it exists
       },
       body: JSON.stringify({ email }),
     });

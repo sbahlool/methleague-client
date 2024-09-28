@@ -21,10 +21,7 @@ button:hover {
   color: white;
 }
 
-img {
-  height: 150px;
-  width: 130px;
-}
+
 
 .back {
   background: #fff;
@@ -51,6 +48,28 @@ img {
   .button-game {
     font-size: 0.9em; /* Slightly smaller font size */
   }
+
+  .card {
+    width: 80%; /* Adjust card width for mobile */
+    margin: 0 auto; /* Center the card */
+  }
+
+  .card-game .front,
+  .card-game .back {
+    position: absolute;
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 75% !important; /* Full width */
+    height: 100%; /* Full height */
+    backface-visibility: hidden; /* Hide the back face when flipped */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+  .card img {
+    height: auto; /* Maintain aspect ratio */
+  }
 }
 
 .card-game {
@@ -63,8 +82,8 @@ img {
 }
 
 .card-game img {
-  width: 65% !important;
-  height: 70% !important; /* Ensure images fill the card */
+  width: 65%;
+  height: 70%;
   display: block;
   border: 2px solid #fff;
   border-radius: 6px;
@@ -76,7 +95,7 @@ img {
   position: absolute;
   top: 0; /* Align to the top */
   left: 0; /* Align to the left */
-  width: 100%; /* Full width */
+  width: 60%; /* Full width */
   height: 100%; /* Full height */
   backface-visibility: hidden; /* Hide the back face when flipped */
   display: flex; /* Use flexbox for centering */
@@ -102,16 +121,4 @@ img {
 .flipped .back {
   transform: rotateY(90deg);
   transition-delay: 0s;
-}
-
-/* Mobile styles */
-@media (max-width: 600px) {
-  .card {
-    width: 80%; /* Adjust card width for mobile */
-    margin: 0 auto; /* Center the card */
-  }
-
-  .card img {
-    height: auto; /* Maintain aspect ratio */
-  }
 }
