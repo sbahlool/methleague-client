@@ -6,12 +6,14 @@
 
 .gameweek-options {
   display: flex;
+  overflow-x: auto; /* Allow horizontal scrolling */
+  white-space: nowrap; /* Prevent wrapping of items */
   margin-bottom: 20px;
 }
 
 .gameweek-option {
   position: relative;
-  margin-right: 10px;
+  margin-right: 10px; /* Add some spacing between options */
   cursor: pointer;
 }
 
