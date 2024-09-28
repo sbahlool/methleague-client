@@ -39,6 +39,14 @@ const AddMatch = () => {
       setAddedMatches(matches)
       const uniqueGameweeks = [...new Set(matches.map((match) => match.gameweek))]
       setOptions(uniqueGameweeks)
+
+      // Set the default selected gameweek to the first not completed gameweek
+      const firstNotCompletedGameweek = uniqueGameweeks
+        .filter((gw) => !matches.find((match) => match.gameweek === gw && match.isCompleted))
+        .sort((a, b) => a - b)[0]; // Get the first gameweek
+      if (firstNotCompletedGameweek) {
+        setSelectedGameweek(firstNotCompletedGameweek);
+      }
     } catch (error) {
       console.error('Failed to fetch added matches', error)
     }

@@ -36,12 +36,12 @@ const Schedule = ({ currentUser }: Props) => {
         const uniqueGameweeks = [...new Set(matches.map((match) => match.gameweek))]
         setOptions(uniqueGameweeks)
 
-        // Set the default selected gameweek to the latest not completed gameweek
-        const latestGameweek = uniqueGameweeks
+        // Set the default selected gameweek to the first not completed gameweek
+        const firstNotCompletedGameweek = uniqueGameweeks
           .filter((gw) => !matches.find((match) => match.gameweek === gw && match.isCompleted))
-          .sort((a, b) => b - a)[0]; // Get the latest gameweek
-        if (latestGameweek) {
-          setSelectedGameweek(latestGameweek);
+          .sort((a, b) => a - b)[0]; // Get the first gameweek
+        if (firstNotCompletedGameweek) {
+          setSelectedGameweek(firstNotCompletedGameweek);
         }
       } catch (error) {
         console.error('Failed to fetch added matches', error)
