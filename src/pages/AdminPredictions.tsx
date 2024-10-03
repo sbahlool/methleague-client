@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { getAllPredictionsByGameweek, PredictionResponse } from '../services/Prediction'
 import { getMatches, MatchResponse } from '../services/Match'
+import { GetUsers, UserResponse } from '../services/Auth' // Import the getUsers function
 import '../style/adminPrediction.css' // Import the new CSS file
-import { UserResponse } from '../services/Auth'
 import { formatDate } from '../utils/date'
 
 interface Props {
@@ -14,6 +14,8 @@ const AdminPredictions = ({ user }: Props) => {
   const [addedMatches, setAddedMatches] = useState<MatchResponse[]>([])
   const [options, setOptions] = useState<number[]>([])
   const [selectedGameweek, setSelectedGameweek] = useState<number>(1)
+  const [users, setUsers] = useState<UserResponse[]>([]) // State to hold users
+  const [showMatchPredictions, setShowMatchPredictions] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     const fetchAddedMatches = async () => {
@@ -48,13 +50,30 @@ const AdminPredictions = ({ user }: Props) => {
       }
     }
 
+    const fetchUsers = async () => {
+      try {
+        const userList = await GetUsers() // Fetch the list of users
+        setUsers(userList)
+      } catch (error) {
+        console.error('Error fetching users:', error)
+      }
+    }
+
     if (user?.role === 'admin') {
       fetchPredictions()
+      fetchUsers() // Fetch users when the component mounts
     }
   }, [selectedGameweek, user])
 
   const handleGameweekChange = (gameweek: number) => {
     setSelectedGameweek(gameweek)
+  }
+
+  const toggleMatchPredictions = (matchId: string) => {
+    setShowMatchPredictions(prev => ({
+      ...prev,
+      [matchId]: !prev[matchId], // Toggle visibility for the specific match
+    }));
   }
 
   if (user?.role !== 'admin') {
@@ -102,17 +121,42 @@ const AdminPredictions = ({ user }: Props) => {
               <div className="match-details">
                 Date: {formatDate(match.date)} <br /> Time: {match.time}
               </div>
-              {predictions
-                .filter((prediction) => prediction.match._id === match._id)
-                .map((prediction) => (
-                  <div key={prediction._id} className="user-prediction">
-                    <h4>{prediction.user.username}</h4>
-                    <p>
-                      Predicted Score: {prediction.predictedHomeScore} - {prediction.predictedAwayScore}
-                    </p>
-                    <p>Points: {prediction.points}</p>
-                  </div>
-                ))}
+              <button onClick={() => toggleMatchPredictions(match._id)}>
+                {showMatchPredictions[match._id] ? 'Hide Predictions' : 'Show Predictions'}
+              </button>
+              {showMatchPredictions[match._id] && (
+                <>
+                  {predictions
+                    .filter((prediction) => prediction.match._id === match._id && prediction.predictedHomeScore !== null)
+                    .map((prediction) => (
+                      <div key={prediction._id} className="user-prediction">
+                        <h4>{prediction.user.username} : {prediction.predictedHomeScore} - {prediction.predictedAwayScore} ; Pts: {prediction.points}</h4>
+                      </div>
+                    ))}
+                  {predictions.filter((prediction) => prediction.match._id === match._id && prediction.predictedHomeScore !== null).length === 0 && (
+                    <p>No predictions submitted yet.</p>
+                  )}
+                  {users
+                    .filter(user => 
+                      !predictions.some(prediction => 
+                        prediction.match._id === match._id && prediction.user._id === user._id && prediction.predictedHomeScore !== null
+                      )
+                    )
+                    .map((user) => (
+                      <div key={user._id} className="user-no-prediction">
+                        <h4>{user.username} did not submit a prediction.</h4>
+                      </div>
+                    ))}
+                  {users
+                    .filter(user => 
+                      !predictions.some(prediction => 
+                        prediction.match._id === match._id && prediction.user._id === user._id && prediction.predictedHomeScore !== null
+                      )
+                    ).length === 0 && (
+                    <p>All users submitted their predictions.</p>
+                  )}
+                </>
+              )}
             </div>
           ))}
       </div>
