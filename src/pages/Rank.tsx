@@ -12,6 +12,7 @@ interface Props {
 const Rank = ({ currentUser }: Props) => {
   const [users, setUsers] = useState<UserWithStats[]>([])
   const [sortBy, setSortBy] = useState<'points' | 'perfect'>('points')
+  const [scriptLoaded, setScriptLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     const fetchUsersAndPredictions = async () => {
@@ -60,6 +61,19 @@ const Rank = ({ currentUser }: Props) => {
     fetchUsersAndPredictions()
   }, [sortBy])
 
+  useEffect(() => {
+    // Load Flourish script dynamically
+    const script = document.createElement('script')
+    script.src = "https://public.flourish.studio/resources/embed.js"
+    script.async = true
+    script.onload = () => setScriptLoaded(true)
+    document.body.appendChild(script)
+
+    return () => {
+      document.body.removeChild(script) // Clean up the script on unmount
+    }
+  }, []) // Run once on mount
+
   const sortUsers = (users: UserWithStats[], criteria: 'points' | 'perfect') => {
     return [...users].sort((a, b) => b[criteria] - a[criteria])
   }
@@ -82,8 +96,18 @@ const Rank = ({ currentUser }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center w-screen min-h-screen bg-purple-900 py-10">
       <h1 className="text-2xl text-purple-100 font-bold mb-6">User Rankings</h1>
+
+      <div className="w-full max-w-3xl mx-auto">
+        {scriptLoaded && (
+          <div className="flourish-embed flourish-bar-chart-race w-full" data-src="visualisation/20188642">
+            <noscript>
+              <img src="https://public.flourish.studio/visualisation/20188642/thumbnail" width="100%" alt="bar-chart-race visualization" />
+            </noscript>
+          </div>
+        )}
+      </div>
+
       <div className="w-full max-w-3xl px-4 sm:px-6 lg:px-8">
-        
         <div className="overflow-x-auto shadow rounded-lg">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-purple-800">
@@ -118,13 +142,13 @@ const Rank = ({ currentUser }: Props) => {
                           <span
                             className={`ml-1 ${
                               user.rankChange < 0
-                                ? 'text-green-500'
-                                : user.rankChange > 0
                                 ? 'text-red-500'
+                                : user.rankChange > 0
+                                ? 'text-green-500'
                                 : 'text-gray-500'
                             }`}
                           >
-                            {user.rankChange < 0 ? '▲' : user.rankChange > 0 ? '▼' : '•'}
+                            {user.rankChange < 0 ? '▼' : user.rankChange > 0 ? '▲' : '•'}
                           </span>
                         )}
                       </div>
@@ -147,7 +171,7 @@ const Rank = ({ currentUser }: Props) => {
                       </div>
                     </td>
                     <td className="px-3 py-2 whitespace-nowrap text-center text-sm text-gray-500">{user.points}</td>
-                    <td className="px-1 py-2 whitespace-nowrap text-center text-sm text-gray-500"> {/* Decreased padding */}
+                    <td className="px-1 py-2 whitespace-nowrap text-center text-sm text-gray-500">
                       {user.perfect}
                     </td>
                   </tr>

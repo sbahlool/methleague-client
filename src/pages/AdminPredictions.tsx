@@ -23,7 +23,9 @@ const AdminPredictions = ({ user }: Props) => {
         const matches = await getMatches()
         setAddedMatches(matches)
         const uniqueGameweeks = [...new Set(matches.map((match) => match.gameweek))]
-        setOptions(uniqueGameweeks)
+        
+        uniqueGameweeks.sort((a, b) => a - b);
+        setOptions(uniqueGameweeks);
 
         // Set the default selected gameweek to the first not completed gameweek
         const firstNotCompletedGameweek = uniqueGameweeks

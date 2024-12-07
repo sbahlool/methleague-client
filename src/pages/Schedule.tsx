@@ -34,6 +34,9 @@ const Schedule = ({ currentUser }: Props) => {
         const matches = await getMatches()
         setAddedMatches(matches)
         const uniqueGameweeks = [...new Set(matches.map((match) => match.gameweek))]
+
+        // Sort the unique gameweeks in ascending order
+        uniqueGameweeks.sort((a, b) => a - b)
         setOptions(uniqueGameweeks)
 
         // Set the default selected gameweek to the first not completed gameweek

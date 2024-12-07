@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import '../style/miniGame.css'
+// import { MiniGameMatch } from '../services/MiniGameMatch'
 
 interface Card {
   src: string
@@ -42,7 +43,8 @@ const App: React.FC = () => {
   const [choiceOne, setChoiceOne] = useState<Card | null>(null)
   const [choiceTwo, setChoiceTwo] = useState<Card | null>(null)
   const [disabled, setDisabled] = useState(false)
-
+  
+  
   const shuffleCards = () => {
     const cardImages: Card[] = [
       { src: '/uploads/Arsenal_PR01Llr.png', matched: false },
@@ -55,7 +57,6 @@ const App: React.FC = () => {
       { src: '/uploads/Astonvilla_gKRqxyi.png', matched: false },
       { src: '/uploads/Brighton_vvcCto4.png', matched: false },
       { src: '/uploads/Westham_F1aNDJ2.png', matched: false },
-      // Add more teams as needed
     ]
 
     const shuffledCards = [...cardImages, ...cardImages]
@@ -101,6 +102,23 @@ const App: React.FC = () => {
   useEffect(() => {
     shuffleCards()
   }, [])
+
+  // useEffect(() => {
+  //   // Check if all cards are matched
+  //   if (cards.every(card => card.matched)) {
+  //     // Record the score when the game ends
+  //     recordScore(turns);
+  //   }
+  // }, [cards]);
+
+  // const recordScore = async (turns: number) => {
+  //   try {
+  //     await MiniGameMatch.recordScore(userId, turns); // Send the score to the backend
+  //     console.log('Score recorded successfully');
+  //   } catch (error) {
+  //     console.error('Failed to record score', error);
+  //   }
+  // };
 
   return (
     <div className="App">
