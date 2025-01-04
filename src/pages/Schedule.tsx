@@ -75,10 +75,12 @@ const Schedule = ({ currentUser }: Props) => {
         const predictions = await getAllPredictions()
         const predictionsByMatch = predictions.reduce(
           (acc: Record<string, PredictionResponse[]>, prediction: PredictionResponse) => {
-            if (!acc[prediction.match._id]) {
-              acc[prediction.match._id] = []
+            if (prediction.match && prediction.match._id) {
+              if (!acc[prediction.match._id]) {
+                acc[prediction.match._id] = []
+              }
+              acc[prediction.match._id].push(prediction)
             }
-            acc[prediction.match._id].push(prediction)
             return acc
           },
           {},
@@ -146,8 +148,9 @@ const Schedule = ({ currentUser }: Props) => {
     }
   }
 
-  const getUserPredictionForMatch = (matchId: string) =>
-    userPredictions.find((prediction) => prediction.match._id === matchId)
+  const getUserPredictionForMatch = (matchId: string) => {
+    return userPredictions?.find((prediction) => prediction.match?._id === matchId) || null;
+  }
 
   return (
     <div className="schedule-container">
