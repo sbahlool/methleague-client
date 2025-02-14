@@ -80,6 +80,8 @@ const Schedule = ({ currentUser }: Props) => {
                 acc[prediction.match._id] = []
               }
               acc[prediction.match._id].push(prediction)
+            } else {
+              console.warn('Prediction does not have a valid match or _id:', prediction)
             }
             return acc
           },
@@ -149,7 +151,7 @@ const Schedule = ({ currentUser }: Props) => {
   }
 
   const getUserPredictionForMatch = (matchId: string) => {
-    return userPredictions?.find((prediction) => prediction.match?._id === matchId) || null;
+    return userPredictions?.find((prediction) => prediction.match && prediction.match._id === matchId) || null;
   }
 
   return (
