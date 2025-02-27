@@ -10,6 +10,7 @@ import {
 import '../style/schedule.css'
 import { formatDate, getTimeDiff } from '../utils/date'
 import { UserResponse } from '../services/Auth'
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 
 interface Props {
   currentUser: (UserResponse & { id?: string }) | null // TODO: added the `& { id: string }` part as a quick hack because there's only a `._id` field to `UserResponse`... Up to you what you wanna do with this
@@ -27,6 +28,30 @@ const Schedule = ({ currentUser }: Props) => {
     homeScore?: string
     awayScore?: string
   }>({})
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [gameweeksPerPage, setGameweeksPerPage] = useState<number>(16); // Default to desktop view
+
+  useEffect(() => {
+    const handleResize = () => {
+      // Set gameweeks per page based on window width
+      if (window.innerWidth < 768) { // Adjust the breakpoint as needed
+        setGameweeksPerPage(5); // Mobile view
+      } else {
+        setGameweeksPerPage(16); // Desktop view
+      }
+    };
+
+    // Set initial value
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchAddedMatches = async () => {
@@ -154,11 +179,30 @@ const Schedule = ({ currentUser }: Props) => {
     return userPredictions?.find((prediction) => prediction.match && prediction.match._id === matchId) || null;
   }
 
+  // Calculate the current gameweeks to display
+  const indexOfLastGameweek = currentPage * gameweeksPerPage;
+  const indexOfFirstGameweek = indexOfLastGameweek - gameweeksPerPage;
+  const currentGameweeks = options.slice(indexOfFirstGameweek, indexOfLastGameweek);
+
+  const totalPages = Math.ceil(options.length / gameweeksPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div className="schedule-container">
       <h2>Gameweek</h2>
       <div className="gameweek-options">
-        {options.map((gameweek) => (
+        {currentGameweeks.map((gameweek) => (
           <label key={gameweek} className="gameweek-option">
             <input
               type="radio"
@@ -169,6 +213,15 @@ const Schedule = ({ currentUser }: Props) => {
             <span className="gameweek-label">{gameweek}</span>
           </label>
         ))}
+      </div>
+      <div className="pagination-controls">
+        <button onClick={handlePrevPage} disabled={currentPage === 1} className="pagination-button">
+          <FaArrowLeft />
+        </button>
+        <span>Page {currentPage} of {totalPages}</span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages} className="pagination-button">
+          <FaArrowRight />
+        </button>
       </div>
       <div className="matches-list">
         {addedMatches

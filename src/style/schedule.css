@@ -504,3 +504,35 @@
 .prediction-form button:hover {
   opacity: 0.8;
 }
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.pagination-button {
+  background-color: #6b21a8; /* Green color resembling a football field */
+  color: white;
+  border: none;
+  border-radius: 50%; /* Circular buttons */
+  padding: 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Fixed width for circular buttons */
+  height: 40px; /* Fixed height for circular buttons */
+}
+
+.pagination-button:hover {
+  background-color: #6b21a8; /* Darker green on hover */
+}
+
+.pagination-controls span {
+  margin: 0 10px;
+  font-weight: bold;
+}
