@@ -94,9 +94,18 @@ export const checkSession = async () => {
   }
 }
 
+// export const getTeams = async (): Promise<TeamResponse[]> => {
+//   try {
+//     const res = await Client.get<TeamResponse[]>('/auth/teams')
+//     return res.data
+//   } catch (error) {
+//     throw error
+//   }
+// }
+
 export const getTeams = async (): Promise<TeamResponse[]> => {
   try {
-    const res = await Client.get<TeamResponse[]>('/auth/teams')
+    const res = await Client.get<TeamResponse[]>('/teams')
     return res.data
   } catch (error) {
     throw error
@@ -148,33 +157,33 @@ export interface UserResponse {
   __v: number
 }
 
-export const forgotPassword = async (email: string): Promise<any> => {
+export const forgotPassword = async (email: string): Promise<unknown> => {
   try {
-    const API_URL = import.meta.env.VITE_REACT_APP_API_URL; // Use the deployed URL
-    const fullUrl = `${API_URL}password-reset/forgot`; // Construct the full URL
-    console.log('Requesting URL:', fullUrl); // Log the URL for debugging
-    const token = localStorage.getItem('token'); // Assuming you store a token in localStorage
+    const API_URL = import.meta.env.VITE_REACT_APP_API_URL // Use the deployed URL
+    const fullUrl = `${API_URL}password-reset/forgot` // Construct the full URL
+    console.log('Requesting URL:', fullUrl) // Log the URL for debugging
+    const token = localStorage.getItem('token') // Assuming you store a token in localStorage
     const response = await fetch(fullUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}), // Add token if it exists
+        ...(token ? { Authorization: `Bearer ${token}` } : {}), // Add token if it exists
       },
       body: JSON.stringify({ email }),
-    });
+    })
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Server error response:', errorText);
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text()
+      console.error('Server error response:', errorText)
+      throw new Error(`HTTP error! status: ${response.status}`)
     }
 
-    return await response.json();
+    return await response.json()
   } catch (error) {
-    console.error('Error in forgotPassword:', error);
-    throw error;
+    console.error('Error in forgotPassword:', error)
+    throw error
   }
-};
+}
 
 export const resetPassword = async (token: string, newPassword: string): Promise<unknown> => {
   const response = await fetch('/password-reset/reset', {

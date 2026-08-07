@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { registerUser, loginUser, getTeams, TeamResponse, UserResponse } from '../services/Auth'
+import { useEffect, useState } from 'react'
+import { registerUser, loginUser, UserResponse, TeamResponse, getTeams } from '../services/Auth'
 import { useNavigate, Link } from 'react-router-dom'
 import '../style/auth.css'
 
@@ -59,7 +59,7 @@ const Register = ({ setUser }: Props) => {
     })
 
     const payload = await loginUser(formValues)
-    setUser(payload)
+    setUser(payload as unknown as UserResponse)
     navigate('/')
   }
 
