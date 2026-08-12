@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { GetUsers, UserResponse } from '../services/Auth'
 import { getPredictions, PredictionResponse } from '../services/Prediction'
 import '../index.css'
+import '../style/rank.css'
 
 type UserWithStats = UserResponse & { points: number; perfect: number; rank: number; rankChange: number | null }
 
@@ -89,13 +90,20 @@ const Rank = ({ currentUser }: Props) => {
 
   const isCurrentUser = (user: UserResponse) => currentUser && user._id === currentUser.id
 
+  const rankBadgeClass = (rank: number) => {
+    if (rank === 1) return 'rank-badge rank-badge--gold'
+    if (rank === 2) return 'rank-badge rank-badge--silver'
+    if (rank === 3) return 'rank-badge rank-badge--bronze'
+    return 'rank-badge'
+  }
+
   if (!currentUser) {
     return <div>Loading...</div>
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen min-h-screen bg-purple-900 py-10">
-      <h1 className="text-2xl text-purple-100 font-bold mb-6">User Rankings</h1>
+    <div className="rank-page flex flex-col items-center justify-center w-screen min-h-screen py-10">
+      <h1 className="rank-title text-2xl font-bold mb-6">User Rankings</h1>
 
       <div className="w-full max-w-3xl mx-auto">
         {scriptLoaded && (
@@ -108,9 +116,9 @@ const Rank = ({ currentUser }: Props) => {
       </div>
 
       <div className="w-full max-w-3xl px-4 sm:px-6 lg:px-8">
-        <div className="overflow-x-auto shadow rounded-lg">
+        <div className="rank-table-shell overflow-x-auto shadow rounded-lg">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-purple-800">
+            <thead>
               <tr>
                 <th scope="col" className="px-3 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
                   Rank
@@ -121,32 +129,46 @@ const Rank = ({ currentUser }: Props) => {
                 <th scope="col" className="px-3 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
                   <span className="hidden sm:inline">Points</span>
                   <span className="inline sm:hidden">Pts</span>
-                  <button onClick={() => setSortBy('points')} className="ml-1 text-purple-100 text-xs p-0.1" aria-label="Sort by points">▲</button>
+                  <button
+                    onClick={() => setSortBy('points')}
+                    className="rank-sort-btn ml-1 text-xs p-0.1"
+                    aria-label="Sort by points"
+                    aria-pressed={sortBy === 'points'}
+                  >
+                    ▲
+                  </button>
                 </th>
                 <th scope="col" className="px-3 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                <span className="hidden sm:inline">Perfect</span>
-                <span className="inline sm:hidden">Perf</span>
-                  <button onClick={() => setSortBy('perfect')} className="ml-1 text-purple-100 text-xs p-0.1" aria-label="Sort by perfect predictions">▲</button>
+                  <span className="hidden sm:inline">Perfect</span>
+                  <span className="inline sm:hidden">Perf</span>
+                  <button
+                    onClick={() => setSortBy('perfect')}
+                    className="rank-sort-btn ml-1 text-xs p-0.1"
+                    aria-label="Sort by perfect predictions"
+                    aria-pressed={sortBy === 'perfect'}
+                  >
+                    ▲
+                  </button>
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-800">
               {users.map((user) => {
                 const highlight = isCurrentUser(user)
                 return (
-                  <tr key={user._id} className={highlight ? 'bg-purple-100' : ''}>
-                    <td className="px-3 py-2 whitespace-nowrap text-center text-sm text-gray-500">
-                      <div className="flex items-center justify-center">
-                        {user.rank}
+                  <tr key={user._id} className={highlight ? 'rank-row--me' : ''}>
+                    <td className="px-3 py-2 whitespace-nowrap text-center text-sm">
+                      <div className="flex items-center justify-center gap-1">
+                        <span className={rankBadgeClass(user.rank)}>{user.rank}</span>
                         {user.rankChange !== null && (
                           <span
-                            className={`ml-1 ${
+                            className={
                               user.rankChange < 0
-                                ? 'text-red-500'
+                                ? 'rank-change--down'
                                 : user.rankChange > 0
-                                ? 'text-green-500'
-                                : 'text-gray-500'
-                            }`}
+                                ? 'rank-change--up'
+                                : 'rank-change--flat'
+                            }
                           >
                             {user.rankChange < 0 ? '▼' : user.rankChange > 0 ? '▲' : '•'}
                           </span>
@@ -156,22 +178,22 @@ const Rank = ({ currentUser }: Props) => {
                     <td className="px-3 py-2 whitespace-nowrap">
                       <div className="flex items-center">
                         <img
-                          className="h-8 w-8 rounded-full"
+                          className="rank-avatar h-8 w-8 rounded-full"
                           src={`/uploads/${user.profilePicture}`}
                           alt={`${user.username} profile`}
                         />
                         <div className="ml-2 overflow-hidden">
-                          <div className="text-sm font-medium text-gray-900 truncate">
+                          <div className="text-sm font-medium truncate">
                             {user.username}
                           </div>
-                          <div className="text-xs text-gray-500 truncate">
+                          <div className="text-xs text-gray-400 truncate">
                             {`${user.firstname} ${user.lastname}`}
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-3 py-2 whitespace-nowrap text-center text-sm text-gray-500">{user.points}</td>
-                    <td className="px-1 py-2 whitespace-nowrap text-center text-sm text-gray-500">
+                    <td className="px-3 py-2 whitespace-nowrap text-center text-sm">{user.points}</td>
+                    <td className="px-1 py-2 whitespace-nowrap text-center text-sm">
                       {user.perfect}
                     </td>
                   </tr>

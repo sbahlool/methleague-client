@@ -1,52 +1,154 @@
-/* Container for the tables to be displayed side by side */
-.table-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem; /* Space between the tables */
-  flex-wrap: wrap; /* Ensure tables wrap on smaller screens */
-  overflow-x: auto; /* Allow horizontal scrolling if needed */
-  padding: 1rem; /* Padding around the container */
+/* ---------------------------------------------
+   Rank page â€” purple theme layer
+   Works alongside the Tailwind utility classes already
+   in Rank.tsx; adds the pieces Tailwind can't express
+   (medal badges, sort buttons, scoreboard texture).
+   --------------------------------------------- */
+
+:root {
+  --rank-void: #150b2b;
+  --rank-panel: #1c0f38;
+  --rank-primary: #6d28d9;
+  --rank-bright: #a855f7;
+  --rank-gold: #f2c14e;
+  --rank-silver: #cbd5e1;
+  --rank-bronze: #d98a4a;
+  --rank-mist: #cabbee;
 }
 
-/* Wrapper for each table to ensure proper layout and spacing */
-.table-wrapper {
-  flex: 1;
-  min-width: 300px; /* Minimum width for each table */
-  max-width: 100%; /* Ensure tables do not overflow */
-  overflow-x: auto; /* Allow horizontal scrolling if the table overflows */
+.rank-page {
+  position: relative;
+  background:
+    radial-gradient(ellipse 800px 400px at 50% 0%, rgba(168, 85, 247, 0.22), transparent 65%),
+    var(--rank-void);
 }
 
-/* General table styles */
-table {
-  width: 100%;
-  border-collapse: collapse; /* Collapse borders for a cleaner look */
+.rank-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(198, 168, 255, 0.08),
+    rgba(198, 168, 255, 0.08) 1px,
+    transparent 1px,
+    transparent 48px
+  );
+  pointer-events: none;
 }
 
-thead {
-  background-color: #4a4a4a; /* Dark background for headers */
-  color: white; /* White text for headers */
+.rank-title {
+  font-family: 'Bebas Neue', 'Source Sans Pro', sans-serif;
+  letter-spacing: 0.04em;
+  color: var(--rank-gold);
 }
 
-th,
-td {
-  padding: 0.5rem; /* Padding for table cells */
-  border: 1px solid #ccc; /* Light border for table cells */
-  text-align: left; /* Align text to the left */
+/* Table shell */
+.rank-table-shell {
+  background: var(--rank-panel);
+  border: 1px solid rgba(198, 168, 255, 0.14);
 }
 
-th {
-  font-weight: bold; /* Bold text for headers */
+.rank-table-shell thead {
+  background: linear-gradient(90deg, var(--rank-primary), #4c1d95);
 }
 
-tbody tr:nth-child(even) {
-  background-color: #f4f4f4; /* Alternate row background color */
+.rank-table-shell tbody tr {
+  background: #201040;
+  transition: background 0.15s ease;
 }
 
-tbody tr:nth-child(odd) {
-  background-color: #fff; /* White background for odd rows */
+.rank-table-shell tbody tr:nth-child(even) {
+  background: #1a0d36;
+}
+
+.rank-table-shell tbody tr:hover {
+  background: rgba(168, 85, 247, 0.14);
+}
+
+.rank-table-shell tbody tr.rank-row--me {
+  background: rgba(242, 193, 78, 0.12);
+  box-shadow: inset 3px 0 0 var(--rank-gold);
+}
+
+.rank-table-shell td,
+.rank-table-shell th {
+  color: var(--rank-mist);
+}
+
+.rank-table-shell tbody td {
+  color: #f0eaff;
+}
+
+/* Sort buttons */
+.rank-sort-btn {
+  color: var(--rank-mist);
+  transition: color 0.15s ease, transform 0.1s ease;
+}
+
+.rank-sort-btn:hover {
+  color: var(--rank-gold);
+}
+
+.rank-sort-btn[aria-pressed='true'] {
+  color: var(--rank-gold);
+  transform: scale(1.1);
+}
+
+/* Medal-style rank badge â€” the signature element */
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 7px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--rank-mist);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(198, 168, 255, 0.14);
+}
+
+.rank-badge--gold {
+  color: #2a1503;
+  background: linear-gradient(135deg, #ffe08a, var(--rank-gold));
+  border-color: transparent;
+  box-shadow: 0 0 14px rgba(242, 193, 78, 0.5);
+}
+
+.rank-badge--silver {
+  color: #1c1c24;
+  background: linear-gradient(135deg, #f1f5f9, var(--rank-silver));
+  border-color: transparent;
+  box-shadow: 0 0 10px rgba(203, 213, 225, 0.35);
+}
+
+.rank-badge--bronze {
+  color: #2a1503;
+  background: linear-gradient(135deg, #eab27c, var(--rank-bronze));
+  border-color: transparent;
+  box-shadow: 0 0 10px rgba(217, 138, 74, 0.35);
+}
+
+.rank-change--up {
+  color: #4ade80;
+}
+
+.rank-change--down {
+  color: #f87171;
+}
+
+.rank-change--flat {
+  color: var(--rank-mist);
+}
+
+.rank-avatar {
+  border: 2px solid rgba(198, 168, 255, 0.25);
 }
 
 img {
-  max-width: 30px; /* Limit the size of images */
-  height: auto; /* Maintain aspect ratio */
+  max-width: 30px;
+  height: auto;
 }

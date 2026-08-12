@@ -41,39 +41,41 @@ const NavBar = ({ user, handleLogOut }: Props) => {
     }
   }, [])
 
+  // NOTE: these used to each be their own <ul className="navbar-nav">,
+  // which then got rendered *inside* the main <ul> below — an invalid
+  // nested-list that was the real cause of the layout breaking. They're
+  // now just the <li> items themselves, merged into the one list.
   const userOptions = user && (
-    <ul className="navbar-nav">
-      <li className="navbar-dropdown">
-        <NavLink to="#" className="dropdown-toggler" onClick={toggleDropdown}>
-          Welcome, {user.username}! <i className="fa fa-angle-down"></i>
-        </NavLink>
-        <ul className={`dropdown${isDropdownOpen ? ' show' : ''}`}>
-          <li>
-            <NavLink className="navitem" to={`/profile/${user.username}`} onClick={closeMenu}>
-              Profile
-            </NavLink>
-          </li>
-          <li className="separator"></li>
-          <li>
-            <NavLink
-              className="navitem"
-              onClick={() => {
-                handleLogOut()
-                closeMenu()
-              }}
-              to="/"
-            >
-              Logout
-            </NavLink>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <li className="navbar-dropdown">
+      <NavLink to="#" className="dropdown-toggler" onClick={toggleDropdown}>
+        Welcome, {user.username}! <i className="fa fa-angle-down"></i>
+      </NavLink>
+      <ul className={`dropdown${isDropdownOpen ? ' show' : ''}`}>
+        <li>
+          <NavLink className="navitem" to={`/profile/${user.username}`} onClick={closeMenu}>
+            Profile
+          </NavLink>
+        </li>
+        <li className="separator"></li>
+        <li>
+          <NavLink
+            className="navitem"
+            onClick={() => {
+              handleLogOut()
+              closeMenu()
+            }}
+            to="/"
+          >
+            Logout
+          </NavLink>
+        </li>
+      </ul>
+    </li>
   )
 
   const visitorOptions = (
-    <ul className="navbar-nav">
-      <li>
+    <>
+      <li className="navbar-nav-right">
         <NavLink to="/login" onClick={closeMenu}>
           Sign in
         </NavLink>
@@ -83,7 +85,7 @@ const NavBar = ({ user, handleLogOut }: Props) => {
           <button className="btn btn-outline-purple">Join</button>
         </NavLink>
       </li>
-    </ul>
+    </>
   )
 
   return (

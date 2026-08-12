@@ -233,21 +233,23 @@ const Schedule = ({ currentUser }: Props) => {
             const canShowPredictions = isRestricted || match.isCompleted
 
             return (
-              <div key={match._id} className="match">
+              <div key={match._id} className={`match ${match.isCompleted ? 'match--completed' : ''}`}>
                 <div className="match-header">
-                  <div className="match-status">{match.isCompleted ? 'Completed' : 'Upcoming'}</div>
+                  <div className={`match-status ${match.isCompleted ? 'is-completed' : 'is-upcoming'}`}>
+                    {match.isCompleted ? 'Completed' : 'Upcoming'}
+                  </div>
                   <div className="match-date-time">
                     {formatDate(match.date)} {match.time}
                   </div>
-                  <div className="match-tournament">
-                    <img src="/uploads/epl-logo.png" alt="Premier League" />
-                  </div>
+                  <img className="match-tournament" src="/uploads/epl-logo.png" alt="Premier League" />
                 </div>
                 <div className="match-content">
                   <div className="team team--home">
-                    <div className="team-logo">
-                      <img src={`/uploads/${match.homeTeam.logo}`} alt={`${match.homeTeam.teamname} logo`} />
-                    </div>
+                    <img
+                      className="team-logo"
+                      src={`/uploads/${match.homeTeam.logo}`}
+                      alt={`${match.homeTeam.teamname} logo`}
+                    />
                     <div className="team-name">{match.homeTeam.teamname}</div>
                   </div>
                   <div className="match-score">
@@ -256,9 +258,11 @@ const Schedule = ({ currentUser }: Props) => {
                     <span className="match-score-number">{match.isCompleted ? match.awayScore : '-'}</span>
                   </div>
                   <div className="team team--away">
-                    <div className="team-logo">
-                      <img src={`/uploads/${match.awayTeam.logo}`} alt={`${match.awayTeam.teamname} logo`} />
-                    </div>
+                    <img
+                      className="team-logo"
+                      src={`/uploads/${match.awayTeam.logo}`}
+                      alt={`${match.awayTeam.teamname} logo`}
+                    />
                     <div className="team-name">{match.awayTeam.teamname}</div>
                   </div>
                 </div>
