@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getMatches, MatchResponse } from '../services/Match'
 import {
   getUserPredictions,
@@ -10,7 +10,7 @@ import {
 import '../style/schedule.css'
 import { formatDate, getTimeDiff } from '../utils/date'
 import { UserResponse } from '../services/Auth'
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa'
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
 interface Props {
   currentUser: (UserResponse & { id?: string }) | null // TODO: added the `& { id: string }` part as a quick hack because there's only a `._id` field to `UserResponse`... Up to you what you wanna do with this
@@ -28,30 +28,7 @@ const Schedule = ({ currentUser }: Props) => {
     homeScore?: string
     awayScore?: string
   }>({})
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [gameweeksPerPage, setGameweeksPerPage] = useState<number>(16); // Default to desktop view
-
-  useEffect(() => {
-    const handleResize = () => {
-      // Set gameweeks per page based on window width
-      if (window.innerWidth < 768) { // Adjust the breakpoint as needed
-        setGameweeksPerPage(5); // Mobile view
-      } else {
-        setGameweeksPerPage(16); // Desktop view
-      }
-    };
-
-    // Set initial value
-    handleResize();
-
-    // Add event listener for window resize
-    window.addEventListener('resize', handleResize);
-    
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  const selectedTabRef = useRef<HTMLLabelElement | null>(null)
 
   useEffect(() => {
     const fetchAddedMatches = async () => {
@@ -179,48 +156,54 @@ const Schedule = ({ currentUser }: Props) => {
     return userPredictions?.find((prediction) => prediction.match && prediction.match._id === matchId) || null;
   }
 
-  // Calculate the current gameweeks to display
-  const indexOfLastGameweek = currentPage * gameweeksPerPage;
-  const indexOfFirstGameweek = indexOfLastGameweek - gameweeksPerPage;
-  const currentGameweeks = options.slice(indexOfFirstGameweek, indexOfLastGameweek);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
 
-  const totalPages = Math.ceil(options.length / gameweeksPerPage);
+  // Keep the active gameweek centered in view whenever it changes
+  // (including the initial "first not completed gameweek" default).
+  useEffect(() => {
+    selectedTabRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  }, [selectedGameweek, options])
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  const scrollGameweeks = (direction: 1 | -1) => {
+    scrollContainerRef.current?.scrollBy({ left: direction * 200, behavior: 'smooth' })
+  }
 
   return (
     <div className="schedule-container">
       <h2>Gameweek</h2>
-      <div className="gameweek-options">
-        {currentGameweeks.map((gameweek) => (
-          <label key={gameweek} className="gameweek-option">
-            <input
-              type="radio"
-              value={gameweek}
-              checked={selectedGameweek === gameweek}
-              onChange={() => handleGameweekChange(gameweek)}
-            />
-            <span className="gameweek-label">{gameweek}</span>
-          </label>
-        ))}
-      </div>
-      <div className="pagination-controls">
-        <button onClick={handlePrevPage} disabled={currentPage === 1} className="pagination-button">
-          <FaArrowLeft />
+      <div className="gameweek-carousel">
+        <button
+          type="button"
+          className="carousel-arrow"
+          onClick={() => scrollGameweeks(-1)}
+          aria-label="Scroll to earlier gameweeks"
+        >
+          <FaChevronLeft />
         </button>
-        <span>Page {currentPage} of {totalPages}</span>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages} className="pagination-button">
-          <FaArrowRight />
+        <div className="gameweek-options" ref={scrollContainerRef}>
+          {options.map((gameweek) => (
+            <label
+              key={gameweek}
+              className="gameweek-option"
+              ref={selectedGameweek === gameweek ? selectedTabRef : null}
+            >
+              <input
+                type="radio"
+                value={gameweek}
+                checked={selectedGameweek === gameweek}
+                onChange={() => handleGameweekChange(gameweek)}
+              />
+              <span className="gameweek-label">{gameweek}</span>
+            </label>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="carousel-arrow"
+          onClick={() => scrollGameweeks(1)}
+          aria-label="Scroll to later gameweeks"
+        >
+          <FaChevronRight />
         </button>
       </div>
       <div className="matches-list">

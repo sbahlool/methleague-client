@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getAllPredictionsByGameweek, PredictionResponse } from '../services/Prediction'
 import { getMatches, MatchResponse } from '../services/Match'
-import { GetUsers, UserResponse } from '../services/Auth' // Import the getUsers function
-import '../style/adminPrediction.css' // Import the new CSS file
+import { GetUsers, UserResponse } from '../services/Auth'
+import '../style/schedule.css'
+import '../style/adminPrediction.css'
 import { formatDate } from '../utils/date'
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
 interface Props {
   user: UserResponse | null
@@ -14,8 +16,11 @@ const AdminPredictions = ({ user }: Props) => {
   const [addedMatches, setAddedMatches] = useState<MatchResponse[]>([])
   const [options, setOptions] = useState<number[]>([])
   const [selectedGameweek, setSelectedGameweek] = useState<number>(1)
-  const [users, setUsers] = useState<UserResponse[]>([]) // State to hold users
-  const [showMatchPredictions, setShowMatchPredictions] = useState<{ [key: string]: boolean }>({});
+  const [users, setUsers] = useState<UserResponse[]>([])
+  const [showMatchPredictions, setShowMatchPredictions] = useState<{ [key: string]: boolean }>({})
+
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
+  const selectedTabRef = useRef<HTMLLabelElement | null>(null)
 
   useEffect(() => {
     const fetchAddedMatches = async () => {
@@ -23,16 +28,16 @@ const AdminPredictions = ({ user }: Props) => {
         const matches = await getMatches()
         setAddedMatches(matches)
         const uniqueGameweeks = [...new Set(matches.map((match) => match.gameweek))]
-        
-        uniqueGameweeks.sort((a, b) => a - b);
-        setOptions(uniqueGameweeks);
+
+        uniqueGameweeks.sort((a, b) => a - b)
+        setOptions(uniqueGameweeks)
 
         // Set the default selected gameweek to the first not completed gameweek
         const firstNotCompletedGameweek = uniqueGameweeks
           .filter((gw) => !matches.find((match) => match.gameweek === gw && match.isCompleted))
-          .sort((a, b) => a - b)[0]; // Get the first gameweek
+          .sort((a, b) => a - b)[0] // Get the first gameweek
         if (firstNotCompletedGameweek) {
-          setSelectedGameweek(firstNotCompletedGameweek);
+          setSelectedGameweek(firstNotCompletedGameweek)
         }
       } catch (error) {
         console.error('Failed to fetch added matches', error)
@@ -54,7 +59,7 @@ const AdminPredictions = ({ user }: Props) => {
 
     const fetchUsers = async () => {
       try {
-        const userList = await GetUsers() // Fetch the list of users
+        const userList = await GetUsers()
         setUsers(userList)
       } catch (error) {
         console.error('Error fetching users:', error)
@@ -63,104 +68,193 @@ const AdminPredictions = ({ user }: Props) => {
 
     if (user?.role === 'admin') {
       fetchPredictions()
-      fetchUsers() // Fetch users when the component mounts
+      fetchUsers()
     }
   }, [selectedGameweek, user])
+
+  // Keep the active gameweek tab centered in view whenever it changes.
+  useEffect(() => {
+    selectedTabRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  }, [selectedGameweek, options])
+
+  const scrollGameweeks = (direction: 1 | -1) => {
+    scrollContainerRef.current?.scrollBy({ left: direction * 200, behavior: 'smooth' })
+  }
 
   const handleGameweekChange = (gameweek: number) => {
     setSelectedGameweek(gameweek)
   }
 
   const toggleMatchPredictions = (matchId: string) => {
-    setShowMatchPredictions(prev => ({
+    setShowMatchPredictions((prev) => ({
       ...prev,
-      [matchId]: !prev[matchId], // Toggle visibility for the specific match
-    }));
+      [matchId]: !prev[matchId],
+    }))
   }
 
   if (user?.role !== 'admin') {
-    return <div>You do not have permission to view this page.</div>
+    return <div className="admin-predictions-denied">You do not have permission to view this page.</div>
   }
 
   return (
     <div className="admin-predictions-container">
       <h2>Admin Predictions</h2>
-      <div className="gameweek-options">
-        {options.map((gameweek) => (
-          <label key={gameweek} className="gameweek-option">
-            <input
-              type="radio"
-              value={gameweek}
-              checked={selectedGameweek === gameweek}
-              onChange={() => handleGameweekChange(gameweek)}
-            />
-            <span className="gameweek-label">{gameweek}</span>
-          </label>
-        ))}
+
+      <div className="gameweek-carousel">
+        <button
+          type="button"
+          className="carousel-arrow"
+          onClick={() => scrollGameweeks(-1)}
+          aria-label="Scroll to earlier gameweeks"
+        >
+          <FaChevronLeft />
+        </button>
+        <div className="gameweek-options" ref={scrollContainerRef}>
+          {options.map((gameweek) => (
+            <label
+              key={gameweek}
+              className="gameweek-option"
+              ref={selectedGameweek === gameweek ? selectedTabRef : null}
+            >
+              <input
+                type="radio"
+                value={gameweek}
+                checked={selectedGameweek === gameweek}
+                onChange={() => handleGameweekChange(gameweek)}
+              />
+              <span className="gameweek-label">{gameweek}</span>
+            </label>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="carousel-arrow"
+          onClick={() => scrollGameweeks(1)}
+          aria-label="Scroll to later gameweeks"
+        >
+          <FaChevronRight />
+        </button>
       </div>
+
       <div className="matches-list">
         {addedMatches
           .filter((match) => match.gameweek === selectedGameweek)
-          .map((match) => (
-            <div key={match._id} className="match-card">
-              <div className="match-header">
-                <div className="team">
-                  <div className="team-logo">
-                    <img src={`/uploads/${match.homeTeam.logo}`} alt={`${match.homeTeam.teamname} logo`} />
+          .map((match) => {
+            const matchPredictions = predictions.filter(
+              (prediction) => prediction.match._id === match._id && prediction.predictedHomeScore !== null,
+            )
+            const usersWithoutPrediction = users.filter(
+              (u) =>
+                !predictions.some(
+                  (prediction) =>
+                    prediction.match._id === match._id &&
+                    prediction.user._id === u._id &&
+                    prediction.predictedHomeScore !== null,
+                ),
+            )
+            const isExpanded = showMatchPredictions[match._id]
+            const submittedCount = matchPredictions.length
+            const totalCount = users.length
+
+            return (
+              <div key={match._id} className={`match ${match.isCompleted ? 'match--completed' : ''}`}>
+                <div className="match-header">
+                  <div className={`match-status ${match.isCompleted ? 'is-completed' : 'is-upcoming'}`}>
+                    {match.isCompleted ? 'Completed' : 'Upcoming'}
                   </div>
-                  <div className="team-name">{match.homeTeam.teamname}</div>
-                </div>
-                <div className="match-tournament">
-                  {match.homeTeam.teamname} vs {match.awayTeam.teamname}
-                </div>
-                <div className="team">
-                  <div className="team-logo">
-                    <img src={`/uploads/${match.awayTeam.logo}`} alt={`${match.awayTeam.teamname} logo`} />
+                  <div className="match-date-time">
+                    {formatDate(match.date)} {match.time}
                   </div>
-                  <div className="team-name">{match.awayTeam.teamname}</div>
+                  <img className="match-tournament" src="/uploads/epl-logo.png" alt="Premier League" />
                 </div>
-              </div>
-              <div className="match-details">
-                Date: {formatDate(match.date)} <br /> Time: {match.time}
-              </div>
-              <button onClick={() => toggleMatchPredictions(match._id)}>
-                {showMatchPredictions[match._id] ? 'Hide Predictions' : 'Show Predictions'}
-              </button>
-              {showMatchPredictions[match._id] && (
-                <>
-                  {predictions
-                    .filter((prediction) => prediction.match._id === match._id && prediction.predictedHomeScore !== null)
-                    .map((prediction) => (
-                      <div key={prediction._id} className="user-prediction">
-                        <h4>{prediction.user.username} : {prediction.predictedHomeScore} - {prediction.predictedAwayScore} ; Pts: {prediction.points}</h4>
+                <div className="match-content">
+                  <div className="team team--home">
+                    <img
+                      className="team-logo"
+                      src={`/uploads/${match.homeTeam.logo}`}
+                      alt={`${match.homeTeam.teamname} logo`}
+                    />
+                    <div className="team-name">{match.homeTeam.teamname}</div>
+                  </div>
+                  <div className="match-score">
+                    <span className="match-score-number">{match.isCompleted ? match.homeScore : '-'}</span>
+                    <span className="match-score-divider">:</span>
+                    <span className="match-score-number">{match.isCompleted ? match.awayScore : '-'}</span>
+                  </div>
+                  <div className="team team--away">
+                    <img
+                      className="team-logo"
+                      src={`/uploads/${match.awayTeam.logo}`}
+                      alt={`${match.awayTeam.teamname} logo`}
+                    />
+                    <div className="team-name">{match.awayTeam.teamname}</div>
+                  </div>
+                </div>
+
+                <div className="predictions-toolbar">
+                  <div className="submission-progress">
+                    <div className="submission-bar">
+                      <div
+                        className="submission-bar-fill"
+                        style={{ width: totalCount ? `${(submittedCount / totalCount) * 100}%` : '0%' }}
+                      />
+                    </div>
+                    <span className="submission-count">
+                      {submittedCount}/{totalCount} submitted
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className={`toggle-predictions ${isExpanded ? 'active' : ''}`}
+                    onClick={() => toggleMatchPredictions(match._id)}
+                  >
+                    {isExpanded ? 'Hide Predictions' : 'Show Predictions'}
+                  </button>
+                </div>
+
+                {isExpanded && (
+                  <div className="predictions-panel">
+                    {matchPredictions.length > 0 ? (
+                      <div className="prediction-rows">
+                        {matchPredictions.map((prediction) => (
+                          <div key={prediction._id} className="prediction-row">
+                            <span className="prediction-user">{prediction.user.username}</span>
+                            <span className="prediction-score">
+                              {prediction.predictedHomeScore} - {prediction.predictedAwayScore}
+                            </span>
+                            <span
+                              className={`prediction-points ${
+                                prediction.points === 3
+                                  ? 'prediction-points--perfect'
+                                  : prediction.points > 0
+                                  ? 'prediction-points--correct'
+                                  : 'prediction-points--zero'
+                              }`}
+                            >
+                              {prediction.points === 3 ? 'Perfect' : `${prediction.points} pt${prediction.points === 1 ? '' : 's'}`}
+                            </span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  {predictions.filter((prediction) => prediction.match._id === match._id && prediction.predictedHomeScore !== null).length === 0 && (
-                    <p>No predictions submitted yet.</p>
-                  )}
-                  {users
-                    .filter(user => 
-                      !predictions.some(prediction => 
-                        prediction.match._id === match._id && prediction.user._id === user._id && prediction.predictedHomeScore !== null
-                      )
-                    )
-                    .map((user) => (
-                      <div key={user._id} className="user-no-prediction">
-                        <h4>{user.username} did not submit a prediction.</h4>
+                    ) : (
+                      <p className="predictions-empty">No predictions submitted yet.</p>
+                    )}
+
+                    {usersWithoutPrediction.length > 0 && (
+                      <div className="no-prediction-rows">
+                        {usersWithoutPrediction.map((u) => (
+                          <div key={u._id} className="no-prediction-row">
+                            <span className="prediction-user">{u.username}</span>
+                            <span className="no-prediction-tag">No prediction</span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  {users
-                    .filter(user => 
-                      !predictions.some(prediction => 
-                        prediction.match._id === match._id && prediction.user._id === user._id && prediction.predictedHomeScore !== null
-                      )
-                    ).length === 0 && (
-                    <p>All users submitted their predictions.</p>
-                  )}
-                </>
-              )}
-            </div>
-          ))}
+                    )}
+                  </div>
+                )}
+              </div>
+            )
+          })}
       </div>
     </div>
   )

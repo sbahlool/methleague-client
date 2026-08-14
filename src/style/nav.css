@@ -243,16 +243,22 @@ ul.navbar-nav {
     overflow-y: auto;
   }
 
-  .navbar-nav {
+  ul.navbar-nav {
     flex-direction: column !important;
     align-items: stretch;
     gap: 0;
     padding: 8px 16px 16px;
+    width: 100%;
   }
 
   .navbar-nav a {
     padding: 12px 8px;
     border-radius: 6px;
+  }
+
+  ul.navbar-nav > li.navbar-dropdown,
+  ul.navbar-nav > li.navbar-nav-right {
+    margin-left: 0 !important;
   }
 
   .navbar-dropdown .dropdown {

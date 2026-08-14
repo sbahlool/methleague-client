@@ -64,18 +64,62 @@
 /* ---------------------------------------------
    Gameweek tabs
    --------------------------------------------- */
+.gameweek-carousel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.carousel-arrow {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--sch-line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--sch-paper);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.carousel-arrow:hover {
+  background: rgba(168, 85, 247, 0.16);
+  border-color: var(--sch-bright);
+  transform: translateY(-1px);
+}
+
+.carousel-arrow:focus-visible {
+  outline: 2px solid var(--sch-gold);
+  outline-offset: 2px;
+}
+
 .gameweek-options {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
   gap: 8px;
-  margin-bottom: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  padding: 4px 2px;
+  mask-image: linear-gradient(90deg, transparent 0, black 20px, black calc(100% - 20px), transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, black 20px, black calc(100% - 20px), transparent 100%);
+}
+
+.gameweek-options::-webkit-scrollbar {
+  display: none;
 }
 
 .gameweek-option {
   position: relative;
   margin-right: 0;
   cursor: pointer;
+  scroll-snap-align: center;
+  flex-shrink: 0;
 }
 
 .gameweek-option input[type='radio'] {
@@ -112,50 +156,6 @@
 }
 
 .gameweek-option input[type='radio']:focus-visible + .gameweek-label {
-  outline: 2px solid var(--sch-gold);
-  outline-offset: 2px;
-}
-
-/* ---------------------------------------------
-   Pagination
-   --------------------------------------------- */
-.pagination-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 32px;
-  color: var(--sch-mist);
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.pagination-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1px solid var(--sch-line);
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--sch-paper);
-  cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
-}
-
-.pagination-button:hover:not(:disabled) {
-  background: rgba(168, 85, 247, 0.16);
-  border-color: var(--sch-bright);
-  transform: translateY(-1px);
-}
-
-.pagination-button:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-.pagination-button:focus-visible {
   outline: 2px solid var(--sch-gold);
   outline-offset: 2px;
 }
