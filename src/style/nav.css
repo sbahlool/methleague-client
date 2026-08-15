@@ -261,8 +261,14 @@ ul.navbar-nav {
     margin-left: 0 !important;
   }
 
+  /* Inline expansion, right below the toggle â€” NavBar.tsx scrolls the
+     toggle to the top of the viewport when this opens, so the revealed
+     items below it always have room to be visible without the user
+     having to go hunting for them. */
   .navbar-dropdown .dropdown {
-    position: static;
+    position: static !important;
+    right: auto;
+    top: auto;
     box-shadow: none;
     border: none;
     background: rgba(255, 255, 255, 0.03);
@@ -270,9 +276,15 @@ ul.navbar-nav {
     visibility: visible;
     transform: none;
     display: none;
+    width: 100%;
   }
 
   .navbar-dropdown .dropdown.show {
     display: block;
+  }
+
+  .navbar-dropdown .dropdown .navitem {
+    padding: 14px 14px;
+    font-size: 15px;
   }
 }
