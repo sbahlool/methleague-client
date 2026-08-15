@@ -72,7 +72,7 @@ const App = () => {
           <Route path="/register" element={<Register setUser={setUser} />} />
           <Route path="/profile/:username" element={<Profile user={user} />} />
           <Route path="/user/:userId/predictions" element={<UserPredictions />} />
-          <Route path="/profile/edit/:username" element={<EditProfilePage />} />
+          <Route path="/profile/edit/:username" element={<EditProfilePage setUser={setUser} />} />
           <Route path="/profile/security/:username" element={<ChangePasswordPage />} />
           <Route path="/Rank" element={<Rank currentUser={user} />} />
           <Route path="/Schedule" element={<Schedule currentUser={user} />} />

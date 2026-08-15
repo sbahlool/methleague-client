@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { getProfile, editProfile, getTeams, TeamResponse, EditProfileRequest } from '../services/Auth'
+import { getProfile, editProfile, getTeams, TeamResponse, EditProfileRequest, UserResponse } from '../services/Auth'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getProfilePictureUrl } from '../utils/image'
 import '../style/auth.css'
@@ -13,7 +13,11 @@ const extractErrorMessage = (error: any): string => {
   return 'Something went wrong. Please try again.'
 }
 
-const EditProfilePage = () => {
+interface Props {
+  setUser: (user: UserResponse) => void
+}
+
+const EditProfilePage = ({ setUser }: Props) => {
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -89,8 +93,24 @@ const EditProfilePage = () => {
       formData.append('team', newProfile.team)
       if (selectedFile) formData.append('profilePicture', selectedFile)
 
-      await editProfile(username, formData)
-      navigate(`/profile/${newProfile.username}`)
+      const response = await editProfile(username, formData)
+
+      // Defensive: handle either the new { user, token } response shape,
+      // or a bare user object if the deployed/running server hasn't picked
+      // up the backend change yet — avoids a hard crash on a shape mismatch
+      // either way, since the save itself has already succeeded by this point.
+      const responseData = response as { user?: UserResponse; token?: string } & Partial<UserResponse>
+      const updatedUser = (responseData.user ?? responseData) as UserResponse
+      const token = responseData.token
+
+      if (!updatedUser?.username) {
+        throw new Error('Unexpected response from server after saving.')
+      }
+
+      if (token) localStorage.setItem('token', token)
+      setUser(updatedUser)
+
+      navigate(`/profile/${updatedUser.username}`)
     } catch (err) {
       setError(extractErrorMessage(err))
       setSubmitting(false)
