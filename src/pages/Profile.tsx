@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
-import { getProfile, UserResponse } from '../services/Auth'
+import { getProfile, GetUsers, UserResponse } from '../services/Auth'
+import { getUserPredictions, getPredictions, PredictionResponse } from '../services/Prediction'
 import { Link, useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import '../style/profile.css' // Ensure this import is correct
+import { getProfilePictureUrl } from '../utils/image'
+import '../style/profile.css'
 
 interface Props {
   user: UserResponse | null
@@ -10,6 +12,8 @@ interface Props {
 
 const Profile = ({ user }: Props) => {
   const [profile, setProfile] = useState<UserResponse | null>(null)
+  const [predictions, setPredictions] = useState<PredictionResponse[]>([])
+  const [rank, setRank] = useState<number | null>(null)
   const { username } = useParams()
   const navigate = useNavigate()
 
@@ -24,62 +28,115 @@ const Profile = ({ user }: Props) => {
     handleProfile()
   }, [username])
 
+  useEffect(() => {
+    const fetchStats = async () => {
+      if (!profile?._id) return
+      try {
+        const data = await getUserPredictions(profile._id)
+        setPredictions(data)
+      } catch (error) {
+        console.error('Error fetching prediction stats:', error)
+      }
+    }
+    fetchStats()
+  }, [profile?._id])
+
+  useEffect(() => {
+    const fetchRank = async () => {
+      if (!profile?._id) return
+      try {
+        const [usersData, allPredictions] = await Promise.all([GetUsers(), getPredictions()])
+
+        const pointsMap = allPredictions.reduce((acc: Record<string, number>, prediction: PredictionResponse) => {
+          const userId = prediction.user._id
+          acc[userId] = (acc[userId] || 0) + prediction.points
+          return acc
+        }, {})
+
+        const sortedUsers = [...usersData].sort((a, b) => (pointsMap[b._id] || 0) - (pointsMap[a._id] || 0))
+        const position = sortedUsers.findIndex((u) => u._id === profile._id)
+        setRank(position >= 0 ? position + 1 : null)
+      } catch (error) {
+        console.error('Error fetching rank:', error)
+      }
+    }
+    fetchRank()
+  }, [profile?._id])
+
   const handleViewPredictions = async () => {
     navigate(`/user/${profile?._id}/predictions`)
   }
 
+  const submittedPredictions = predictions.filter((p) => p.predictedHomeScore !== null)
+  const totalPoints = submittedPredictions.reduce((sum, p) => sum + (p.points || 0), 0)
+  const perfectCount = submittedPredictions.filter((p) => p.points === 3).length
+
   const editOptions = user && user.username === username && (
-    <div>
-      <a className="btn btn-outline-warning" href={`/profile/edit/${username}`}>
+    <div className="profile-edit-actions">
+      <a className="btn-ghost-pill" href={`/profile/edit/${username}`}>
         Edit Profile
       </a>
-      <a className="btn btn-outline-warning" href={`/profile/security/${username}`}>
+      <a className="btn-ghost-pill" href={`/profile/security/${username}`}>
         Change Password
       </a>
     </div>
   )
 
   return profile ? (
-    <section className="vh-100 profile">
-      <div className="container py-5 h-100">
-        <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col-md-12 col-xl-4">
-            <div className="card">
-              <div className="card-body text-center">
-                <div className="mt-3 mb-4">
-                  <div className="profile-pic">
-                    <img src={`/uploads/${profile.profilePicture}`} id="output" alt="Profile" />
-                  </div>
-                </div>
-                <h4 className="mb-2">
-                  {profile.firstname} {profile.lastname}
-                </h4>
-                <p className="text-muted mb-4">@{profile.username}</p>
-                {profile.team && (
-                  <div className="team-logo-container">
-                    <p className="text-muted mb-4">Favorite Team:</p>
-                    <p>
-                      <strong>{profile.team.teamname}</strong>
-                    </p>
-                    {profile.team.logo && (
-                      <img src={`/uploads/${profile.team.logo}`} alt={`${profile.team.teamname} logo`} />
-                    )}
-                  </div>
-                )}
-                <button onClick={handleViewPredictions}>View Predicted Scores</button>
-              </div>
-              {username === profile.username && editOptions}
+    <section className="profile-page">
+      <div className="profile-shell">
+        <div className="profile-card">
+          <div className="profile-avatar-wrap">
+            <img className="profile-avatar" src={getProfilePictureUrl(profile.profilePicture)} alt="Profile" />
+          </div>
+
+          <h4 className="profile-name">
+            {profile.firstname} {profile.lastname}
+          </h4>
+          <p className="profile-username">@{profile.username}</p>
+
+          {profile.team && (
+            <div className="team-badge">
+              {profile.team.logo && (
+                <img className="team-badge-logo" src={`/uploads/${profile.team.logo}`} alt={`${profile.team.teamname} logo`} />
+              )}
+              <span className="team-badge-name">{profile.team.teamname}</span>
+            </div>
+          )}
+
+          <div className="profile-stats">
+            <div className="stat-box">
+              <div className="stat-number">{rank ? `#${rank}` : '-'}</div>
+              <div className="stat-label">Rank</div>
+            </div>
+            <div className="stat-box">
+              <div className="stat-number">{totalPoints}</div>
+              <div className="stat-label">Points</div>
+            </div>
+            <div className="stat-box">
+              <div className="stat-number">{perfectCount}</div>
+              <div className="stat-label">Perfect</div>
+            </div>
+            <div className="stat-box">
+              <div className="stat-number">{submittedPredictions.length}</div>
+              <div className="stat-label">Predictions</div>
             </div>
           </div>
+
+          <button className="profile-cta" onClick={handleViewPredictions}>
+            View Predicted Scores
+          </button>
+
+          {username === profile.username && editOptions}
         </div>
       </div>
     </section>
   ) : (
-    <div className="hero-section">
+    <section className="profile-not-found">
       <h1>Oops!</h1>
       <h3>Profile Not Found.</h3>
       <Link to="/">Go back to Home</Link>
-    </div>
+    </section>
   )
 }
 

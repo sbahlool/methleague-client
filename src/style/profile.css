@@ -1,122 +1,287 @@
-/* Profile Page Styles */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+Pro:wght@400;600;700&display=swap');
 
-body {
-  font-family: 'Roboto', sans-serif;
+:root {
+  --prof-void: #150b2b;
+  --prof-panel: #1c0f38;
+  --prof-panel-alt: #201040;
+  --prof-primary: #6d28d9;
+  --prof-bright: #a855f7;
+  --prof-gold: #f2c14e;
+  --prof-mist: #cabbee;
+  --prof-paper: #f8f6ff;
+  --prof-line: rgba(198, 168, 255, 0.14);
 }
 
-.vh-100 {
-  height: 100vh;
+/* ---------------------------------------------
+   Page shell
+   --------------------------------------------- */
+.profile-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background:
+    radial-gradient(ellipse 800px 500px at 50% 10%, rgba(168, 85, 247, 0.22), transparent 65%),
+    var(--prof-void);
+  font-family: 'Source Sans Pro', sans-serif;
+  color: var(--prof-paper);
+  overflow: hidden;
 }
 
-.profile {
-  background-color: #f4f4f4;
-  padding: 2rem 0;
+.profile-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--prof-line),
+    var(--prof-line) 1px,
+    transparent 1px,
+    transparent 48px
+  );
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 30%, transparent 85%);
+  pointer-events: none;
 }
 
-.container {
+.profile-shell {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 1200px;
-  padding: 0 15px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
 
-.card {
-  background-color: #fff;
-  border: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-  padding: 1.5rem;
-  margin: 0 auto; /* Center the card horizontally */
-}
-
-.card-body {
-  padding: 2rem;
-}
-
-.profile-pic img {
-  border-radius: 50%;
-  border: 4px solid #710598;
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  display: block; /* Ensure image is a block element */
-  margin: 0 auto; /* Center the image */
-}
-
-.card h4 {
-  margin: 1rem 0;
-  font-size: 1.5rem;
-  color: #333;
-}
-
-.card p {
-  color: #666;
-}
-
-.card button {
-  background-color: #710598;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: block; /* Ensure button is a block element */
-  margin: 1rem auto; /* Center the button */
-}
-
-.card button:hover {
-  background-color: #62008c;
-}
-
-.btn-outline-warning {
-  color: #710598 !important;
-  border-color: #710598 !important;
-  border-radius: 5px !important;
-  display: block !important; /* Ensure buttons are block elements */
-  margin: 5px auto !important; /* Center buttons and add margin */
-}
-
-.btn-outline-warning:hover {
-  color: #fff !important;
-  background-color: #710598 !important;
-  border-color: #62008c !important;
-}
-
-.hero-section {
+/* ---------------------------------------------
+   Card
+   --------------------------------------------- */
+.profile-card {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: var(--prof-panel);
+  border: 1px solid var(--prof-line);
+  border-radius: 20px;
+  padding: 40px 28px 32px;
   text-align: center;
-  padding: 3rem;
-  background-color: #f4f4f4;
+  overflow: hidden;
 }
 
-.hero-section h1 {
-  font-size: 2.5rem;
-  color: #333;
+.profile-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--prof-primary), var(--prof-bright), var(--prof-gold));
 }
 
-.hero-section h3 {
-  font-size: 1.5rem;
-  color: #666;
+/* ---------------------------------------------
+   Avatar
+   --------------------------------------------- */
+.profile-avatar-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
 }
 
-.hero-section a {
-  color: #710598;
+.profile-avatar {
+  width: 120px !important;
+  height: 120px !important;
+  max-width: none !important;
+  max-height: none !important;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--prof-gold);
+  box-shadow: 0 0 0 6px rgba(242, 193, 78, 0.12), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.profile-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px;
+  letter-spacing: 0.03em;
+  margin: 0 0 4px;
+  color: var(--prof-paper);
+}
+
+.profile-username {
+  color: var(--prof-mist);
+  font-size: 14px;
+  margin: 0 0 18px;
+}
+
+/* ---------------------------------------------
+   Team badge
+   --------------------------------------------- */
+.team-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px 6px 8px;
+  border-radius: 999px;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  margin-bottom: 22px;
+}
+
+.team-badge-logo {
+  height: 40px;
+  width: auto;
+  max-width: 64px;
+  flex-shrink: 0;
+}
+
+.team-badge-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--prof-bright);
+}
+
+/* ---------------------------------------------
+   Stats
+   --------------------------------------------- */
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.stat-box {
+  background: var(--prof-panel-alt);
+  border: 1px solid var(--prof-line);
+  border-radius: 12px;
+  padding: 12px 4px;
+}
+
+.stat-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  color: var(--prof-gold);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--prof-mist);
+  margin-top: 4px;
+}
+
+/* ---------------------------------------------
+   Buttons
+   --------------------------------------------- */
+.profile-cta {
+  display: block;
+  width: 100%;
+  color: var(--prof-void);
+  background: linear-gradient(100deg, var(--prof-gold), #f7d883);
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(242, 193, 78, 0.25);
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.profile-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(242, 193, 78, 0.35);
+}
+
+.profile-edit-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.btn-ghost-pill {
+  display: block;
+  color: var(--prof-mist);
+  background: transparent;
+  border: 1px solid var(--prof-line);
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
   text-decoration: none;
-  font-weight: bold;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
-.hero-section a:hover {
+.btn-ghost-pill:hover {
+  color: var(--prof-paper);
+  border-color: var(--prof-bright);
+  background: rgba(168, 85, 247, 0.1);
+}
+
+/* ---------------------------------------------
+   Not-found state
+   --------------------------------------------- */
+.profile-not-found {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  background: var(--prof-void);
+  color: var(--prof-paper);
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.profile-not-found h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  color: var(--prof-gold);
+  margin: 0;
+}
+
+.profile-not-found h3 {
+  font-size: 18px;
+  color: var(--prof-mist);
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.profile-not-found a {
+  color: var(--prof-bright);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.profile-not-found a:hover {
   text-decoration: underline;
 }
 
-.team-logo-container {
-  text-align: center;
-  margin: 1rem 0; /* Add spacing around the logo */
-}
+/* ---------------------------------------------
+   Responsive
+   --------------------------------------------- */
+@media (max-width: 420px) {
+  .profile-card {
+    padding: 32px 20px 26px;
+  }
 
-.team-logo-container img {
-  display: inline-block;
-  max-width: 100px; /* Adjust size as needed */
-  height: auto; /* Maintain aspect ratio */
+  .profile-avatar {
+    width: 96px !important;
+    height: 96px !important;
+  }
+
+  .profile-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-number {
+    font-size: 22px;
+  }
 }

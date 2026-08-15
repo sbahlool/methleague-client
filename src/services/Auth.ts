@@ -64,9 +64,17 @@ export const getProfile = async (username: string): Promise<UserResponse> => {
   }
 }
 
-export const editProfile = async (username: string, data: EditProfileRequest) => {
+export const editProfile = async (username: string, formData: FormData) => {
   try {
-    const res = await Client.put(`/auth/editProfile/${username}`, data)
+    // If the shared `Client` axios instance has a default Content-Type
+    // (e.g. 'application/json'), it silently overrides the multipart
+    // boundary axios would otherwise generate for FormData — which breaks
+    // server-side parsing without throwing any client-side error. Setting
+    // it to undefined here forces axios to drop that default and generate
+    // its own 'multipart/form-data; boundary=...' header instead.
+    const res = await Client.put(`/auth/editProfile/${username}`, formData, {
+      headers: { 'Content-Type': undefined },
+    })
     return res.data
   } catch (error) {
     throw error

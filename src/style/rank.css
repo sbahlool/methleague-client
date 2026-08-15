@@ -1,5 +1,5 @@
 /* ---------------------------------------------
-   Rank page â€” purple theme layer
+   Rank page — purple theme layer
    Works alongside the Tailwind utility classes already
    in Rank.tsx; adds the pieces Tailwind can't express
    (medal badges, sort buttons, scoreboard texture).
@@ -95,7 +95,7 @@
   transform: scale(1.1);
 }
 
-/* Medal-style rank badge â€” the signature element */
+/* Medal-style rank badge — the signature element */
 .rank-badge {
   display: inline-flex;
   align-items: center;
@@ -146,9 +146,8 @@
 
 .rank-avatar {
   border: 2px solid rgba(198, 168, 255, 0.25);
-}
-
-img {
-  max-width: 30px;
-  height: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
 }

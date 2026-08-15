@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { GetUsers, UserResponse } from '../services/Auth'
 import { getPredictions, PredictionResponse } from '../services/Prediction'
+import { getProfilePictureUrl } from '../utils/image'
 import '../index.css'
 import '../style/rank.css'
 
@@ -179,7 +180,7 @@ const Rank = ({ currentUser }: Props) => {
                       <div className="flex items-center">
                         <img
                           className="rank-avatar h-8 w-8 rounded-full"
-                          src={`/uploads/${user.profilePicture}`}
+                          src={getProfilePictureUrl(user.profilePicture)}
                           alt={`${user.username} profile`}
                         />
                         <div className="ml-2 overflow-hidden">

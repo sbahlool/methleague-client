@@ -1,66 +1,169 @@
-.edit-profile-container {
-  padding: 50px 0;
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+/* Reuses --auth-* tokens and .auth-input / .field-group / .field-label /
+   .team-grid / .team-card / .auth-error / .auth-submit from auth.css —
+   this file only adds what's specific to the edit page: the shell and
+   the click-to-upload avatar. */
+
+.edit-profile-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 56px 24px 80px;
+  background:
+    radial-gradient(ellipse 800px 500px at 50% 0%, rgba(168, 85, 247, 0.22), transparent 65%),
+    var(--auth-void);
+  font-family: 'Source Sans Pro', sans-serif;
+  color: var(--auth-paper);
+  overflow: hidden;
 }
 
-.edit-profile-image {
-  border-radius: 50%;
-  border: 4px solid #710598;
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  display: block; /* Ensure image is a block element */
-  margin: 0 auto; /* Center the image */
+.edit-profile-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--auth-line),
+    var(--auth-line) 1px,
+    transparent 1px,
+    transparent 48px
+  );
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 10%, black 30%, transparent 85%);
+  pointer-events: none;
+}
+
+.edit-profile-shell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
 }
 
 .edit-profile-title {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 34px;
+  letter-spacing: 0.03em;
+  color: var(--auth-gold);
+  text-align: center;
+  margin: 0 0 24px;
 }
 
 .edit-profile-form {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+  background: var(--auth-panel);
+  border: 1px solid var(--auth-line);
+  border-radius: 20px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.edit-profile-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--auth-primary), var(--auth-bright), var(--auth-gold));
+}
+
+/* ---------------------------------------------
+   Click-to-upload avatar
+   --------------------------------------------- */
+.avatar-upload {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 8px;
+  margin-bottom: 6px;
 }
 
-.edit-profile-file-label {
+.avatar-upload-button {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
   cursor: pointer;
-  color: #6c757d;
-  margin-bottom: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.edit-profile-file-input {
+.avatar-upload-image {
+  width: 120px !important;
+  height: 120px !important;
+  max-width: none !important;
+  max-height: none !important;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--auth-gold);
+  box-shadow: 0 0 0 6px rgba(242, 193, 78, 0.12), 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: block;
+}
+
+.avatar-upload-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 50%;
+  background: rgba(21, 11, 43, 0.72);
+  color: var(--auth-paper);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.avatar-upload-button:hover .avatar-upload-overlay,
+.avatar-upload-button:focus-visible .avatar-upload-overlay {
+  opacity: 1;
+}
+
+.avatar-upload-input {
   display: none;
 }
 
-.edit-profile-label {
-  font-size: 1.1rem;
-  font-weight: bold;
+.avatar-upload-filename {
+  font-size: 12px;
+  color: var(--auth-mist);
+  margin: 0;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.edit-profile-input {
+/* ---------------------------------------------
+   Submit button spacing (auth-submit is shared,
+   this just removes the flex:1 it has in the
+   two-button auth-actions row)
+   --------------------------------------------- */
+.edit-profile-submit {
+  flex: none;
   width: 100%;
-  max-width: 300px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  margin-top: 6px;
 }
 
-.edit-profile-button {
-  background-color: #710598;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: block; /* Ensure button is a block element */
-  margin: 1rem auto; /* Center the button */
-}
+@media (max-width: 480px) {
+  .edit-profile-form {
+    padding: 22px;
+  }
 
-.edit-profile-button:hover {
-  background-color: #62008c;
+  .avatar-upload-button,
+  .avatar-upload-image {
+    width: 96px !important;
+    height: 96px !important;
+  }
 }
