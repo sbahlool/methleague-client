@@ -73,12 +73,12 @@ const Profile = ({ user }: Props) => {
 
   const editOptions = user && user.username === username && (
     <div className="profile-edit-actions">
-      <a className="btn-ghost-pill" href={`/profile/edit/${username}`}>
+      <Link className="btn-ghost-pill" to={`/profile/edit/${username}`}>
         Edit Profile
-      </a>
-      <a className="btn-ghost-pill" href={`/profile/security/${username}`}>
+      </Link>
+      <Link className="btn-ghost-pill" to={`/profile/security/${username}`}>
         Change Password
-      </a>
+      </Link>
     </div>
   )
 
