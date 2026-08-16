@@ -394,6 +394,62 @@
 /* ---------------------------------------------
    Footer actions (toggle + predict)
    --------------------------------------------- */
+/* ---------------------------------------------
+   Prediction lock countdown
+   --------------------------------------------- */
+.prediction-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--sch-line);
+  color: var(--sch-mist);
+}
+
+.prediction-countdown-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.prediction-countdown--soon {
+  color: var(--sch-gold);
+  border-color: rgba(242, 193, 78, 0.35);
+}
+
+.prediction-countdown--urgent {
+  color: var(--sch-loss);
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+.prediction-countdown--urgent .prediction-countdown-dot {
+  animation: countdown-pulse 1s ease-in-out infinite;
+}
+
+@keyframes countdown-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.prediction-countdown--locked {
+  color: var(--sch-mist);
+  opacity: 0.7;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--sch-line);
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .match-footer {
   display: flex;
   align-items: center;

@@ -12,12 +12,15 @@ import '../style/schedule.css'
 import { formatDate, getTimeDiff } from '../utils/date'
 import { UserResponse } from '../services/Auth'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { useToast } from '../context/ToastContext'
+import PredictionCountdown from '../components/PredictionCountdown'
 
 interface Props {
   currentUser: (UserResponse & { id?: string }) | null // TODO: added the `& { id: string }` part as a quick hack because there's only a `._id` field to `UserResponse`... Up to you what you wanna do with this
 }
 
 const Schedule = ({ currentUser }: Props) => {
+  const { showToast } = useToast()
   const [addedMatches, setAddedMatches] = useState<MatchResponse[]>([])
   const [selectedGameweek, setSelectedGameweek] = useState<number>(1)
   const [options, setOptions] = useState<number[]>([])
@@ -122,7 +125,7 @@ const Schedule = ({ currentUser }: Props) => {
   const handlePredictionSubmit = async (matchId: string) => {
     const prediction = editingPrediction
     if (prediction.homeScore === '' || prediction.awayScore === '') {
-      alert('Please enter both scores')
+      showToast('Please enter both scores', 'error')
       return
     }
 
@@ -147,9 +150,10 @@ const Schedule = ({ currentUser }: Props) => {
       setUserPredictions(updatedUserPredictions)
 
       setEditingPrediction({})
+      showToast('Prediction saved!', 'success')
     } catch (error) {
       console.error('Failed to submit prediction:', error)
-      alert('Failed to submit prediction. Please try again.')
+      showToast('Failed to submit prediction. Please try again.', 'error')
     }
   }
 
@@ -215,6 +219,15 @@ const Schedule = ({ currentUser }: Props) => {
             const isRestricted = timeDiff <= 10
             const userPrediction = getUserPredictionForMatch(match._id)
             const canShowPredictions = isRestricted || match.isCompleted
+            // Same 10-minute window used for isRestricted above, expressed
+            // as an actual Date so the countdown can tick live.
+            // match.date may already include a time component (a full ISO
+            // datetime) — take just the date portion before appending
+            // match.time, otherwise this produces an invalid double-T
+            // string and every calculation off it becomes NaN.
+            const datePart = match.date.split('T')[0]
+            const kickoff = new Date(`${datePart}T${match.time}`)
+            const lockTime = new Date(kickoff.getTime() - 10 * 60 * 1000)
 
             return (
               <div key={match._id} className={`match ${match.isCompleted ? 'match--completed' : ''}`}>
@@ -289,6 +302,7 @@ const Schedule = ({ currentUser }: Props) => {
                   </div>
                 ) : (
                   <div className="match-footer">
+                    {!match.isCompleted && <PredictionCountdown target={lockTime} />}
                     {canShowPredictions && (
                       <div
                         className={`toggle-predictions ${showPredictions[match._id] ? 'active' : ''}`}

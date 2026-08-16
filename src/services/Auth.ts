@@ -167,26 +167,8 @@ export interface UserResponse {
 
 export const forgotPassword = async (email: string): Promise<unknown> => {
   try {
-    const API_URL = import.meta.env.VITE_REACT_APP_API_URL // Use the deployed URL
-    const fullUrl = `${API_URL}password-reset/forgot` // Construct the full URL
-    console.log('Requesting URL:', fullUrl) // Log the URL for debugging
-    const token = localStorage.getItem('token') // Assuming you store a token in localStorage
-    const response = await fetch(fullUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}), // Add token if it exists
-      },
-      body: JSON.stringify({ email }),
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error('Server error response:', errorText)
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-
-    return await response.json()
+    const res = await Client.post('/password-reset/forgot', { email })
+    return res.data
   } catch (error) {
     console.error('Error in forgotPassword:', error)
     throw error
@@ -194,13 +176,13 @@ export const forgotPassword = async (email: string): Promise<unknown> => {
 }
 
 export const resetPassword = async (token: string, newPassword: string): Promise<unknown> => {
-  const response = await fetch('/password-reset/reset', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token, newPassword }),
-  })
-  if (!response.ok) throw new Error('Failed to reset password')
-  return response.json()
+  try {
+    const res = await Client.post('/password-reset/reset', { token, newPassword })
+    return res.data
+  } catch (error) {
+    console.error('Error in resetPassword:', error)
+    throw error
+  }
 }
 
 // New function to fetch the current user

@@ -5,6 +5,7 @@ import '../style/schedule.css'
 import '../style/admin.css'
 import { formatDate } from '../utils/date'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { useToast } from '../context/ToastContext'
 
 const emptyMatchRequest: MatchRequest = {
   gameweek: '',
@@ -15,6 +16,7 @@ const emptyMatchRequest: MatchRequest = {
 }
 
 const AddMatch = () => {
+  const { showToast } = useToast()
   const [matchData, setMatchData] = useState<MatchRequest>({ ...emptyMatchRequest })
   const [teams, setTeams] = useState<TeamResponse[]>([])
   const [addedMatches, setAddedMatches] = useState<MatchResponse[]>([])
@@ -84,11 +86,12 @@ const AddMatch = () => {
     e.preventDefault()
     try {
       await addMatch(matchData)
-      alert('Match added successfully')
+      showToast('Match added successfully', 'success')
       setMatchData({ ...emptyMatchRequest })
       fetchAddedMatches()
     } catch (error) {
       console.error('Failed to add match', error)
+      showToast('Failed to add match. Please try again.', 'error')
     }
   }
 
@@ -106,10 +109,11 @@ const AddMatch = () => {
     const { homeScore, awayScore } = scores[matchId] || {}
     try {
       await updateMatchScores(matchId, { homeScore, awayScore })
-      alert('Scores updated successfully')
+      showToast('Scores updated successfully', 'success')
       fetchAddedMatches()
     } catch (error) {
       console.error('Failed to update scores', error)
+      showToast('Failed to update scores. Please try again.', 'error')
     }
   }
 

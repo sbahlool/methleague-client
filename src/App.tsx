@@ -20,6 +20,7 @@ import ForgotPassword from './pages/ForgotPasswordPage'
 import ResetPassword from './pages/ResetPasswordPage'
 import Table from './pages/Table'
 import MiniGame from './pages/MiniGame'
+import { ToastProvider } from './context/ToastContext'
 
 import './index.css'
 import './App.css'
@@ -45,45 +46,47 @@ const App = () => {
   }, [])
 
   return (
-    <div>
-      <NavBar user={user} handleLogOut={handleLogOut} />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/table" element={<Table />} />
-          <Route path="/minigame" element={<MiniGame />} />
-          <Route path="/login" element={<Login setUser={setUser} />} />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin-predictions"
-            element={
-              <ProtectedRoute>
-                <AdminPredictions user={user} />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/register" element={<Register setUser={setUser} />} />
-          <Route path="/profile/:username" element={<Profile user={user} />} />
-          <Route path="/user/:userId/predictions" element={<UserPredictions currentUser={user} />} />
-          <Route path="/profile/edit/:username" element={<EditProfilePage setUser={setUser} />} />
-          <Route path="/profile/security/:username" element={<ChangePasswordPage />} />
-          <Route path="/Rank" element={<Rank currentUser={user} />} />
-          <Route path="/Schedule" element={<Schedule currentUser={user} />} />
-          <Route path="/match/:matchId" element={<Match />} />
-          <Route path="/update-prediction/:matchId" element={<UpdatePrediction currentUser={user} />} />{' '}
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset/:token" element={<ResetPassword />} />
-          <Route path="/rank" element={<Rank currentUser={user} />} />
-        </Routes>
-      </main>
-    </div>
+    <ToastProvider>
+      <div>
+        <NavBar user={user} handleLogOut={handleLogOut} />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/table" element={<Table />} />
+            <Route path="/minigame" element={<MiniGame />} />
+            <Route path="/login" element={<Login setUser={setUser} />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin-predictions"
+              element={
+                <ProtectedRoute>
+                  <AdminPredictions user={user} />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/register" element={<Register setUser={setUser} />} />
+            <Route path="/profile/:username" element={<Profile user={user} />} />
+            <Route path="/user/:userId/predictions" element={<UserPredictions currentUser={user} />} />
+            <Route path="/profile/edit/:username" element={<EditProfilePage setUser={setUser} />} />
+            <Route path="/profile/security/:username" element={<ChangePasswordPage />} />
+            <Route path="/Rank" element={<Rank currentUser={user} />} />
+            <Route path="/Schedule" element={<Schedule currentUser={user} />} />
+            <Route path="/match/:matchId" element={<Match />} />
+            <Route path="/update-prediction/:matchId" element={<UpdatePrediction currentUser={user} />} />{' '}
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset/:token" element={<ResetPassword />} />
+            <Route path="/rank" element={<Rank currentUser={user} />} />
+          </Routes>
+        </main>
+      </div>
+    </ToastProvider>
   )
 }
 

@@ -1,0 +1,113 @@
+:root {
+  --toast-void: #150b2b;
+  --toast-panel: #1c0f38;
+  --toast-line: rgba(198, 168, 255, 0.14);
+  --toast-paper: #f8f6ff;
+  --toast-mist: #cabbee;
+  --toast-win: #4ade80;
+  --toast-loss: #f87171;
+  --toast-bright: #a855f7;
+}
+
+/* Prefixed app-toast-* throughout — Bootstrap ships its own .toast
+   component (display: none by default, until Bootstrap's own JS adds
+   a .show class), and since this app loads bootstrap.css globally,
+   a plain .toast class name collided with it and got silently hidden. */
+
+.app-toast-container {
+  position: fixed;
+  top: 76px;
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: min(360px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+.app-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--toast-panel);
+  border: 1px solid var(--toast-line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  color: var(--toast-paper);
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  pointer-events: auto;
+  animation: app-toast-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes app-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.app-toast-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.app-toast--success .app-toast-icon {
+  background: rgba(74, 222, 128, 0.18);
+  color: var(--toast-win);
+}
+
+.app-toast--error .app-toast-icon {
+  background: rgba(248, 113, 113, 0.18);
+  color: var(--toast-loss);
+}
+
+.app-toast--info .app-toast-icon {
+  background: rgba(168, 85, 247, 0.18);
+  color: var(--toast-bright);
+}
+
+.app-toast-message {
+  flex: 1 1 auto;
+  line-height: 1.4;
+}
+
+.app-toast-dismiss {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--toast-mist);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 4px;
+  transition: color 0.15s ease;
+}
+
+.app-toast-dismiss:hover {
+  color: var(--toast-paper);
+}
+
+@media (max-width: 480px) {
+  .app-toast-container {
+    top: auto;
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+  }
+}
