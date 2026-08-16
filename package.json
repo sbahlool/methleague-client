@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cp dist/index.html dist/200.html",
     "lint": "eslint 'src/**/*.{js,ts,tsx}' --report-unused-disable-directives --max-warnings 0 --fix",
     "lint:check": "eslint 'src/**/*.{js,ts,tsx}' --report-unused-disable-directives --max-warnings 0",
     "format": "prettier src/* -w --log-level silent",
@@ -13,12 +13,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "18": "^0.0.0",
     "axios": "^1.6.5",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.4",
-    "cloudinary": "^1.41.3",
-    "multer-storage-cloudinary": "^4.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
     "react-chartjs-2": "^5.2.0",
