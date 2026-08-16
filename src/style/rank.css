@@ -151,3 +151,27 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
+.rank-user-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 8px;
+  margin: -4px;
+  padding: 4px;
+  transition: background 0.15s ease;
+}
+
+.rank-user-link:hover {
+  background: rgba(168, 85, 247, 0.1);
+}
+
+.rank-user-link:hover .text-sm {
+  color: var(--rank-bright);
+}
+
+.rank-user-link:focus-visible {
+  outline: 2px solid var(--rank-gold);
+  outline-offset: 2px;
+}

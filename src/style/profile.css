@@ -225,6 +225,16 @@
 }
 
 /* ---------------------------------------------
+   Loading state
+   --------------------------------------------- */
+.profile-loading-state {
+  position: relative;
+  z-index: 1;
+  color: var(--prof-mist);
+  font-size: 14px;
+}
+
+/* ---------------------------------------------
    Not-found state
    --------------------------------------------- */
 .profile-not-found {

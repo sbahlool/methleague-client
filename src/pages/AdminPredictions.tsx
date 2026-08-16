@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { getAllPredictionsByGameweek, PredictionResponse } from '../services/Prediction'
 import { getMatches, MatchResponse } from '../services/Match'
 import { GetUsers, UserResponse } from '../services/Auth'
@@ -218,7 +219,9 @@ const AdminPredictions = ({ user }: Props) => {
                       <div className="prediction-rows">
                         {matchPredictions.map((prediction) => (
                           <div key={prediction._id} className="prediction-row">
-                            <span className="prediction-user">{prediction.user.username}</span>
+                            <Link to={`/profile/${prediction.user.username}`} className="prediction-user">
+                              {prediction.user.username}
+                            </Link>
                             <span className="prediction-score">
                               {prediction.predictedHomeScore} - {prediction.predictedAwayScore}
                             </span>
@@ -244,7 +247,9 @@ const AdminPredictions = ({ user }: Props) => {
                       <div className="no-prediction-rows">
                         {usersWithoutPrediction.map((u) => (
                           <div key={u._id} className="no-prediction-row">
-                            <span className="prediction-user">{u.username}</span>
+                            <Link to={`/profile/${u.username}`} className="prediction-user">
+                              {u.username}
+                            </Link>
                             <span className="no-prediction-tag">No prediction</span>
                           </div>
                         ))}

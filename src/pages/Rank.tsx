@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { GetUsers, UserResponse } from '../services/Auth'
 import { getPredictions, PredictionResponse } from '../services/Prediction'
 import { getProfilePictureUrl } from '../utils/image'
@@ -177,7 +178,7 @@ const Rank = ({ currentUser }: Props) => {
                       </div>
                     </td>
                     <td className="px-3 py-2 whitespace-nowrap">
-                      <div className="flex items-center">
+                      <Link to={`/profile/${user.username}`} className="rank-user-link">
                         <img
                           className="rank-avatar h-8 w-8 rounded-full"
                           src={getProfilePictureUrl(user.profilePicture)}
@@ -191,7 +192,7 @@ const Rank = ({ currentUser }: Props) => {
                             {`${user.firstname} ${user.lastname}`}
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     </td>
                     <td className="px-3 py-2 whitespace-nowrap text-center text-sm">{user.points}</td>
                     <td className="px-1 py-2 whitespace-nowrap text-center text-sm">

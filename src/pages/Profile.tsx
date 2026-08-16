@@ -14,15 +14,20 @@ const Profile = ({ user }: Props) => {
   const [profile, setProfile] = useState<UserResponse | null>(null)
   const [predictions, setPredictions] = useState<PredictionResponse[]>([])
   const [rank, setRank] = useState<number | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const { username } = useParams()
   const navigate = useNavigate()
 
   useEffect(() => {
     const handleProfile = async () => {
+      setIsLoading(true)
+      setProfile(null)
       try {
         setProfile(await getProfile(username!))
       } catch (error) {
         console.error('Error fetching profile:', error)
+      } finally {
+        setIsLoading(false)
       }
     }
     handleProfile()
@@ -82,6 +87,14 @@ const Profile = ({ user }: Props) => {
     </div>
   )
 
+  if (isLoading) {
+    return (
+      <section className="profile-page">
+        <div className="profile-loading-state">Loading profile…</div>
+      </section>
+    )
+  }
+
   return profile ? (
     <section className="profile-page">
       <div className="profile-shell">
@@ -123,9 +136,11 @@ const Profile = ({ user }: Props) => {
             </div>
           </div>
 
-          <button className="profile-cta" onClick={handleViewPredictions}>
-            View Predicted Scores
-          </button>
+          {user && user.username === username && (
+            <button className="profile-cta" onClick={handleViewPredictions}>
+              View Predicted Scores
+            </button>
+          )}
 
           {username === profile.username && editOptions}
         </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { getMatches, MatchResponse } from '../services/Match'
 import {
   getUserPredictions,
@@ -313,7 +314,12 @@ const Schedule = ({ currentUser }: Props) => {
                     <div className="predictions-list">
                       {allPredictions[match._id]?.map((prediction, index) => (
                         <div key={index} className="prediction-item">
-                          {prediction.user.username}: {prediction.predictedHomeScore} - {prediction.predictedAwayScore}
+                          <Link to={`/profile/${prediction.user.username}`} className="prediction-item-user">
+                            {prediction.user.username}
+                          </Link>
+                          <span className="prediction-item-score">
+                            {prediction.predictedHomeScore} - {prediction.predictedAwayScore}
+                          </span>
                         </div>
                       ))}
                     </div>

@@ -1,120 +1,212 @@
-.user-predictions-container {
-  max-width: 1000px;
-  margin: 0 auto;
-}
+/* Reuses --sch-* tokens and .match/.match-header/.match-content/
+   .prediction-points classes from schedule.css and adminPrediction.css.
+   This file only adds what's specific to this page: the shell, the
+   profile chip header, and the predicted-score/points footer row. */
 
-.user-predictions {
+.user-predictions-page {
   position: relative;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  box-shadow:
-    0 0 2px 0 rgba(0, 0, 0, 0.1),
-    0 4px 4px 0 rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  padding: 16px;
+  min-height: 100vh;
+  padding: 48px 24px 96px;
+  background:
+    radial-gradient(ellipse 800px 400px at 50% 0%, rgba(168, 85, 247, 0.2), transparent 65%),
+    var(--sch-void);
+  font-family: 'Source Sans Pro', sans-serif;
+  color: var(--sch-paper);
 }
 
-.match-headers {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-  padding-bottom: 8px;
+.user-predictions-page > * {
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.match-tournaments {
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-}
-
-.match-tournaments img {
-  height: 70px;
-  width: 100px;
-  margin-right: 12px;
-}
-
-.match-contents {
-  display: flex;
-  padding: 16px;
-}
-
-.columns {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.team {
+.user-predictions-header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
 }
 
-.team-logo {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background-color: #ffffff;
-  box-shadow:
-    0 4px 4px 0 rgba(0, 0, 0, 0.15),
-    0 0 0 15px #f8f3f9;
-  display: flex;
+.up-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 34px;
+  letter-spacing: 0.04em;
+  color: var(--sch-gold);
+  margin: 0;
+}
+
+.up-profile-chip {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-}
-
-.team-logo img {
-  width: 60px;
-}
-
-.team-name {
-  margin-top: 16px;
-}
-
-.match-score {
-  margin-top: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Center scores horizontally */
-}
-
-.match-score-number {
-  font-size: 48px;
-  font-weight: 600;
-  line-height: 1;
-  text-align: center; /* Center text within the number container */
-}
-
-.match-score-divider {
-  font-size: 28px;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 999px;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  color: var(--sch-bright);
   font-weight: 700;
-  line-height: 1;
-  color: #333; /* Example color */
-  margin-left: 10px;
-  margin-right: 10px;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.15s ease;
 }
 
-.match-details {
+.up-profile-chip:hover {
+  background: rgba(168, 85, 247, 0.18);
+}
+
+.up-profile-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.up-state {
+  text-align: center;
+  color: var(--sch-mist);
+  font-size: 14px;
+  padding: 48px 16px;
+  border: 1px dashed var(--sch-line);
+  border-radius: 16px;
+}
+
+.up-state--error {
+  color: #fca5a5;
+  border-color: rgba(248, 113, 113, 0.35);
+  background: rgba(248, 113, 113, 0.08);
+}
+
+.up-restricted-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--sch-bright);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.up-restricted-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------------------------------------------
+   Prediction grid + compact cards
+   --------------------------------------------- */
+.prediction-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.prediction-card {
+  background: var(--sch-panel);
+  border: 1px solid var(--sch-line);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.prediction-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sch-primary), var(--sch-bright));
+}
+
+.prediction-card--completed::before {
+  background: linear-gradient(90deg, var(--sch-gold), #f7d883);
+}
+
+.prediction-card-header {
+  display: flex;
+  justify-content: center;
+}
+
+/* Both teams share identical alignment (crest above name, centered) —
+   deliberately not mirrored left/right like the wide Schedule.tsx cards,
+   since that mirrored layout is what broke at this narrower card width. */
+.prediction-card-teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.prediction-card-team {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
-.match-date {
-  font-size: 18px;
-  color: #6c757d; /* Example color for var(--color-text-secondary) */
+.prediction-card-logo {
+  height: 34px;
+  width: auto;
+  max-width: 44px;
+  flex-shrink: 0;
 }
 
-.match-date strong {
-  color: #343a40; /* Example color for var(--color-text-primary) */
-}
-
-.no-predictions {
+.prediction-card-team-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sch-paper);
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.prediction-card-score {
+  font-family: 'Bebas Neue', sans-serif;
   font-size: 18px;
-  color: #6c757d;
+  color: var(--sch-mist);
+  flex-shrink: 0;
+  padding: 0 4px;
+}
+
+.prediction-card--completed .prediction-card-score {
+  color: var(--sch-gold);
+}
+
+.prediction-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--sch-line);
+  font-size: 12px;
+}
+
+.prediction-card-predicted {
+  color: var(--sch-bright);
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .prediction-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .prediction-card {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .up-title {
+    font-size: 28px;
+  }
 }

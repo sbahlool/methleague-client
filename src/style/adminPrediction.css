@@ -127,6 +127,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.prediction-user:hover {
+  color: var(--sch-bright);
+  text-decoration: underline;
 }
 
 .prediction-score {
