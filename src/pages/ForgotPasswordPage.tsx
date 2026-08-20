@@ -31,13 +31,13 @@ const ForgotPassword = () => {
     <div className="auth-page">
       <div className="auth-shell">
         <h1 className="auth-title">Forgot Password</h1>
-        <p className="auth-subtitle">We'll email you a link to reset it.</p>
+        <p className="auth-subtitle">We&apos;ll email you a link to reset it.</p>
 
         <div className="auth-form">
           {submitted ? (
             <div className="field-group">
               <p className="field-hint field-hint--good" style={{ fontSize: '14px', textAlign: 'center' }}>
-                If an account with that email exists, we've sent a password reset link. Check your inbox.
+                If an account with that email exists, we&apos;ve sent a password reset link. Check your inbox.
               </p>
             </div>
           ) : (

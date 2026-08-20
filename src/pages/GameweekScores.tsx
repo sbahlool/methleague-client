@@ -4,7 +4,7 @@ import { getGameweekScores } from '../services/Gameweek' // New service for game
 import '../index.css'
 
 // Define the GameweekScoreResponse type
-type GameweekScoreResponse = Record<string, Record<number, number>>; // Assuming scores are keyed by user ID and gameweek number
+type GameweekScoreResponse = Record<string, Record<number, number>> // Assuming scores are keyed by user ID and gameweek number
 
 type UserWithScores = UserResponse & { scores: Record<number, number> } // Adjusted type for scores
 

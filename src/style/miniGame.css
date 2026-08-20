@@ -132,11 +132,16 @@
 }
 
 .card-game img {
-  height: 78%;
   width: auto;
-  max-width: 82%;
+  height: auto;
+  max-width: 70%;
+  max-height: 70%;
   display: block;
   object-fit: contain;
+  background: #fff;
+  border-radius: 8px;
+  padding: 6px;
+  box-sizing: content-box;
 }
 
 .card-game .front,
