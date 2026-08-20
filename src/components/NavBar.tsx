@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import '../style/nav.css'
 import { UserResponse } from '../services/Auth'
 
@@ -12,7 +12,6 @@ const NavBar = ({ user, handleLogOut }: Props) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false)
   const [isMenuOpen, setMenuOpen] = useState(false)
   const [isBurgerVisible, setBurgerVisible] = useState(true)
-  const dropdownToggleRef = useRef<HTMLAnchorElement>(null)
 
   const toggleDropdown: React.MouseEventHandler<HTMLAnchorElement> = (event) => {
     event.preventDefault()
@@ -42,59 +41,39 @@ const NavBar = ({ user, handleLogOut }: Props) => {
     }
   }, [])
 
-  // The actual fix for "the menu isn't visible without scrolling": when it
-  // opens, scroll the toggle itself to the top of the viewport so the
-  // revealed Profile/Logout items directly below it always have room to
-  // be visible too, regardless of where "Welcome, user!" sat in the list.
-  useEffect(() => {
-    if (isDropdownOpen) {
-      dropdownToggleRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }, [isDropdownOpen])
-
-  // NOTE: these used to each be their own <ul className="navbar-nav">,
-  // which then got rendered *inside* the main <ul> below — an invalid
-  // nested-list that was the real cause of the layout breaking. They're
-  // now just the <li> items themselves, merged into the one list.
   const userOptions = user && (
-    <li className="navbar-dropdown">
-      <NavLink to="#" className="dropdown-toggler" onClick={toggleDropdown} ref={dropdownToggleRef}>
-        Welcome, {user.username}! <i className="fa fa-angle-down"></i>
-      </NavLink>
-      <ul className={`dropdown${isDropdownOpen ? ' show' : ''}`}>
-        <li>
-          <NavLink
-            className="navitem"
-            to={`/profile/${user.username}`}
-            onClick={() => {
-              setDropdownOpen(false)
-              closeMenu()
-            }}
-          >
-            Profile
-          </NavLink>
-        </li>
-        <li className="separator"></li>
-        <li>
-          <NavLink
-            className="navitem"
-            onClick={() => {
-              handleLogOut()
-              setDropdownOpen(false)
-              closeMenu()
-            }}
-            to="/"
-          >
-            Logout
-          </NavLink>
-        </li>
-      </ul>
-    </li>
+    <ul className="navbar-nav">
+      <li className="navbar-dropdown">
+        <NavLink to="#" className="dropdown-toggler" onClick={toggleDropdown}>
+          Welcome, {user.username}! <i className="fa fa-angle-down"></i>
+        </NavLink>
+        <ul className={`dropdown${isDropdownOpen ? ' show' : ''}`}>
+          <li>
+            <NavLink className="navitem" to={`/profile/${user.username}`} onClick={closeMenu}>
+              Profile
+            </NavLink>
+          </li>
+          <li className="separator"></li>
+          <li>
+            <NavLink
+              className="navitem"
+              onClick={() => {
+                handleLogOut()
+                closeMenu()
+              }}
+              to="/"
+            >
+              Logout
+            </NavLink>
+          </li>
+        </ul>
+      </li>
+    </ul>
   )
 
   const visitorOptions = (
-    <>
-      <li className="navbar-nav-right">
+    <ul className="navbar-nav">
+      <li>
         <NavLink to="/login" onClick={closeMenu}>
           Sign in
         </NavLink>
@@ -104,7 +83,7 @@ const NavBar = ({ user, handleLogOut }: Props) => {
           <button className="btn btn-outline-purple">Join</button>
         </NavLink>
       </li>
-    </>
+    </ul>
   )
 
   return (
@@ -138,6 +117,11 @@ const NavBar = ({ user, handleLogOut }: Props) => {
               <li>
                 <NavLink to="/rank" onClick={closeMenu}>
                   Rank
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/statistics" onClick={closeMenu}>
+                  Statistics
                 </NavLink>
               </li>
               <li>

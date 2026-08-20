@@ -1,106 +1,155 @@
-.App {
-  max-width: 860px;
-  margin: 40px auto;
-  padding: 0 20px; /* Added padding for mobile */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+:root {
+  --mg-void: #150b2b;
+  --mg-panel: #1c0f38;
+  --mg-primary: #6d28d9;
+  --mg-bright: #a855f7;
+  --mg-gold: #f2c14e;
+  --mg-mist: #cabbee;
+  --mg-paper: #f8f6ff;
+  --mg-line: rgba(198, 168, 255, 0.14);
 }
 
+.minigame-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 48px 20px 96px;
+  background:
+    radial-gradient(ellipse 800px 400px at 50% 0%, rgba(168, 85, 247, 0.2), transparent 65%),
+    var(--mg-void);
+  font-family: 'Source Sans Pro', sans-serif;
+  color: var(--mg-paper);
+  display: flex;
+  justify-content: center;
+}
+
+.minigame-shell {
+  width: 100%;
+  max-width: 720px;
+  text-align: center;
+}
+
+.minigame-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px;
+  letter-spacing: 0.04em;
+  color: var(--mg-gold);
+  margin: 0 0 6px;
+}
+
+.minigame-subtitle {
+  color: var(--mg-mist);
+  font-size: 14px;
+  margin: 0 0 24px;
+}
+
+/* ---------------------------------------------
+   Stats
+   --------------------------------------------- */
+.minigame-stats {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.minigame-stat {
+  background: var(--mg-panel);
+  border: 1px solid var(--mg-line);
+  border-radius: 14px;
+  padding: 14px 28px;
+  min-width: 100px;
+}
+
+.minigame-stat-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px;
+  color: var(--mg-gold);
+  line-height: 1;
+}
+
+.minigame-stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--mg-mist);
+  margin-top: 6px;
+}
+
+.minigame-guest-notice {
+  font-size: 13px;
+  color: var(--mg-mist);
+  margin: 0 0 16px;
+}
+
+/* ---------------------------------------------
+   New Game button
+   --------------------------------------------- */
 .button-game {
-  background: #c23866;
-  border: 2px solid #fff;
-  padding: 6px 12px;
-  border-radius: 4px;
-  color: white;
-  font-weight: bold;
+  color: var(--mg-void);
+  background: linear-gradient(100deg, var(--mg-gold), #f7d883);
+  border: none;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
   cursor: pointer;
-  font-size: 1em;
-  width: 100%; /* Full width for mobile */
+  box-shadow: 0 8px 22px rgba(242, 193, 78, 0.25);
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+  margin-bottom: 32px;
 }
 
-button:hover {
-  background: #c23866;
-  color: white;
+.button-game:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(242, 193, 78, 0.35);
 }
 
-
-
-.back {
-  background: #fff;
-}
-
+/* ---------------------------------------------
+   Card grid
+   --------------------------------------------- */
 .card-grid {
-  margin-top: 40px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 20px;
-}
-
-/* Mobile styles */
-@media (max-width: 600px) {
-  .card-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 columns on mobile */
-  }
-
-  img {
-    height: 100px; /* Smaller images for mobile */
-    width: 90px; /* Adjusted width for mobile */
-  }
-
-  .button-game {
-    font-size: 0.9em; /* Slightly smaller font size */
-  }
-
-  .card {
-    width: 80%; /* Adjust card width for mobile */
-    margin: 0 auto; /* Center the card */
-  }
-
-  .card-game .front,
-  .card-game .back {
-    position: absolute;
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    width: 75% !important; /* Full width */
-    height: 100%; /* Full height */
-    backface-visibility: hidden; /* Hide the back face when flipped */
-    display: flex; /* Use flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-}
-
-  .card img {
-    height: auto; /* Maintain aspect ratio */
-  }
+  grid-gap: 16px;
+  justify-items: center;
 }
 
 .card-game {
   position: relative;
-  width: 100%; /* Ensure the card takes full width */
-  max-width: 150px; /* Set a max width for larger screens */
-  height: 100px; /* Increased height for cards */
-  margin: 0 auto; /* Center the card */
-  perspective: 1000px; /* Add perspective for 3D effect */
+  width: 100%;
+  max-width: 140px;
+  height: 100px;
+  perspective: 1000px;
+}
+
+.card-game > div {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .card-game img {
-  width: 65%;
-  height: 70%;
+  height: 78%;
+  width: auto;
+  max-width: 82%;
   display: block;
-  border: 2px solid #fff;
-  border-radius: 6px;
-  object-fit: cover; /* Maintain aspect ratio and cover the area */
+  object-fit: contain;
 }
 
 .card-game .front,
 .card-game .back {
   position: absolute;
-  top: 0; /* Align to the top */
-  left: 0; /* Align to the left */
-  width: 60%; /* Full width */
-  height: 100%; /* Full height */
-  backface-visibility: hidden; /* Hide the back face when flipped */
-  display: flex; /* Use flexbox for centering */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  border: 2px solid var(--mg-line);
+  border-radius: 10px;
+  background: var(--mg-panel);
 }
 
 .card-game .front {
@@ -114,11 +163,40 @@ button:hover {
 }
 
 .card-game .back {
-  transition: transform 0.2s ease-in; 
+  transition: transform 0.2s ease-in;
   transition-delay: 0.2s;
+  cursor: pointer;
+  border-color: rgba(168, 85, 247, 0.35);
+}
+
+.card-game .back:hover {
+  border-color: var(--mg-bright);
 }
 
 .flipped .back {
   transform: rotateY(90deg);
   transition-delay: 0s;
+}
+
+/* ---------------------------------------------
+   Responsive
+   --------------------------------------------- */
+@media (max-width: 600px) {
+  .minigame-title {
+    font-size: 32px;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+  }
+
+  .card-game {
+    height: 90px;
+  }
+
+  .minigame-stat {
+    padding: 12px 20px;
+    min-width: 80px;
+  }
 }

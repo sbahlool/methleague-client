@@ -20,6 +20,7 @@ import ForgotPassword from './pages/ForgotPasswordPage'
 import ResetPassword from './pages/ResetPasswordPage'
 import Table from './pages/Table'
 import MiniGame from './pages/MiniGame'
+import Statistics from './pages/Statistics'
 import { ToastProvider } from './context/ToastContext'
 
 import './index.css'
@@ -53,7 +54,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/table" element={<Table />} />
-            <Route path="/minigame" element={<MiniGame />} />
+            <Route path="/minigame" element={<MiniGame currentUser={user} />} />
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route
               path="/admin"
@@ -77,6 +78,7 @@ const App = () => {
             <Route path="/profile/edit/:username" element={<EditProfilePage setUser={setUser} />} />
             <Route path="/profile/security/:username" element={<ChangePasswordPage />} />
             <Route path="/Rank" element={<Rank currentUser={user} />} />
+            <Route path="/statistics" element={<Statistics />} />
             <Route path="/Schedule" element={<Schedule currentUser={user} />} />
             <Route path="/match/:matchId" element={<Match />} />
             <Route path="/update-prediction/:matchId" element={<UpdatePrediction currentUser={user} />} />{' '}

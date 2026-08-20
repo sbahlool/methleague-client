@@ -1,34 +1,35 @@
-// import Client from './api'
+import Client from './api'
 
-// export const recordScore = async (userId: string, score: number): Promise<void> => {
-//   try {
-//     await Client.post('/minigame/score', { userId, score })
-//   } catch (error) {
-//     console.error('Failed to record score', error)
-//     throw error
-//   }
-// }
+export interface ScoreRequest {
+  userId: string
+  score: number
+}
 
-// export const getHighScore = async (userId: string): Promise<number> => {
-//   try {
-//     const res = await Client.get(`/minigame/highscore/${userId}`)
-//     return res.data.highScore
-//   } catch (error) {
-//     console.error('Failed to retrieve high score', error)
-//     throw error
-//   }
-// }
+export interface RecordScoreResponse {
+  bestScore: number
+  isNewBest: boolean
+}
 
-// export interface ScoreRequest {
-//   userId: string
-//   score: number
-// }
+export interface HighScoreResponse {
+  highScore: number
+}
 
-// export interface HighScoreResponse {
-//   highScore: number
-// }
+export const recordScore = async (userId: string, score: number): Promise<RecordScoreResponse> => {
+  try {
+    const res = await Client.post<RecordScoreResponse>('/minigame/score', { userId, score })
+    return res.data
+  } catch (error) {
+    console.error('Failed to record score', error)
+    throw error
+  }
+}
 
-// export const MiniGameMatch = {
-//   recordScore,
-//   getHighScore
-// }
+export const getHighScore = async (userId: string): Promise<number> => {
+  try {
+    const res = await Client.get<HighScoreResponse>(`/minigame/highscore/${userId}`)
+    return res.data.highScore
+  } catch (error) {
+    console.error('Failed to retrieve high score', error)
+    throw error
+  }
+}
