@@ -22,9 +22,9 @@ const GameweekScores = ({ currentUser }: Props) => {
         const usersData = await GetUsers()
         const scoresData: GameweekScoreResponse = await getGameweekScores(gameweek) // Fetch scores for the selected gameweek
 
-        const usersWithScores: UserWithScores[] = usersData.map(user => ({
+        const usersWithScores: UserWithScores[] = usersData.map((user) => ({
           ...user,
-          scores: scoresData[user._id] || {} // Map scores to users
+          scores: scoresData[user._id] || {}, // Map scores to users
         }))
 
         setUsers(usersWithScores)

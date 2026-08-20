@@ -134,6 +134,12 @@ const Profile = ({ user }: Props) => {
               <div className="stat-number">{submittedPredictions.length}</div>
               <div className="stat-label">Predictions</div>
             </div>
+            {profile.MatchHighScore !== undefined && profile.MatchHighScore > 0 && (
+              <div className="stat-box">
+                <div className="stat-number">{profile.MatchHighScore}</div>
+                <div className="stat-label">Best Turns</div>
+              </div>
+            )}
           </div>
 
           {user && user.username === username && (

@@ -42,9 +42,10 @@
 .stats-page > * {
   position: relative;
   z-index: 1;
+  width: 100%;
   max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .stats-title {
@@ -52,7 +53,7 @@
   font-size: 40px;
   letter-spacing: 0.04em;
   color: var(--stats-gold);
-  text-align: center;
+  text-align: center !important;
   margin: 0 0 6px;
 }
 
@@ -167,13 +168,14 @@
   font-size: 26px;
   letter-spacing: 0.03em;
   color: var(--stats-paper);
-  text-align: center;
+  text-align: center !important;
   margin: 0 0 16px;
 }
 
 .accolades-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 16px;
 }
 
@@ -183,6 +185,7 @@
   align-items: center;
   text-align: center;
   gap: 6px;
+  flex: 0 1 220px;
   background: var(--stats-panel);
   border: 1px solid var(--stats-line);
   border-radius: 16px;
@@ -279,7 +282,7 @@
     text-align: center;
   }
 
-  .accolades-grid {
-    grid-template-columns: 1fr 1fr;
+  .accolade-card {
+    flex-basis: 45%;
   }
 }

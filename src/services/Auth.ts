@@ -160,6 +160,7 @@ export interface UserResponse {
     __v: number
   }
   role: string
+  MatchHighScore?: number
   createdAt: string
   updatedAt: string
   __v: number

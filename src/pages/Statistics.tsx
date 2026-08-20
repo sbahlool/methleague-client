@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { GetUsers, UserResponse } from '../services/Auth'
 import { getPredictions, PredictionResponse } from '../services/Prediction'
+import { getMatches } from '../services/Match'
 import { getProfilePictureUrl } from '../utils/image'
 import '../style/statistics.css'
 
@@ -33,6 +34,7 @@ const MIN_SAMPLE_FOR_ACCURACY = 3
 const Statistics = () => {
   const [users, setUsers] = useState<UserResponse[]>([])
   const [predictions, setPredictions] = useState<PredictionResponse[]>([])
+  const [completedMatchesPerGameweek, setCompletedMatchesPerGameweek] = useState<Record<number, number>>({})
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -41,9 +43,21 @@ const Statistics = () => {
       setIsLoading(true)
       setError('')
       try {
-        const [usersData, predictionsData] = await Promise.all([GetUsers(), getPredictions()])
+        const [usersData, predictionsData, matchesData] = await Promise.all([
+          GetUsers(),
+          getPredictions(),
+          getMatches(),
+        ])
         setUsers(usersData)
         setPredictions(predictionsData)
+
+        const gameweekCounts: Record<number, number> = {}
+        matchesData
+          .filter((m) => m.isCompleted)
+          .forEach((m) => {
+            gameweekCounts[m.gameweek] = (gameweekCounts[m.gameweek] || 0) + 1
+          })
+        setCompletedMatchesPerGameweek(gameweekCounts)
       } catch (err) {
         console.error('Failed to load statistics:', err)
         setError('Something went wrong loading statistics. Please try again.')
@@ -74,8 +88,9 @@ const Statistics = () => {
   // off yet must never factor into any stat here, since aggregate figures
   // (a popular scoreline, a "most home wins called" count, etc.) can leak
   // hints about what other people predicted before the deadline locks it.
+  // Also excludes orphaned predictions whose user was since deleted.
   const submittedPredictions = predictions.filter(
-    (p) => p.predictedHomeScore !== null && p.predictedAwayScore !== null && p.match?.isCompleted,
+    (p) => p.predictedHomeScore !== null && p.predictedAwayScore !== null && p.match?.isCompleted && p.user,
   )
 
   // ---------------------------------------------------------------
@@ -107,6 +122,13 @@ const Statistics = () => {
     }
   })
   const topTeam = Object.values(teamCounts).sort((a, b) => b.count - a.count)[0]
+
+  // Mini Game best — separate from predictions entirely, just the
+  // MatchHighScore field on each user. 0 means "hasn't played," so those
+  // are excluded rather than treated as a suspiciously perfect score.
+  const puzzleMaster = users
+    .filter((u) => (u.MatchHighScore ?? 0) > 0)
+    .sort((a, b) => (a.MatchHighScore ?? Infinity) - (b.MatchHighScore ?? Infinity))[0]
 
   // ---------------------------------------------------------------
   // Per-user stats, for the accolades below
@@ -156,6 +178,46 @@ const Statistics = () => {
     .filter((s) => s.completedCount >= MIN_SAMPLE_FOR_ACCURACY)
     .sort((a, b) => a.correctCount / a.completedCount - b.correctCount / b.completedCount)[0]
 
+  // Per-gameweek clean sweeps — a gameweek only counts if the user
+  // predicted *every* completed match that week (not just some of them)
+  // and got all of them right. Tallied across the whole season; whoever
+  // has done it the most times wins the card.
+  const gameweekGroups: Record<string, PredictionResponse[]> = {}
+  submittedPredictions.forEach((p) => {
+    const gw = p.match?.gameweek
+    if (gw == null) return
+    const key = `${p.user._id}:${gw}`
+    if (!gameweekGroups[key]) gameweekGroups[key] = []
+    gameweekGroups[key].push(p)
+  })
+
+  const perfectGameweekCounts: Record<string, number> = {}
+  const cleanGameweekCounts: Record<string, number> = {}
+
+  Object.values(gameweekGroups).forEach((group) => {
+    const userId = group[0].user._id
+    const gameweek = group[0].match!.gameweek
+    const totalForGameweek = completedMatchesPerGameweek[gameweek] || 0
+
+    // Must have predicted every completed match that gameweek, not just
+    // however many they happened to submit.
+    if (totalForGameweek === 0 || group.length !== totalForGameweek) return
+
+    if (group.every((p) => p.points === 3)) {
+      perfectGameweekCounts[userId] = (perfectGameweekCounts[userId] || 0) + 1
+    }
+    if (group.every((p) => p.points > 0)) {
+      cleanGameweekCounts[userId] = (cleanGameweekCounts[userId] || 0) + 1
+    }
+  })
+
+  const topPerfectGameweeks = users
+    .map((user) => ({ user, count: perfectGameweekCounts[user._id] || 0 }))
+    .sort((a, b) => b.count - a.count)[0]
+  const topCleanGameweeks = users
+    .map((user) => ({ user, count: cleanGameweekCounts[user._id] || 0 }))
+    .sort((a, b) => b.count - a.count)[0]
+
   const accolades: Accolade[] = []
 
   if (topByPoints && topByPoints.points > 0) {
@@ -196,6 +258,24 @@ const Statistics = () => {
       statValue: `${pct}%`,
     })
   }
+  if (topPerfectGameweeks && topPerfectGameweeks.count > 0) {
+    accolades.push({
+      icon: '🌟',
+      title: 'Perfect Gameweek',
+      description: 'Called every match perfectly in a gameweek — most times this season',
+      user: topPerfectGameweeks.user,
+      statValue: `${topPerfectGameweeks.count}x`,
+    })
+  }
+  if (topCleanGameweeks && topCleanGameweeks.count > 0) {
+    accolades.push({
+      icon: '✅',
+      title: 'Clean Sweep',
+      description: 'Got the correct result on every match in a gameweek — most times this season',
+      user: topCleanGameweeks.user,
+      statValue: `${topCleanGameweeks.count}x`,
+    })
+  }
   if (topByActivity && topByActivity.totalPredictions > 0) {
     accolades.push({
       icon: '🔥',
@@ -230,6 +310,15 @@ const Statistics = () => {
       description: 'Predicts the most draws',
       user: topByDraws.user,
       statValue: `${topByDraws.draws} draws called`,
+    })
+  }
+  if (puzzleMaster) {
+    accolades.push({
+      icon: '🧩',
+      title: 'Puzzle Master',
+      description: 'Fewest turns in the Mini Game',
+      user: puzzleMaster,
+      statValue: `${puzzleMaster.MatchHighScore} turns`,
     })
   }
 
