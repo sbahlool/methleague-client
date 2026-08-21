@@ -52,7 +52,11 @@ const AdminPredictions = ({ user }: Props) => {
     const fetchPredictions = async () => {
       try {
         const data = await getAllPredictionsByGameweek(selectedGameweek)
-        setPredictions(data)
+        // A prediction's user can come back null if that user was deleted
+        // after the prediction was made — populate() just returns null
+        // rather than erroring, so drop these instead of crashing later
+        // on prediction.user._id / prediction.user.username.
+        setPredictions(data.filter((prediction) => prediction.user))
       } catch (error) {
         console.error('Error fetching predictions:', error)
       }
