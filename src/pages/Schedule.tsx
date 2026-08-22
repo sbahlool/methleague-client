@@ -81,6 +81,13 @@ const Schedule = ({ currentUser }: Props) => {
         const predictions = await getAllPredictions()
         const predictionsByMatch = predictions.reduce(
           (acc: Record<string, PredictionResponse[]>, prediction: PredictionResponse) => {
+            // A prediction's user can come back null if that user was
+            // deleted after the prediction was made — populate() just
+            // returns null rather than erroring, so skip these instead
+            // of crashing later on prediction.user.username.
+            if (!prediction.user) {
+              return acc
+            }
             if (prediction.match && prediction.match._id) {
               if (!acc[prediction.match._id]) {
                 acc[prediction.match._id] = []

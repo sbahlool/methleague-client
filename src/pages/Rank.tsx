@@ -23,6 +23,12 @@ const Rank = ({ currentUser }: Props) => {
         const [usersData, predictionsData] = await Promise.all([GetUsers(), getPredictions()])
 
         const pointsMap = predictionsData.reduce((acc, prediction: PredictionResponse) => {
+          // A prediction's user can come back null if that user was
+          // deleted after the prediction was made — populate() just
+          // returns null rather than erroring, so skip these instead
+          // of crashing on .user._id.
+          if (!prediction.user) return acc
+
           const userId = prediction.user._id
           if (!acc[userId]) {
             acc[userId] = { points: 0, perfect: 0 }
